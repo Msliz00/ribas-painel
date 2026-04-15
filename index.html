@@ -4,324 +4,370 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RIBAS CRM · BingoBet</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --orange:#FF6B00;--orange-light:#FF8C38;
-  --bg:#0C0905;--surface:#1A1410;--surface2:#221A12;
-  --text:#F0ECE8;--text-dim:#6A5F55;--text-mid:#A09080;
-  --green:#00C96E;--yellow:#F5A623;--red:#FF4444;--blue:#3B9EFF;
+  --orange:#FF6B00;--ol:#FF8C38;
+  --bg:#0C0905;--s1:#1A1410;--s2:#221A12;
+  --text:#F0ECE8;--dim:#6A5F55;--mid:#A09080;
+  --green:#00C96E;--yellow:#F5A623;--red:#FF4444;--blue:#3B9EFF;--purple:#A855F7;
   --border:rgba(255,255,255,0.07);
-  --f:\'Outfit\',system-ui,sans-serif;
-  --fm:\'JetBrains Mono\',monospace;
+  --f:'Comfortaa',cursive;
+  --fm:'JetBrains Mono',monospace;
 }
-body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+body{background:var(--bg);color:var(--text);font-family:var(--f);min-height:100vh;overflow-x:hidden}
+svg{display:block;flex-shrink:0}
 
-/* ANIMATIONS */
-@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeInScale{from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,201,110,0.4)}50%{box-shadow:0 0 0 5px rgba(0,201,110,0)}}
-@keyframes popIn{0%{opacity:0;transform:translateX(120%)}65%{transform:translateX(-4px)}100%{opacity:1;transform:translateX(0)}}
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeScale{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,201,110,0.5)}50%{box-shadow:0 0 0 7px rgba(0,201,110,0)}}
+@keyframes pulseO{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,0.5)}50%{box-shadow:0 0 0 9px rgba(255,107,0,0)}}
+@keyframes popIn{0%{opacity:0;transform:translateX(120%)}65%{transform:translateX(-5px)}100%{opacity:1;transform:translateX(0)}}
 @keyframes popOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(120%)}}
-@keyframes borderGlow{0%,100%{border-color:rgba(255,107,0,0.15)}50%{border-color:rgba(255,107,0,0.5)}}
+@keyframes glow{0%,100%{border-color:rgba(255,107,0,0.2);box-shadow:0 0 0 rgba(255,107,0,0)}50%{border-color:rgba(255,107,0,0.7);box-shadow:0 0 40px rgba(255,107,0,0.12)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes logoPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,0.3)}50%{box-shadow:0 0 20px 5px rgba(255,107,0,0.15)}}
-@keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(22px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+@keyframes neonPulse{0%,100%{text-shadow:0 0 8px rgba(255,107,0,0.6),0 0 20px rgba(255,107,0,0.3)}50%{text-shadow:0 0 3px rgba(255,107,0,0.3)}}
+@keyframes casinoRotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes casinoFloat{0%,100%{transform:translateY(0) scale(1);opacity:0.12}50%{transform:translateY(-20px) scale(1.1);opacity:0.22}}
+@keyframes casinoPulse{0%,100%{opacity:0.06}50%{opacity:0.14}}
+@keyframes countBounce{0%{transform:scale(0.8);opacity:0}60%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
 
-/* LOGIN */
-#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
-.login-wrap{width:100%;max-width:400px;padding:24px;animation:fadeInScale 0.5s cubic-bezier(0.34,1.56,0.64,1) both}
-.login-card{background:linear-gradient(165deg,rgba(28,20,12,0.99),rgba(16,12,7,1));border:1px solid rgba(255,107,0,0.15);border-radius:20px;padding:40px 34px 34px;box-shadow:0 40px 80px rgba(0,0,0,0.75);animation:borderGlow 3s ease-in-out infinite}
-.login-logo{text-align:center;margin-bottom:32px}
-.login-logo-icon{width:64px;height:64px;background:linear-gradient(130deg,#ff7a1a,#e05800);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;margin-bottom:16px;animation:logoPulse 2.5s ease-in-out infinite}
-.login-title{font-size:24px;font-weight:900;letter-spacing:0.03em}
+/* ── ICON WRAPPER ── */
+.ico{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.ico svg{stroke-width:1.8px}
+.ico-sm svg{width:16px;height:16px}
+.ico-md svg{width:22px;height:22px}
+.ico-lg svg{width:28px;height:28px}
+.ico-xl svg{width:36px;height:36px}
+
+/* ── LOGIN ── */
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;overflow:hidden}
+.casino-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.c-shape{position:absolute;border-radius:50%;border:1px solid rgba(255,107,0,0.15);animation:casinoPulse 4s ease-in-out infinite}
+.c-line{position:absolute;background:linear-gradient(90deg,transparent,rgba(255,107,0,0.08),transparent);animation:casinoPulse 3s ease-in-out infinite}
+.c-star{position:absolute;animation:casinoFloat 5s ease-in-out infinite}
+.c-ring{position:absolute;border-radius:50%;border:2px solid rgba(255,107,0,0.06);animation:casinoRotate linear infinite}
+
+.login-wrap{width:100%;max-width:420px;padding:24px;animation:fadeScale 0.6s cubic-bezier(0.34,1.4,0.64,1) both;position:relative;z-index:2}
+.login-card{background:linear-gradient(160deg,rgba(32,22,12,0.99),rgba(12,8,4,1));border:1px solid rgba(255,107,0,0.2);border-radius:26px;padding:46px 40px 40px;box-shadow:0 60px 120px rgba(0,0,0,0.85),0 0 80px rgba(255,107,0,0.04);animation:glow 4s ease-in-out infinite}
+.login-logo{text-align:center;margin-bottom:38px}
+.login-logo-icon{width:80px;height:80px;background:linear-gradient(135deg,#ff8520,#d94e00);border-radius:22px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px;animation:pulseO 2.5s ease-in-out infinite;box-shadow:0 8px 32px rgba(255,107,0,0.35)}
+.login-title{font-size:30px;font-weight:700;letter-spacing:0.01em;animation:neonPulse 3s ease-in-out infinite}
 .login-title span{color:var(--orange)}
-.login-sub{font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;margin-top:4px}
-.login-divider{display:flex;align-items:center;gap:12px;margin:24px 0 20px}
-.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.login-divider-label{font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--text-dim);font-family:'JetBrains Mono',monospace;text-transform:uppercase}
-.login-field{margin-bottom:16px}
-.login-label{display:block;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-mid);font-family:'JetBrains Mono',monospace;margin-bottom:6px}
-.login-label span{color:var(--orange)}
-.login-input{width:100%;background:var(--surface2);border:1px solid rgba(255,255,255,0.07);border-radius:10px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13.5px;padding:13px 15px;outline:none;transition:border-color 0.2s,box-shadow 0.2s}
-.login-input:focus{border-color:rgba(255,107,0,0.45);box-shadow:0 0 0 3px rgba(255,107,0,0.09)}
-.login-input::placeholder{color:var(--text-dim)}
-.remember-row{display:flex;align-items:center;gap:8px;margin-bottom:20px;cursor:pointer}
-.remember-check{width:16px;height:16px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
-.remember-check.active{background:var(--orange);border-color:var(--orange)}
-.remember-check.active::after{content:'✓';font-size:10px;color:#fff;font-weight:700}
-.remember-label{font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
-.login-btn{width:100%;background:linear-gradient(130deg,#ff7a1a 0%,#e05800 100%);color:#fff;border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;padding:15px;cursor:pointer;box-shadow:0 4px 28px rgba(255,107,0,0.28);transition:transform 0.15s,box-shadow 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.login-btn:hover{transform:translateY(-1px);box-shadow:0 8px 36px rgba(255,107,0,0.38)}
-.login-btn:active{transform:scale(0.98)}
-.login-error{background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.25);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);font-family:'JetBrains Mono',monospace;margin-bottom:16px;display:none;animation:fadeIn 0.3s ease both}
-.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;display:none}
+.login-sub{font-size:11px;color:var(--dim);font-family:var(--fm);letter-spacing:0.14em;margin-top:7px;text-transform:uppercase}
+.login-div{display:flex;align-items:center;gap:14px;margin:30px 0 24px}
+.login-div::before,.login-div::after{content:'';flex:1;height:1px;background:var(--border)}
+.login-div span{font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--dim);font-family:var(--fm);text-transform:uppercase}
+.lfield{margin-bottom:18px}
+.llabel{display:block;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);font-family:var(--fm);margin-bottom:8px}
+.llabel em{color:var(--orange);font-style:normal}
+.linput{width:100%;background:var(--s2);border:1px solid rgba(255,255,255,0.08);border-radius:13px;color:var(--text);font-family:var(--fm);font-size:14px;padding:15px 17px;outline:none;transition:border-color 0.2s,box-shadow 0.2s,transform 0.15s;letter-spacing:0.03em}
+.linput:focus{border-color:rgba(255,107,0,0.5);box-shadow:0 0 0 3px rgba(255,107,0,0.1);transform:scale(1.01)}
+.linput::placeholder{color:var(--dim)}
+.rem-row{display:flex;align-items:center;gap:10px;margin-bottom:24px;cursor:pointer}
+.rem-check{width:18px;height:18px;border:1.5px solid rgba(255,255,255,0.15);border-radius:5px;background:var(--s2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.rem-check.on{background:var(--orange);border-color:var(--orange)}
+.rem-check.on::after{content:'✓';font-size:11px;color:#fff;font-weight:700}
+.rem-label{font-size:12px;color:var(--dim);font-family:var(--fm)}
+.lbtn{width:100%;background:linear-gradient(130deg,#ff8520,#d94e00);color:#fff;border:none;border-radius:13px;font-family:var(--f);font-size:16px;font-weight:700;padding:17px;cursor:pointer;box-shadow:0 8px 36px rgba(255,107,0,0.38);display:flex;align-items:center;justify-content:center;gap:10px;transition:transform 0.2s,box-shadow 0.2s}
+.lbtn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 48px rgba(255,107,0,0.5)}
+.lbtn:active{transform:scale(0.98)}
+.lerr{background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.25);border-radius:11px;padding:12px 16px;font-size:12px;color:var(--red);font-family:var(--fm);margin-bottom:18px;display:none;animation:fadeUp 0.3s ease both}
+.lspinner{width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.65s linear infinite;display:none}
 
-/* LAYOUT */
+/* ── LAYOUT ── */
 #dashboard{display:none;height:100vh;overflow:hidden}
 .layout{display:flex;height:100vh}
 
-/* SIDEBAR */
-.sidebar{width:240px;flex-shrink:0;background:rgba(10,7,3,0.98);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow:hidden}
-.sidebar-brand{padding:20px 20px 16px;border-bottom:1px solid var(--border)}
-.brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-.brand-icon{width:34px;height:34px;background:linear-gradient(130deg,#ff7a1a,#e05800);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff;flex-shrink:0}
-.brand-name{font-size:18px;font-weight:900;letter-spacing:0.03em}
-.brand-name span{color:var(--orange)}
-.brand-sub{font-size:9px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.12em;margin-top:2px}
-.brand-role{display:inline-block;margin-top:8px;background:rgba(255,107,0,0.12);border:1px solid rgba(255,107,0,0.2);color:var(--orange);font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;padding:3px 8px;border-radius:4px}
+/* ── SIDEBAR ── */
+.sidebar{width:258px;flex-shrink:0;background:rgba(6,4,2,0.98);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh}
+.sb-brand{padding:24px 20px 18px;border-bottom:1px solid var(--border)}
+.sb-logo{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.sb-icon{width:40px;height:40px;background:linear-gradient(135deg,#ff8520,#d94e00);border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:pulseO 3s ease-in-out infinite}
+.sb-name{font-size:20px;font-weight:700;letter-spacing:0.01em}
+.sb-name span{color:var(--orange)}
+.sb-sub{font-size:9px;color:var(--dim);font-family:var(--fm);letter-spacing:0.14em;margin-top:3px;text-transform:uppercase}
+.sb-role{display:inline-flex;align-items:center;gap:6px;margin-top:11px;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.22);color:var(--orange);font-size:10px;font-weight:700;font-family:var(--fm);letter-spacing:0.1em;padding:5px 10px;border-radius:6px;text-transform:uppercase}
 
-.sidebar-nav{flex:1;padding:12px 10px;overflow-y:auto}
-.sidebar-nav::-webkit-scrollbar{width:0}
-.nav-section{font-size:9px;font-weight:700;letter-spacing:0.15em;color:var(--text-dim);font-family:'JetBrains Mono',monospace;text-transform:uppercase;padding:12px 10px 6px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all 0.18s;margin-bottom:2px;position:relative}
-.nav-item:hover{background:rgba(255,255,255,0.04)}
-.nav-item.active{background:linear-gradient(130deg,rgba(255,107,0,0.18),rgba(255,107,0,0.08));border:1px solid rgba(255,107,0,0.2)}
+.sb-nav{flex:1;padding:14px 10px;overflow-y:auto}
+.sb-nav::-webkit-scrollbar{width:0}
+.nav-sec{font-size:9px;font-weight:700;letter-spacing:0.18em;color:var(--dim);font-family:var(--fm);text-transform:uppercase;padding:14px 12px 7px}
+.nav-item{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:12px;cursor:pointer;transition:all 0.22s cubic-bezier(0.34,1.4,0.64,1);margin-bottom:3px;border:1px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,0.04);transform:translateX(4px)}
+.nav-item.active{background:linear-gradient(130deg,rgba(255,107,0,0.18),rgba(255,107,0,0.05));border-color:rgba(255,107,0,0.28);transform:translateX(5px)}
 .nav-item.active .nav-label{color:var(--orange);font-weight:700}
-.nav-item.active .nav-icon{color:var(--orange)}
-.nav-icon{font-size:15px;width:20px;text-align:center;color:var(--text-dim);transition:color 0.18s;flex-shrink:0}
-.nav-label{font-size:13px;font-weight:500;color:var(--text-mid);transition:color 0.18s;flex:1}
-.nav-badge{font-size:8px;font-weight:700;padding:2px 6px;border-radius:8px;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
-.nb-live{background:rgba(0,201,110,0.15);color:var(--green);border:1px solid rgba(0,201,110,0.25)}
+.nav-item.active .nav-ico svg{stroke:var(--orange)}
+.nav-ico{width:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-ico svg{width:18px;height:18px;stroke:var(--dim);transition:stroke 0.18s;stroke-width:2px}
+.nav-item:hover .nav-ico svg{stroke:var(--mid)}
+.nav-label{font-size:13px;font-weight:600;color:var(--mid);transition:color 0.18s;flex:1}
+.nav-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;font-family:var(--fm);letter-spacing:0.04em}
+.nb-ok{background:rgba(0,201,110,0.15);color:var(--green);border:1px solid rgba(0,201,110,0.25)}
 .nb-warn{background:rgba(245,166,35,0.15);color:var(--yellow);border:1px solid rgba(245,166,35,0.25)}
 .nb-err{background:rgba(255,68,68,0.15);color:var(--red);border:1px solid rgba(255,68,68,0.25)}
-.nb-new{background:rgba(59,158,255,0.15);color:var(--blue);border:1px solid rgba(59,158,255,0.25)}
+.nb-blue{background:rgba(59,158,255,0.15);color:var(--blue);border:1px solid rgba(59,158,255,0.25)}
 
-.sidebar-footer{padding:16px;border-top:1px solid var(--border)}
-.sidebar-user{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--surface2);cursor:pointer;transition:background 0.15s}
-.sidebar-user:hover{background:rgba(255,107,0,0.08)}
-.user-avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(130deg,rgba(255,107,0,0.3),rgba(255,107,0,0.1));border:1px solid rgba(255,107,0,0.25);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--orange);flex-shrink:0}
-.user-name{font-size:12px;font-weight:700;color:var(--text)}
-.user-role{font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;margin-top:1px}
-.user-logout{font-size:11px;color:var(--text-dim);margin-left:auto;padding:4px 8px;border-radius:6px;transition:all 0.15s}
-.user-logout:hover{color:var(--red)}
+.sb-footer{padding:16px;border-top:1px solid var(--border)}
+.sb-user{display:flex;align-items:center;gap:11px;padding:12px 13px;border-radius:13px;background:var(--s1);cursor:pointer;transition:all 0.2s;border:1px solid var(--border)}
+.sb-user:hover{background:rgba(255,107,0,0.07);border-color:rgba(255,107,0,0.2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
+.user-av{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(255,107,0,0.28),rgba(255,107,0,0.08));border:1.5px solid rgba(255,107,0,0.3);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--orange);flex-shrink:0}
+.user-nm{font-size:13px;font-weight:700;letter-spacing:0.01em}
+.user-rl{font-size:10px;color:var(--dim);font-family:var(--fm);margin-top:2px}
 
-/* MAIN CONTENT */
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);background:rgba(8,5,2,0.97);position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)}
+.topbar-l{display:flex;align-items:center;gap:10px}
+.tb-title{font-size:12px;color:var(--dim);font-family:var(--fm);letter-spacing:0.06em}
+.tb-page{font-size:13px;font-weight:700;color:var(--text);font-family:var(--fm)}
+.topbar-r{display:flex;align-items:center;gap:12px}
+.badge-live{display:flex;align-items:center;gap:6px;background:rgba(0,201,110,0.1);border:1px solid rgba(0,201,110,0.25);color:var(--green);font-size:10px;font-weight:700;letter-spacing:0.1em;padding:5px 11px;border-radius:6px;font-family:var(--fm)}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 2s infinite}
+.btn-sair{display:flex;align-items:center;gap:7px;background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.25);color:var(--red);font-family:var(--f);font-size:12px;font-weight:700;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all 0.2s;letter-spacing:0.04em}
+.btn-sair:hover{background:rgba(255,68,68,0.18);transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,68,68,0.18)}
+.btn-sair svg{stroke:var(--red)}
+
+/* ── PAGES ── */
 .main-content{flex:1;overflow-y:auto;height:100vh}
 .main-content::-webkit-scrollbar{width:4px}
-.main-content::-webkit-scrollbar-thumb{background:var(--text-dim);border-radius:2px}
-
-/* TOPBAR */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);background:rgba(12,9,5,0.96);position:sticky;top:0;z-index:10}
-.topbar-left{display:flex;align-items:center;gap:8px}
-.topbar-title{font-size:13px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
-.topbar-sep{color:var(--text-dim);font-size:12px}
-.topbar-page{font-size:13px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace}
-.topbar-right{display:flex;align-items:center;gap:12px}
-.topbar-meta{font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
-.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px;animation:pulse 2s infinite}
-.badge-live{background:rgba(0,201,110,0.15);border:1px solid rgba(0,201,110,0.3);color:var(--green);font-size:9px;font-weight:700;letter-spacing:0.12em;padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
-
-/* PAGE CONTENT */
-.page{display:none;padding:28px;animation:fadeIn 0.3s ease both}
+.main-content::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+.page{display:none;padding:28px;animation:fadeUp 0.32s ease both}
 .page.active{display:block}
 
-/* WELCOME BANNER */
-.welcome-banner{background:linear-gradient(165deg,rgba(28,20,12,0.98),rgba(16,12,7,0.99));border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;gap:18px}
-.welcome-icon{width:52px;height:52px;background:linear-gradient(130deg,#ff7a1a,#e05800);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.welcome-title{font-size:22px;font-weight:800}
+/* ── WELCOME BANNER ── */
+.welcome{background:linear-gradient(160deg,rgba(30,22,13,0.98),rgba(12,8,4,0.99));border:1px solid var(--border);border-radius:20px;padding:28px 32px;margin-bottom:26px;display:flex;align-items:center;gap:22px;position:relative;overflow:hidden}
+.welcome::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,107,0,0.04),transparent 55%);pointer-events:none}
+.welcome-icon-box{width:60px;height:60px;border-radius:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:iconFloat 4s ease-in-out infinite}
+.welcome-icon-box svg{width:28px;height:28px;stroke-width:1.8px}
+.welcome-title{font-size:24px;font-weight:700;letter-spacing:0.01em;margin-bottom:6px}
 .welcome-title span{color:var(--orange)}
-.welcome-sub{font-size:13px;color:var(--text-dim);margin-top:4px;line-height:1.5}
-.welcome-sub b{color:var(--orange)}
+.welcome-sub{font-size:13px;color:var(--mid);line-height:1.65;font-weight:400}
+.welcome-sub strong{color:var(--orange);font-weight:700}
 
-/* METRIC CARDS */
-.metrics-row{display:grid;gap:14px;margin-bottom:20px}
-.metrics-4{grid-template-columns:repeat(4,1fr)}
-.metrics-2{grid-template-columns:repeat(2,1fr)}
-.metrics-3{grid-template-columns:repeat(3,1fr)}
-.metric-card{background:linear-gradient(165deg,rgba(28,20,12,0.98),rgba(16,12,7,0.99));border:1px solid var(--border);border-radius:16px;padding:22px;transition:border-color 0.2s,transform 0.2s;animation:cardIn 0.4s ease both}
-.metric-card:hover{border-color:rgba(255,107,0,0.15);transform:translateY(-2px)}
-.metric-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:16px}
-.mi-orange{background:rgba(255,107,0,0.15)}
-.mi-green{background:rgba(0,201,110,0.12)}
-.mi-blue{background:rgba(59,158,255,0.12)}
-.mi-yellow{background:rgba(245,166,35,0.12)}
-.mi-red{background:rgba(255,68,68,0.12)}
-.mi-purple{background:rgba(139,92,246,0.12)}
-.metric-val{font-size:34px;font-weight:900;line-height:1;margin-bottom:6px}
-.metric-label{font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
-.metric-delta{font-size:11px;margin-top:8px;font-family:'JetBrains Mono',monospace;font-weight:500}
-.d-up{color:var(--green)}.d-warn{color:var(--yellow)}.d-err{color:var(--red)}
+/* ── METRIC CARDS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
 
-/* SECTION LABEL */
-.section-label{display:flex;align-items:center;gap:12px;margin:24px 0 16px}
-.section-label::before,.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.section-label-text{font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--text-dim);font-family:'JetBrains Mono',monospace;text-transform:uppercase;white-space:nowrap}
+.mcard{background:linear-gradient(160deg,rgba(30,22,13,0.98),rgba(12,8,4,0.99));border:1px solid var(--border);border-radius:20px;padding:26px;animation:cardIn 0.5s ease both;position:relative;overflow:hidden;transform-style:preserve-3d;transition:transform 0.22s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.22s ease,border-color 0.22s ease}
+.mcard::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;filter:blur(40px);opacity:0;transition:opacity 0.3s;pointer-events:none}
+.mcard:hover{transform:translateY(-8px) rotateX(6deg) scale(1.025)}
+.mcard-orange:hover{border-color:rgba(255,107,0,0.45);box-shadow:0 20px 60px rgba(255,107,0,0.14)}
+.mcard-orange::after{background:var(--orange)}
+.mcard-orange:hover::after{opacity:0.15}
+.mcard-green:hover{border-color:rgba(0,201,110,0.45);box-shadow:0 20px 60px rgba(0,201,110,0.12)}
+.mcard-blue:hover{border-color:rgba(59,158,255,0.45);box-shadow:0 20px 60px rgba(59,158,255,0.12)}
+.mcard-yellow:hover{border-color:rgba(245,166,35,0.45);box-shadow:0 20px 60px rgba(245,166,35,0.12)}
+.mcard-red:hover{border-color:rgba(255,68,68,0.45);box-shadow:0 20px 60px rgba(255,68,68,0.12)}
+.mcard-purple:hover{border-color:rgba(168,85,247,0.45);box-shadow:0 20px 60px rgba(168,85,247,0.12)}
 
-/* CARD BASE */
-.card{background:linear-gradient(165deg,rgba(28,20,12,0.98),rgba(16,12,7,0.99));border:1px solid var(--border);border-radius:16px;padding:22px;animation:cardIn 0.4s ease both}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.card-title{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-mid);font-family:'JetBrains Mono',monospace}
-.tag{font-size:9px;font-weight:700;letter-spacing:0.08em;padding:3px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;text-transform:uppercase}
-.tag-orange{background:rgba(255,107,0,0.15);color:var(--orange);border:1px solid rgba(255,107,0,0.25)}
-.tag-green{background:rgba(0,201,110,0.12);color:var(--green);border:1px solid rgba(0,201,110,0.2)}
-.tag-err{background:rgba(255,68,68,0.12);color:var(--red);border:1px solid rgba(255,68,68,0.2)}
+.mcard-icon-box{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.mcard-icon-box svg{width:24px;height:24px;stroke-width:1.8px}
+.mib-o{background:rgba(255,107,0,0.15)} .mib-g{background:rgba(0,201,110,0.12)} .mib-b{background:rgba(59,158,255,0.12)}
+.mib-y{background:rgba(245,166,35,0.12)} .mib-r{background:rgba(255,68,68,0.12)} .mib-p{background:rgba(168,85,247,0.12)}
 
-/* AGENTS */
-.agent-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:rgba(26,20,16,0.6);margin-bottom:8px;cursor:pointer;transition:all 0.18s}
-.agent-row:hover{border-color:rgba(255,107,0,0.25);transform:translateX(3px)}
-.agent-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-right:12px}
-.dot-green{background:var(--green);animation:pulse 2s infinite}
-.dot-gray{background:var(--text-dim)}
-.dot-yellow{background:var(--yellow)}
-.agent-name{font-size:14px;font-weight:700}
-.agent-desc{font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;margin-top:2px}
-.agent-status-pill{font-size:10px;font-weight:700;padding:4px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em}
-.sp-ok{background:rgba(0,201,110,0.1);color:var(--green);border:1px solid rgba(0,201,110,0.2)}
-.sp-off{background:rgba(106,95,85,0.1);color:var(--text-dim);border:1px solid rgba(106,95,85,0.18)}
-.sp-err{background:rgba(255,68,68,0.1);color:var(--red);border:1px solid rgba(255,68,68,0.2)}
-.sp-warn{background:rgba(245,166,35,0.1);color:var(--yellow);border:1px solid rgba(245,166,35,0.2)}
+.mcard-val{font-size:40px;font-weight:700;line-height:1;margin-bottom:8px;letter-spacing:-0.02em;animation:countBounce 0.6s ease both}
+.mcard-label{font-size:11px;color:var(--dim);font-family:var(--fm);letter-spacing:0.1em;text-transform:uppercase;font-weight:600}
+.mcard-delta{font-size:11px;margin-top:10px;font-family:var(--fm);font-weight:600}
+.dg{color:var(--green)}.dw{color:var(--yellow)}.dr{color:var(--red)}
 
-/* COMMANDS */
-.cmd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.cmd-card{background:rgba(26,20,16,0.8);border:1px solid var(--border);border-radius:14px;padding:20px;cursor:pointer;transition:all 0.2s;text-align:left}
-.cmd-card:hover{border-color:rgba(255,107,0,0.35);background:rgba(255,107,0,0.04);transform:translateY(-2px)}
-.cmd-card:active{transform:scale(0.97)}
-.cmd-card.primary{border-color:rgba(255,107,0,0.25);background:rgba(255,107,0,0.06)}
-.cmd-card.primary:hover{background:rgba(255,107,0,0.1)}
-.cmd-card.danger{border-color:rgba(255,68,68,0.2)}
-.cmd-card.danger:hover{border-color:rgba(255,68,68,0.4);background:rgba(255,68,68,0.05)}
-.cmd-icon-wrap{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px}
-.cmd-name{font-size:14px;font-weight:700;margin-bottom:4px}
-.cmd-desc{font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
+/* ── SECTION LABEL ── */
+.sec-label{display:flex;align-items:center;gap:14px;margin:26px 0 18px}
+.sec-label::before,.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.sec-label-inner{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.sec-label-inner svg{width:14px;height:14px;stroke:var(--dim);stroke-width:2px;flex-shrink:0}
+.sec-label-inner span{font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--dim);font-family:var(--fm);text-transform:uppercase}
 
-/* FLOW */
-.flow-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.flow-label{font-size:11px;color:var(--text-mid);font-family:'JetBrains Mono',monospace;width:88px;flex-shrink:0;font-weight:500}
-.flow-track{flex:1;height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden}
-.flow-fill{height:100%;border-radius:4px;width:0%;transition:width 1s cubic-bezier(0.34,1.2,0.64,1)}
-.flow-val{font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:600;min-width:44px;text-align:right}
+/* ── CARD BASE ── */
+.card{background:linear-gradient(160deg,rgba(30,22,13,0.98),rgba(12,8,4,0.99));border:1px solid var(--border);border-radius:20px;padding:24px;animation:cardIn 0.4s ease both}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.card-ttl{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);font-family:var(--fm)}
+.tag{font-size:9px;font-weight:700;letter-spacing:0.08em;padding:4px 9px;border-radius:6px;font-family:var(--fm);text-transform:uppercase}
+.tag-o{background:rgba(255,107,0,0.15);color:var(--orange);border:1px solid rgba(255,107,0,0.25)}
+.tag-g{background:rgba(0,201,110,0.12);color:var(--green);border:1px solid rgba(0,201,110,0.2)}
+.tag-r{background:rgba(255,68,68,0.12);color:var(--red);border:1px solid rgba(255,68,68,0.2)}
 
-/* LOG */
-.log-list{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto}
+/* ── STATUS ROWS ── */
+.srow{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-radius:14px;margin-bottom:10px;transition:transform 0.2s,box-shadow 0.2s}
+.srow:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 8px 28px rgba(0,0,0,0.3)}
+.srow-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:14px}
+.srow-ico svg{width:20px;height:20px;stroke-width:1.8px}
+.srow-name{font-size:14px;font-weight:700;letter-spacing:0.01em}
+.srow-desc{font-size:10px;font-family:var(--fm);color:var(--dim);margin-top:3px}
+.pill{font-size:10px;font-weight:700;padding:5px 12px;border-radius:7px;font-family:var(--fm);letter-spacing:0.06em;white-space:nowrap}
+.pill-ok{background:rgba(0,201,110,0.12);color:var(--green);border:1px solid rgba(0,201,110,0.22)}
+.pill-off{background:rgba(106,95,85,0.1);color:var(--dim);border:1px solid rgba(106,95,85,0.18)}
+.pill-err{background:rgba(255,68,68,0.12);color:var(--red);border:1px solid rgba(255,68,68,0.22)}
+.pill-warn{background:rgba(245,166,35,0.12);color:var(--yellow);border:1px solid rgba(245,166,35,0.22)}
+
+/* ── AGENTS ── */
+.agent-row{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-radius:16px;border:1px solid var(--border);background:rgba(22,16,10,0.6);margin-bottom:10px;cursor:pointer;transition:all 0.22s cubic-bezier(0.34,1.4,0.64,1)}
+.agent-row:hover{border-color:rgba(255,107,0,0.35);transform:translateX(7px) translateY(-2px);background:rgba(255,107,0,0.04);box-shadow:0 10px 36px rgba(0,0,0,0.3)}
+.adot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-right:14px}
+.dot-g{background:var(--green);animation:pulse 2s infinite}
+.dot-gr{background:var(--dim)}
+.aname{font-size:14px;font-weight:700;letter-spacing:0.01em}
+.adesc{font-size:11px;color:var(--dim);font-family:var(--fm);margin-top:3px}
+.aping{font-size:10px;color:var(--dim);font-family:var(--fm);margin-top:4px;opacity:0.8}
+
+/* ── COMMANDS ── */
+.cmd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cmd-card{background:rgba(22,16,10,0.8);border:1px solid var(--border);border-radius:18px;padding:24px;cursor:pointer;text-align:left;transform-style:preserve-3d;transition:transform 0.24s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.24s ease,border-color 0.2s,background 0.2s}
+.cmd-card:hover{transform:translateY(-10px) rotateX(10deg) scale(1.04);box-shadow:0 24px 60px rgba(0,0,0,0.55),0 0 30px rgba(255,107,0,0.1);border-color:rgba(255,107,0,0.4);background:rgba(255,107,0,0.05)}
+.cmd-card:active{transform:translateY(-3px) rotateX(4deg) scale(0.99)}
+.cmd-card.primary{border-color:rgba(255,107,0,0.25);background:rgba(255,107,0,0.07)}
+.cmd-card.danger:hover{border-color:rgba(255,68,68,0.5);background:rgba(255,68,68,0.06);box-shadow:0 24px 60px rgba(0,0,0,0.55),0 0 30px rgba(255,68,68,0.1)}
+.cmd-icon-box{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.cmd-icon-box svg{width:24px;height:24px;stroke-width:1.8px}
+.cmd-name{font-size:15px;font-weight:700;margin-bottom:6px;letter-spacing:0.01em}
+.cmd-desc{font-size:11px;color:var(--dim);font-family:var(--fm);line-height:1.5}
+
+/* ── FLOW BARS ── */
+.flow-row{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.flow-label{font-size:11px;color:var(--mid);font-family:var(--fm);width:92px;flex-shrink:0;font-weight:600;letter-spacing:0.04em}
+.flow-track{flex:1;height:10px;background:rgba(255,255,255,0.04);border-radius:5px;overflow:hidden;position:relative}
+.flow-fill{height:100%;border-radius:5px;width:0%;transition:width 1.2s cubic-bezier(0.34,1.2,0.64,1);position:relative;overflow:hidden}
+.flow-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);animation:shimmer 2.5s infinite;background-size:600px 100%}
+.flow-val{font-size:12px;font-family:var(--fm);font-weight:700;min-width:48px;text-align:right;letter-spacing:0.02em}
+
+/* ── LOG ── */
+.log-list{display:flex;flex-direction:column;gap:9px;max-height:480px;overflow-y:auto}
 .log-list::-webkit-scrollbar{width:3px}
-.log-list::-webkit-scrollbar-thumb{background:var(--text-dim);border-radius:2px}
-.log-row{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(26,20,16,0.6);animation:fadeIn 0.2s ease both}
-.log-time{font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;white-space:nowrap;min-width:42px;padding-top:1px}
-.log-dot{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
-.log-msg{font-size:12px;font-family:'JetBrains Mono',monospace;line-height:1.5}
+.log-list::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+.log-row{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border-radius:12px;background:rgba(22,16,10,0.6);animation:fadeUp 0.22s ease both;transition:background 0.15s}
+.log-row:hover{background:rgba(36,26,14,0.8)}
+.log-time{font-size:10px;color:var(--dim);font-family:var(--fm);white-space:nowrap;min-width:42px;padding-top:1px;letter-spacing:0.04em}
+.log-dot{width:8px;height:8px;border-radius:50%;margin-top:3px;flex-shrink:0}
+.log-msg{font-size:12px;font-family:var(--fm);line-height:1.55;color:var(--text);letter-spacing:0.02em}
 
-/* TASKS */
-.task-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;margin-bottom:10px;transition:transform 0.15s}
-.task-item:hover{transform:translateY(-1px)}
-.task-num{font-size:16px;font-weight:900;font-family:'JetBrains Mono',monospace;min-width:26px}
-.task-text{font-size:13px;font-weight:600}
-.task-urg{font-size:9px;font-family:'JetBrains Mono',monospace;margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700}
+/* ── TASKS ── */
+.task-item{display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:16px;margin-bottom:10px;transition:transform 0.22s cubic-bezier(0.34,1.4,0.64,1),box-shadow 0.22s}
+.task-item:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 12px 36px rgba(0,0,0,0.35)}
+.task-num{font-size:18px;font-weight:700;font-family:var(--fm);min-width:28px;letter-spacing:0.02em}
+.task-text{font-size:13px;font-weight:700;letter-spacing:0.01em;line-height:1.4}
+.task-urg{font-size:9px;font-family:var(--fm);margin-top:4px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700}
 
-/* NOTIF */
-.notif{position:fixed;top:16px;right:16px;background:linear-gradient(130deg,#ff7a1a,#e05800);color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:700;font-family:'Outfit',sans-serif;box-shadow:0 4px 28px rgba(255,107,0,0.4);z-index:9999;opacity:0;transform:translateX(120%);pointer-events:none}
+/* ── NOTIF ── */
+.notif{position:fixed;top:18px;right:18px;background:linear-gradient(130deg,#ff8520,#d94e00);color:#fff;padding:14px 22px;border-radius:14px;font-size:13px;font-weight:700;font-family:var(--f);box-shadow:0 8px 40px rgba(255,107,0,0.45);z-index:9999;opacity:0;transform:translateX(120%);pointer-events:none;letter-spacing:0.02em}
 .notif.show{animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards}
 .notif.hide{animation:popOut 0.3s ease forwards}
-
-/* STATUS ROW */
-.status-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;margin-bottom:8px}
-.status-label{font-size:13px;font-weight:700}
-.status-desc{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-dim);margin-top:2px}
 </style>
 </head>
 <body>
 
 <div class="notif" id="notif"></div>
 
-<!-- LOGIN -->
+<!-- ═══ LOGIN ═══ -->
 <div id="login-screen">
+  <div class="casino-bg" id="cbg"></div>
   <div class="login-wrap">
     <div class="login-card">
       <div class="login-logo">
-        <div class="login-logo-icon">R</div>
+        <div class="login-logo-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
         <div class="login-title">RIBAS <span>CRM</span></div>
-        <div class="login-sub">BINGO BET · iGAMING · ACESSO RESTRITO</div>
+        <div class="login-sub">BingoBet · iGaming · Acesso Restrito</div>
       </div>
-      <div class="login-divider"><span class="login-divider-label">identificação</span></div>
-      <div id="login-error" class="login-error"></div>
-      <div class="login-field">
-        <label class="login-label">Login <span>*</span></label>
-        <input class="login-input" type="text" id="login-user" placeholder="seu usuário" autocomplete="username">
+      <div class="login-div"><span>identificação</span></div>
+      <div id="lerr" class="lerr"></div>
+      <div class="lfield">
+        <label class="llabel">Login <em>*</em></label>
+        <input class="linput" type="text" id="luser" placeholder="seu usuário" autocomplete="username">
       </div>
-      <div class="login-field">
-        <label class="login-label">Senha <span>*</span></label>
-        <input class="login-input" type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+      <div class="lfield">
+        <label class="llabel">Senha <em>*</em></label>
+        <input class="linput" type="password" id="lpass" placeholder="••••••••" autocomplete="current-password">
       </div>
-      <div class="remember-row" onclick="toggleRemember()">
-        <div class="remember-check" id="remember-check"></div>
-        <span class="remember-label">Salvar senha neste dispositivo</span>
+      <div class="rem-row" onclick="toggleRem()">
+        <div class="rem-check" id="remcheck"></div>
+        <span class="rem-label">Salvar senha neste dispositivo</span>
       </div>
-      <button class="login-btn" onclick="doLogin()">
-        <div class="spinner" id="login-spinner"></div>
-        <span id="login-btn-text">ENTRAR</span>
+      <button class="lbtn" onclick="doLogin()">
+        <div class="lspinner" id="lspin"></div>
+        <span id="lbtntxt">Entrar no Sistema</span>
       </button>
     </div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ═══ DASHBOARD ═══ -->
 <div id="dashboard">
 <div class="layout">
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-logo">
-        <div class="brand-icon">R</div>
+    <div class="sb-brand">
+      <div class="sb-logo">
+        <div class="sb-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
         <div>
-          <div class="brand-name">RIBAS <span>CRM</span></div>
+          <div class="sb-name">RIBAS <span>CRM</span></div>
         </div>
       </div>
-      <div class="brand-sub">BINGO BET · iGAMING</div>
-      <div class="brand-role" id="role-badge">OPERADOR</div>
+      <div class="sb-sub">BingoBet · iGaming</div>
+      <div class="sb-role">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span id="role-badge">OPERADOR</span>
+      </div>
     </div>
 
-    <div class="sidebar-nav">
-      <div class="nav-section">Principal</div>
+    <div class="sb-nav">
+      <div class="nav-sec">Principal</div>
       <div class="nav-item active" onclick="showPage('overview',this)">
-        <span class="nav-icon">◈</span>
+        <span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
         <span class="nav-label">Visão Geral</span>
-        <span class="nav-badge nb-live">LIVE</span>
+        <span class="nav-badge nb-ok">LIVE</span>
       </div>
       <div class="nav-item" onclick="showPage('metricas',this)">
-        <span class="nav-icon">◎</span>
+        <span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
         <span class="nav-label">Métricas</span>
-        <span class="nav-badge nb-live">LIVE</span>
+        <span class="nav-badge nb-ok">LIVE</span>
       </div>
 
-      <div class="nav-section">Sistema</div>
+      <div class="nav-sec">Sistema</div>
       <div class="nav-item" onclick="showPage('agentes',this)">
-        <span class="nav-icon">⚙</span>
+        <span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
         <span class="nav-label">Agentes</span>
-        <span class="nav-badge nb-warn">2/6</span>
+        <span class="nav-badge nb-warn">2 de 6</span>
       </div>
       <div class="nav-item" onclick="showPage('operacao',this)">
-        <span class="nav-icon">◆</span>
+        <span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
         <span class="nav-label">Operação</span>
-        <span class="nav-badge nb-new">A/B</span>
+        <span class="nav-badge nb-blue">A/B</span>
       </div>
       <div class="nav-item" onclick="showPage('comandos',this)">
-        <span class="nav-icon">▶</span>
+        <span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
         <span class="nav-label">Comandos</span>
       </div>
 
-      <div class="nav-section">Monitoramento</div>
+      <div class="nav-sec">Monitoramento</div>
       <div class="nav-item" onclick="showPage('log',this)">
-        <span class="nav-icon">≡</span>
+        <span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
         <span class="nav-label">Log Atividade</span>
         <span class="nav-badge nb-err" id="log-badge">5</span>
       </div>
       <div class="nav-item" onclick="showPage('pendencias',this)">
-        <span class="nav-icon">!</span>
+        <span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
         <span class="nav-label">Pendências</span>
         <span class="nav-badge nb-err">7</span>
       </div>
     </div>
 
-    <div class="sidebar-footer">
-      <div class="sidebar-user" onclick="doLogout()">
-        <div class="user-avatar" id="user-avatar">?</div>
+    <div class="sb-footer">
+      <div class="sb-user" onclick="doLogout()">
+        <div class="user-av" id="userav">?</div>
         <div>
-          <div class="user-name" id="user-name">—</div>
-          <div class="user-role">RIBAS CRM</div>
+          <div class="user-nm" id="usernm">Carregando</div>
+          <div class="user-rl">RIBAS CRM</div>
         </div>
-        <div class="user-logout">→ Sair</div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--dim)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </div>
     </div>
   </div>
@@ -329,340 +375,340 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-
   <!-- MAIN -->
   <div class="main-content">
     <div class="topbar">
-      <div class="topbar-left">
-        <span class="topbar-title">RIBAS CRM</span>
-        <span class="topbar-sep">—</span>
-        <span class="topbar-page" id="topbar-page">Visão Geral</span>
+      <div class="topbar-l">
+        <span class="tb-title">RIBAS CRM</span>
+        <span style="color:var(--dim)">·</span>
+        <span class="tb-page" id="tb-page">Visão Geral</span>
       </div>
-      <div class="topbar-right">
-        <div class="topbar-meta"><span class="pulse-dot"></span>SISTEMA ATIVO</div>
-        <div class="topbar-meta" id="clock">--:--:--</div>
-        <div class="badge-live">LIVE</div>
+      <div class="topbar-r">
+        <div class="badge-live"><div class="pulse-dot"></div>SISTEMA ATIVO</div>
+        <div style="font-size:12px;color:var(--mid);font-family:var(--fm);letter-spacing:0.04em" id="clock">--:--:--</div>
+        <button class="btn-sair" onclick="doLogout()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
       </div>
     </div>
 
-    <!-- PAGE: VISÃO GERAL -->
+    <!-- VISÃO GERAL -->
     <div class="page active" id="page-overview">
-      <div class="welcome-banner">
-        <div class="welcome-icon">★</div>
+      <div class="welcome">
+        <div class="welcome-icon-box" style="background:linear-gradient(135deg,rgba(255,107,0,0.25),rgba(255,107,0,0.07))">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
         <div>
-          <div class="welcome-title">Bem-vindo, <span id="welcome-name">—</span></div>
-          <div class="welcome-sub">Acesso <b>total ao sistema</b>. Monitore métricas, gerencie agentes e controle toda a operação CRM do BingoBet no Telegram.</div>
+          <div class="welcome-title">Bem-vindo, <span id="wnm">—</span></div>
+          <div class="welcome-sub">Acesso <strong>total ao sistema</strong>. Monitore métricas, gerencie agentes e controle toda a operação CRM do BingoBet no Telegram.</div>
         </div>
       </div>
-
-      <div class="metrics-row metrics-4">
-        <div class="metric-card" style="animation-delay:0.05s">
-          <div class="metric-icon mi-orange">◈</div>
-          <div class="metric-val" style="color:var(--orange)">32.873</div>
-          <div class="metric-label">Total Leads</div>
-          <div class="metric-delta d-warn">importação pendente</div>
+      <div class="grid-4">
+        <div class="mcard mcard-orange" style="animation-delay:0.05s">
+          <div class="mcard-icon-box mib-o"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="mcard-val" style="color:var(--orange)">32.873</div>
+          <div class="mcard-label">Total Leads</div>
+          <div class="mcard-delta dw">importação pendente</div>
         </div>
-        <div class="metric-card" style="animation-delay:0.1s">
-          <div class="metric-icon mi-green">$</div>
-          <div class="metric-val" style="color:var(--green)" id="ov-ativos">—</div>
-          <div class="metric-label">Ativos Hoje</div>
-          <div class="metric-delta d-up">atualizado ao vivo</div>
+        <div class="mcard mcard-green" style="animation-delay:0.1s">
+          <div class="mcard-icon-box mib-g"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="mcard-val" style="color:var(--green)" id="ov1">—</div>
+          <div class="mcard-label">Ativos Hoje</div>
+          <div class="mcard-delta dg">atualizado ao vivo</div>
         </div>
-        <div class="metric-card" style="animation-delay:0.15s">
-          <div class="metric-icon mi-blue">◆</div>
-          <div class="metric-val" style="color:var(--blue)">6</div>
-          <div class="metric-label">Canais</div>
-          <div class="metric-delta d-warn">aguardando import</div>
+        <div class="mcard mcard-blue" style="animation-delay:0.15s">
+          <div class="mcard-icon-box mib-b"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.55a16 16 0 0 0 6.29 6.29l1.62-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="mcard-val" style="color:var(--blue)">6</div>
+          <div class="mcard-label">Canais</div>
+          <div class="mcard-delta dw">aguardando importação</div>
         </div>
-        <div class="metric-card" style="animation-delay:0.2s">
-          <div class="metric-icon mi-yellow">▶</div>
-          <div class="metric-val" style="color:var(--yellow)" id="ov-disparos">—</div>
-          <div class="metric-label">Disparos</div>
-          <div class="metric-delta d-warn">A/B split ativo</div>
-        </div>
-      </div>
-
-      <div class="metrics-row metrics-2">
-        <div class="metric-card" style="animation-delay:0.25s">
-          <div class="metric-icon mi-green">◎</div>
-          <div class="metric-val" style="color:var(--green)">2</div>
-          <div class="metric-label">Agentes Ativos</div>
-          <div class="metric-delta d-warn">4 pendentes de build</div>
-        </div>
-        <div class="metric-card" style="animation-delay:0.3s">
-          <div class="metric-icon mi-yellow">%</div>
-          <div class="metric-val" style="color:var(--yellow)">18%</div>
-          <div class="metric-label">Taxa de Conversão</div>
-          <div class="metric-delta d-up">leads → FTD</div>
+        <div class="mcard mcard-yellow" style="animation-delay:0.2s">
+          <div class="mcard-icon-box mib-y"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div class="mcard-val" style="color:var(--yellow)" id="ov2">—</div>
+          <div class="mcard-label">Disparos</div>
+          <div class="mcard-delta dw">A/B split ativo</div>
         </div>
       </div>
-
-      <div class="section-label"><span class="section-label-text">Status do Sistema</span></div>
+      <div class="grid-2">
+        <div class="mcard mcard-green" style="animation-delay:0.25s">
+          <div class="mcard-icon-box mib-g"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="mcard-val" style="color:var(--green)">2</div>
+          <div class="mcard-label">Agentes Ativos</div>
+          <div class="mcard-delta dw">4 aguardando build</div>
+        </div>
+        <div class="mcard mcard-yellow" style="animation-delay:0.3s">
+          <div class="mcard-icon-box mib-y"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="mcard-val" style="color:var(--yellow)">18%</div>
+          <div class="mcard-label">Conversão</div>
+          <div class="mcard-delta dg">leads convertidos</div>
+        </div>
+      </div>
+      <div class="sec-label"><div class="sec-label-inner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Status do Sistema</span></div></div>
       <div class="card">
-        <div class="status-row" style="background:rgba(0,201,110,0.06);border:1px solid rgba(0,201,110,0.12)">
-          <div><div class="status-label">MASTER-FLOW</div><div class="status-desc">Reativo ENTRADA / SAÍDA / CLIQUE</div></div>
-          <span class="agent-status-pill sp-ok">ATIVO</span>
+        <div class="srow" style="background:rgba(0,201,110,0.07);border:1px solid rgba(0,201,110,0.15)">
+          <div class="srow-ico" style="background:rgba(0,201,110,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div style="flex:1"><div class="srow-name">MASTER FLOW</div><div class="srow-desc">Reativo ENTRADA / SAÍDA / CLIQUE</div></div>
+          <span class="pill pill-ok">ATIVO</span>
         </div>
-        <div class="status-row" style="background:rgba(0,201,110,0.06);border:1px solid rgba(0,201,110,0.12)">
-          <div><div class="status-label">WEBHOOK N8N</div><div class="status-desc">Supabase · AWS sa-east-1</div></div>
-          <span class="agent-status-pill sp-ok">VALIDADO</span>
+        <div class="srow" style="background:rgba(0,201,110,0.07);border:1px solid rgba(0,201,110,0.15)">
+          <div class="srow-ico" style="background:rgba(0,201,110,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div style="flex:1"><div class="srow-name">WEBHOOK N8N</div><div class="srow-desc">Supabase · AWS sa-east-1</div></div>
+          <span class="pill pill-ok">VALIDADO</span>
         </div>
-        <div class="status-row" style="background:rgba(255,68,68,0.06);border:1px solid rgba(255,68,68,0.12)">
-          <div><div class="status-label">agent_signals</div><div class="status-desc">Tabela de comunicação entre agentes</div></div>
-          <span class="agent-status-pill sp-err">NÃO CRIADO</span>
+        <div class="srow" style="background:rgba(255,68,68,0.07);border:1px solid rgba(255,68,68,0.15)">
+          <div class="srow-ico" style="background:rgba(255,68,68,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+          <div style="flex:1"><div class="srow-name">agent_signals</div><div class="srow-desc">Tabela de comunicação entre agentes</div></div>
+          <span class="pill pill-err">NÃO CRIADO</span>
         </div>
-        <div class="status-row" style="background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.12)">
-          <div><div class="status-label">Chaves Supabase</div><div class="status-desc">anon key + service_role expostas</div></div>
-          <span class="agent-status-pill sp-warn">RENOVAR</span>
+        <div class="srow" style="background:rgba(245,166,35,0.07);border:1px solid rgba(245,166,35,0.15)">
+          <div class="srow-ico" style="background:rgba(245,166,35,0.12)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div style="flex:1"><div class="srow-name">Chaves Supabase</div><div class="srow-desc">anon key e service_role expostas</div></div>
+          <span class="pill pill-warn">RENOVAR</span>
         </div>
       </div>
     </div>
 
-    <!-- PAGE: MÉTRICAS -->
+    <!-- MÉTRICAS -->
     <div class="page" id="page-metricas">
-      <div class="welcome-banner">
-        <div class="welcome-icon" style="background:linear-gradient(130deg,rgba(0,201,110,0.3),rgba(0,201,110,0.1))">◎</div>
+      <div class="welcome">
+        <div class="welcome-icon-box" style="background:linear-gradient(135deg,rgba(0,201,110,0.2),rgba(0,201,110,0.05))">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
         <div>
           <div class="welcome-title">Métricas <span>Detalhadas</span></div>
-          <div class="welcome-sub">Dados da base de leads · Funil completo · Distribuição A/B</div>
+          <div class="welcome-sub">Funil completo · Distribuição A/B · Base de leads em tempo real</div>
         </div>
       </div>
-      <div class="metrics-row metrics-4">
-        <div class="metric-card">
-          <div class="metric-icon mi-orange">◈</div>
-          <div class="metric-val" style="color:var(--orange)">32.873</div>
-          <div class="metric-label">Total Leads</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-icon mi-green">✓</div>
-          <div class="metric-val" style="color:var(--green)">22.353</div>
-          <div class="metric-label">Leads Ativos</div>
-          <div class="metric-delta d-up">68% da base</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-icon mi-yellow">↻</div>
-          <div class="metric-val" style="color:var(--yellow)">10.520</div>
-          <div class="metric-label">Em RMKT</div>
-          <div class="metric-delta d-warn">32% da base</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-icon mi-blue">★</div>
-          <div class="metric-val" style="color:var(--blue)">5.917</div>
-          <div class="metric-label">Convertidos</div>
-          <div class="metric-delta d-up">18% conversão</div>
-        </div>
+      <div class="grid-4">
+        <div class="mcard mcard-orange"><div class="mcard-icon-box mib-o"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="mcard-val" style="color:var(--orange)">32.873</div><div class="mcard-label">Total Leads</div></div>
+        <div class="mcard mcard-green"><div class="mcard-icon-box mib-g"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="mcard-val" style="color:var(--green)">22.353</div><div class="mcard-label">Leads Ativos</div><div class="mcard-delta dg">68% da base</div></div>
+        <div class="mcard mcard-yellow"><div class="mcard-icon-box mib-y"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div><div class="mcard-val" style="color:var(--yellow)">10.520</div><div class="mcard-label">Em RMKT</div><div class="mcard-delta dw">32% da base</div></div>
+        <div class="mcard mcard-blue"><div class="mcard-icon-box mib-b"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="mcard-val" style="color:var(--blue)">5.917</div><div class="mcard-label">Convertidos</div><div class="mcard-delta dg">18% conversão</div></div>
       </div>
-      <div class="section-label"><span class="section-label-text">Funil de Leads</span></div>
-      <div class="card">
-        <div id="flow-bars"></div>
-      </div>
-      <div class="section-label"><span class="section-label-text">Distribuição A/B</span></div>
-      <div class="metrics-row metrics-2">
-        <div class="metric-card" style="border-color:rgba(255,107,0,0.2);background:linear-gradient(165deg,rgba(255,107,0,0.06),rgba(16,12,7,0.99))">
-          <div class="metric-icon mi-orange">A</div>
-          <div class="metric-val" style="color:var(--orange)">50%</div>
-          <div class="metric-label">Variante A</div>
-          <div class="metric-delta" style="color:var(--text-dim)">16.436 leads · Split matemático</div>
-        </div>
-        <div class="metric-card" style="border-color:rgba(59,158,255,0.2);background:linear-gradient(165deg,rgba(59,158,255,0.06),rgba(16,12,7,0.99))">
-          <div class="metric-icon mi-blue">B</div>
-          <div class="metric-val" style="color:var(--blue)">50%</div>
-          <div class="metric-label">Variante B</div>
-          <div class="metric-delta" style="color:var(--text-dim)">16.437 leads · Delay 3s</div>
-        </div>
+      <div class="sec-label"><div class="sec-label-inner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Funil de Leads</span></div></div>
+      <div class="card"><div id="fb"></div></div>
+      <div class="sec-label"><div class="sec-label-inner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span>Distribuição A/B</span></div></div>
+      <div class="grid-2">
+        <div class="mcard mcard-orange" style="border-color:rgba(255,107,0,0.22)"><div class="mcard-icon-box mib-o"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg></div><div class="mcard-val" style="color:var(--orange)">50%</div><div class="mcard-label">Variante A</div><div class="mcard-delta" style="color:var(--dim)">16.436 leads · Split matemático</div></div>
+        <div class="mcard mcard-blue" style="border-color:rgba(59,158,255,0.22)"><div class="mcard-icon-box mib-b"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg></div><div class="mcard-val" style="color:var(--blue)">50%</div><div class="mcard-label">Variante B</div><div class="mcard-delta" style="color:var(--dim)">16.437 leads · Delay 3s</div></div>
       </div>
     </div>
 
-    <!-- PAGE: AGENTES -->
+    <!-- AGENTES -->
     <div class="page" id="page-agentes">
-      <div class="welcome-banner">
-        <div class="welcome-icon" style="background:linear-gradient(130deg,rgba(245,166,35,0.3),rgba(245,166,35,0.1))">⚙</div>
+      <div class="welcome">
+        <div class="welcome-icon-box" style="background:linear-gradient(135deg,rgba(245,166,35,0.2),rgba(245,166,35,0.05))">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
         <div>
           <div class="welcome-title">Agentes <span>· Saúde Real-time</span></div>
-          <div class="welcome-sub">15 agentes desenhados · 6 camadas · 2 ativos · 4 pendentes de build</div>
+          <div class="welcome-sub">15 agentes desenhados · 6 camadas · 2 ativos · 4 aguardando build</div>
         </div>
       </div>
-      <div class="card">
-        <div id="agent-list"></div>
-      </div>
+      <div class="card"><div id="agent-list"></div></div>
     </div>
 
-    <!-- PAGE: OPERAÇÃO -->
+    <!-- OPERAÇÃO -->
     <div class="page" id="page-operacao">
-      <div class="welcome-banner">
-        <div class="welcome-icon" style="background:linear-gradient(130deg,rgba(59,158,255,0.3),rgba(59,158,255,0.1))">◆</div>
+      <div class="welcome">
+        <div class="welcome-icon-box" style="background:linear-gradient(135deg,rgba(59,158,255,0.2),rgba(59,158,255,0.05))">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
         <div>
           <div class="welcome-title">Operação <span>· Funil e A/B</span></div>
           <div class="welcome-sub">Controle do fluxo de leads · Remarketing · Split de variantes</div>
         </div>
       </div>
-      <div class="section-label"><span class="section-label-text">Funil Detalhado</span></div>
+      <div class="sec-label"><div class="sec-label-inner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span>Funil Detalhado</span></div></div>
       <div class="card" style="margin-bottom:20px">
-        <div id="flow-bars-op"></div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
-          <div style="text-align:center;padding:14px;background:rgba(255,107,0,0.08);border:1px solid rgba(255,107,0,0.15);border-radius:10px">
-            <div style="font-size:22px;font-weight:900;color:var(--orange)">68%</div>
-            <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em">Retenção</div>
-          </div>
-          <div style="text-align:center;padding:14px;background:rgba(59,158,255,0.08);border:1px solid rgba(59,158,255,0.15);border-radius:10px">
-            <div style="font-size:22px;font-weight:900;color:var(--blue)">18%</div>
-            <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em">Conversão</div>
-          </div>
-          <div style="text-align:center;padding:14px;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.15);border-radius:10px">
-            <div style="font-size:22px;font-weight:900;color:var(--yellow)">32%</div>
-            <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em">RMKT</div>
-          </div>
-          <div style="text-align:center;padding:14px;background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.15);border-radius:10px">
-            <div style="font-size:22px;font-weight:900;color:var(--red)">8%</div>
-            <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em">Saída</div>
-          </div>
+        <div id="fo"></div>
+        <div class="grid-4" style="margin-top:24px;padding-top:22px;border-top:1px solid var(--border);margin-bottom:0">
+          <div style="text-align:center;padding:18px;background:rgba(255,107,0,0.08);border:1px solid rgba(255,107,0,0.18);border-radius:14px"><div style="font-size:28px;font-weight:700;color:var(--orange)">68%</div><div style="font-size:10px;font-family:var(--fm);color:var(--dim);margin-top:6px;text-transform:uppercase;letter-spacing:0.1em">Retenção</div></div>
+          <div style="text-align:center;padding:18px;background:rgba(59,158,255,0.08);border:1px solid rgba(59,158,255,0.18);border-radius:14px"><div style="font-size:28px;font-weight:700;color:var(--blue)">18%</div><div style="font-size:10px;font-family:var(--fm);color:var(--dim);margin-top:6px;text-transform:uppercase;letter-spacing:0.1em">Conversão</div></div>
+          <div style="text-align:center;padding:18px;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.18);border-radius:14px"><div style="font-size:28px;font-weight:700;color:var(--yellow)">32%</div><div style="font-size:10px;font-family:var(--fm);color:var(--dim);margin-top:6px;text-transform:uppercase;letter-spacing:0.1em">RMKT</div></div>
+          <div style="text-align:center;padding:18px;background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.18);border-radius:14px"><div style="font-size:28px;font-weight:700;color:var(--red)">8%</div><div style="font-size:10px;font-family:var(--fm);color:var(--dim);margin-top:6px;text-transform:uppercase;letter-spacing:0.1em">Saída</div></div>
         </div>
       </div>
     </div>
 
-    <!-- PAGE: COMANDOS -->
+    <!-- COMANDOS -->
     <div class="page" id="page-comandos">
-      <div class="welcome-banner">
-        <div class="welcome-icon" style="background:linear-gradient(130deg,rgba(255,107,0,0.3),rgba(255,107,0,0.1))">▶</div>
+      <div class="welcome">
+        <div class="welcome-icon-box" style="background:linear-gradient(135deg,rgba(255,107,0,0.2),rgba(255,107,0,0.05))">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
         <div>
           <div class="welcome-title">Comandos <span>Rápidos</span></div>
           <div class="welcome-sub">Ações diretas nos workflows N8N · Clique para executar</div>
         </div>
       </div>
       <div class="cmd-grid">
-        <div class="cmd-card primary" onclick="runCmd('MASTER-FLOW reiniciado com sucesso.','ok')">
-          <div class="cmd-icon-wrap mi-orange">▶</div>
+        <div class="cmd-card primary" onclick="runCmd('MASTER FLOW reiniciado com sucesso','ok')">
+          <div class="cmd-icon-box mib-o"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
           <div class="cmd-name">MASTER FLOW</div>
           <div class="cmd-desc">Reiniciar fluxo principal reativo</div>
         </div>
-        <div class="cmd-card" onclick="runCmd('METRICS-FLOW disparado. Relatório enviado ao Telegram.','ok')">
-          <div class="cmd-icon-wrap mi-green">◈</div>
-          <div class="cmd-name">METRICS-FLOW</div>
+        <div class="cmd-card" onclick="runCmd('METRICS FLOW disparado · Relatório enviado ao Telegram','ok')">
+          <div class="cmd-icon-box mib-g"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <div class="cmd-name">METRICS FLOW</div>
           <div class="cmd-desc">Disparar relatório agora</div>
         </div>
-        <div class="cmd-card" onclick="runCmd('SCOUT ativo. Rotação de 3 tokens iniciada.','ok')">
-          <div class="cmd-icon-wrap mi-blue">◎</div>
+        <div class="cmd-card" onclick="runCmd('SCOUT ativo · Rotação de 3 tokens iniciada','ok')">
+          <div class="cmd-icon-box mib-b"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
           <div class="cmd-name">SCOUT</div>
           <div class="cmd-desc">Executar scan de membros</div>
         </div>
-        <div class="cmd-card" onclick="runCmd('ORCHESTRATOR verificando agent_signals...','warn')">
-          <div class="cmd-icon-wrap mi-yellow">⚙</div>
+        <div class="cmd-card" onclick="runCmd('ORCHESTRATOR verificando agent_signals','warn')">
+          <div class="cmd-icon-box mib-y"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
           <div class="cmd-name">ORCHESTRATOR</div>
           <div class="cmd-desc">Ping e verificação de status</div>
         </div>
-        <div class="cmd-card" onclick="runCmd('MANUAL-DISPATCH: aguardando seleção de segmento.','warn')">
-          <div class="cmd-icon-wrap mi-purple">◆</div>
+        <div class="cmd-card" onclick="runCmd('MANUAL DISPATCH · aguardando seleção de segmento','warn')">
+          <div class="cmd-icon-box mib-p"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
           <div class="cmd-name">DISPARO MANUAL</div>
           <div class="cmd-desc">Split 50/50 · Delay 3s</div>
         </div>
-        <div class="cmd-card danger" onclick="runCmd('EMERGÊNCIA: todos os workflows suspensos.','err')">
-          <div class="cmd-icon-wrap mi-red">■</div>
+        <div class="cmd-card danger" onclick="runCmd('EMERGÊNCIA · todos os workflows suspensos','err')">
+          <div class="cmd-icon-box mib-r"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-linecap="round" stroke-linejoin="round"><octagon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/></svg></div>
           <div class="cmd-name" style="color:var(--red)">EMERGÊNCIA</div>
           <div class="cmd-desc">Pausar todos os workflows</div>
         </div>
       </div>
     </div>
 
-    <!-- PAGE: LOG -->
+    <!-- LOG -->
     <div class="page" id="page-log">
-      <div class="welcome-banner" style="justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:18px">
-          <div class="welcome-icon" style="background:linear-gradient(130deg,rgba(106,95,85,0.3),rgba(106,95,85,0.1))">≡</div>
+      <div class="welcome" style="justify-content:space-between;gap:16px">
+        <div style="display:flex;align-items:center;gap:22px">
+          <div class="welcome-icon-box" style="background:linear-gradient(135deg,rgba(106,95,85,0.25),rgba(106,95,85,0.06))">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--mid)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
           <div>
             <div class="welcome-title">Log de <span>Atividade</span></div>
             <div class="welcome-sub">Eventos do sistema em tempo real · Auto-atualiza a cada 30s</div>
           </div>
         </div>
-        <button onclick="clearLog()" style="background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.2);color:var(--red);padding:10px 18px;border-radius:10px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.08em;transition:all 0.15s" onmouseover="this.style.background='rgba(255,68,68,0.18)'" onmouseout="this.style.background='rgba(255,68,68,0.1)'">LIMPAR LOG</button>
+        <button onclick="clearLog()" style="display:flex;align-items:center;gap:8px;background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.22);color:var(--red);padding:11px 20px;border-radius:12px;cursor:pointer;font-family:var(--f);font-size:12px;font-weight:700;transition:all 0.2s;white-space:nowrap;flex-shrink:0" onmouseover="this.style.background='rgba(255,68,68,0.18)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,68,68,0.08)';this.style.transform='none'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Limpar Log
+        </button>
       </div>
-      <div class="card">
-        <div class="log-list" id="log-list"></div>
-      </div>
+      <div class="card"><div class="log-list" id="log-list"></div></div>
     </div>
 
-    <!-- PAGE: PENDÊNCIAS -->
+    <!-- PENDÊNCIAS -->
     <div class="page" id="page-pendencias">
-      <div class="welcome-banner">
-        <div class="welcome-icon" style="background:linear-gradient(130deg,rgba(255,68,68,0.3),rgba(255,68,68,0.1))">!</div>
+      <div class="welcome">
+        <div class="welcome-icon-box" style="background:linear-gradient(135deg,rgba(255,68,68,0.2),rgba(255,68,68,0.05))">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
         <div>
           <div class="welcome-title">Ordem de <span>Execução</span></div>
           <div class="welcome-sub">7 demandas abertas · Sequência definida · Nenhuma iniciada</div>
         </div>
       </div>
-      <div class="card">
-        <div id="pend-list"></div>
-      </div>
+      <div class="card"><div id="pend-list"></div></div>
     </div>
 
-  </div><!-- /main-content -->
-</div><!-- /layout -->
-</div><!-- /dashboard -->
+  </div>
+</div>
+</div>
 
 <script>
 const USERS={'00baby':'Bekas00!','toni':'PaiDeGay00!','bigão':'Bigão00!'};
 let rememberMe=false;
 
-function toggleRemember(){rememberMe=!rememberMe;document.getElementById('remember-check').classList.toggle('active',rememberMe);}
+function toggleRem(){rememberMe=!rememberMe;document.getElementById('remcheck').classList.toggle('on',rememberMe)}
 
 function doLogin(){
-  const user=document.getElementById('login-user').value.trim().toLowerCase();
-  const pass=document.getElementById('login-pass').value;
-  const errEl=document.getElementById('login-error');
-  document.getElementById('login-spinner').style.display='block';
-  document.getElementById('login-btn-text').textContent='Verificando...';
-  errEl.style.display='none';
+  const u=document.getElementById('luser').value.trim().toLowerCase();
+  const p=document.getElementById('lpass').value;
+  const e=document.getElementById('lerr');
+  document.getElementById('lspin').style.display='block';
+  document.getElementById('lbtntxt').textContent='Verificando...';
+  e.style.display='none';
   setTimeout(()=>{
-    if(USERS[user]&&USERS[user]===pass){
-      if(rememberMe){localStorage.setItem('ribas_u',user);localStorage.setItem('ribas_p',pass);}
-      sessionStorage.setItem('ribas_s',user);
+    if(USERS[u]&&USERS[u]===p){
+      if(rememberMe){localStorage.setItem('ru',u);localStorage.setItem('rp',p)}
+      sessionStorage.setItem('rs',u);
       document.getElementById('login-screen').style.opacity='0';
-      document.getElementById('login-screen').style.transition='opacity 0.3s';
+      document.getElementById('login-screen').style.transition='opacity 0.35s';
       setTimeout(()=>{
         document.getElementById('login-screen').style.display='none';
         document.getElementById('dashboard').style.display='block';
-        setUser(user);
-        initDashboard();
-      },300);
+        setUser(u);initDashboard();
+      },350);
     } else {
-      document.getElementById('login-spinner').style.display='none';
-      document.getElementById('login-btn-text').textContent='ENTRAR';
-      errEl.textContent='Usuário ou senha incorretos.';
-      errEl.style.display='block';
+      document.getElementById('lspin').style.display='none';
+      document.getElementById('lbtntxt').textContent='Entrar no Sistema';
+      e.textContent='Usuário ou senha incorretos';
+      e.style.display='block';
     }
-  },800);
+  },900);
 }
 
-function setUser(user){
-  const display=user.charAt(0).toUpperCase()+user.slice(1);
-  document.getElementById('user-name').textContent=display;
-  document.getElementById('user-avatar').textContent=display.charAt(0).toUpperCase();
-  document.getElementById('welcome-name').textContent=display;
-  document.getElementById('role-badge').textContent=user==='00baby'?'MASTER':'OPERADOR';
+function setUser(u){
+  const d=u.charAt(0).toUpperCase()+u.slice(1);
+  document.getElementById('usernm').textContent=d;
+  document.getElementById('userav').textContent=d.charAt(0).toUpperCase();
+  document.getElementById('wnm').textContent=d;
+  document.getElementById('role-badge').textContent=u==='00baby'?'MASTER':'OPERADOR';
 }
 
-function doLogout(){sessionStorage.removeItem('ribas_s');location.reload();}
+function doLogout(){sessionStorage.removeItem('rs');location.reload()}
 
 function showPage(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   el.classList.add('active');
-  const titles={'overview':'Visão Geral','metricas':'Métricas','agentes':'Agentes','operacao':'Operação','comandos':'Comandos','log':'Log Atividade','pendencias':'Pendências'};
-  document.getElementById('topbar-page').textContent=titles[id]||id;
-  if(id==='metricas'||id==='operacao') setTimeout(animateFlow,200);
+  const T={overview:'Visão Geral',metricas:'Métricas',agentes:'Agentes',operacao:'Operação',comandos:'Comandos',log:'Log Atividade',pendencias:'Pendências'};
+  document.getElementById('tb-page').textContent=T[id]||id;
+  if(id==='metricas'||id==='operacao')setTimeout(animFlow,250);
 }
 
-window.addEventListener('DOMContentLoaded',()=>{
-  const su=localStorage.getItem('ribas_u'),sp=localStorage.getItem('ribas_p'),ss=sessionStorage.getItem('ribas_s');
-  if(ss){document.getElementById('login-screen').style.display='none';document.getElementById('dashboard').style.display='block';setUser(ss);initDashboard();}
-  else if(su&&sp&&USERS[su]===sp){document.getElementById('login-user').value=su;document.getElementById('login-pass').value=sp;rememberMe=true;document.getElementById('remember-check').classList.add('active');}
-  document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-  document.getElementById('login-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
-});
+function buildCasino(){
+  const bg=document.getElementById('cbg');
+  const shapes=[
+    {w:300,h:300,x:10,y:10,delay:0,dur:6},{w:200,h:200,x:70,y:60,delay:1,dur:8},
+    {w:400,h:400,x:5,y:40,delay:2,dur:10},{w:150,h:150,x:80,y:15,delay:0.5,dur:7},
+  ];
+  shapes.forEach(s=>{
+    const el=document.createElement('div');
+    el.className='c-shape';
+    el.style.cssText=`width:${s.w}px;height:${s.h}px;left:${s.x}%;top:${s.y}%;animation-delay:${s.delay}s;animation-duration:${s.dur}s`;
+    bg.appendChild(el);
+  });
+  const lines=[
+    {w:'60%',x:20,y:20,delay:0,dur:5},{w:'40%',x:10,y:60,delay:1.5,dur:7},
+    {w:'80%',x:5,y:80,delay:0.5,dur:6},{w:'50%',x:30,y:40,delay:2,dur:8},
+  ];
+  lines.forEach(l=>{
+    const el=document.createElement('div');
+    el.className='c-line';
+    el.style.cssText=`width:${l.w};height:1px;left:${l.x}%;top:${l.y}%;animation-delay:${l.delay}s;animation-duration:${l.dur}s`;
+    bg.appendChild(el);
+  });
+  for(let i=0;i<20;i++){
+    const el=document.createElement('div');
+    el.className='c-star';
+    el.style.cssText=`left:${Math.random()*95}%;top:${Math.random()*95}%;width:3px;height:3px;border-radius:50%;background:rgba(255,107,0,0.4);animation-delay:${Math.random()*4}s;animation-duration:${3+Math.random()*5}s`;
+    bg.appendChild(el);
+  }
+  const rings=[{s:500,x:75,y:20,dur:15},{s:300,x:20,y:70,dur:20}];
+  rings.forEach(r=>{
+    const el=document.createElement('div');
+    el.className='c-ring';
+    el.style.cssText=`width:${r.s}px;height:${r.s}px;left:${r.x}%;top:${r.y}%;margin-left:-${r.s/2}px;margin-top:-${r.s/2}px;animation-duration:${r.dur}s`;
+    bg.appendChild(el);
+  });
+}
 
 const agents=[
-  {name:'MASTER-FLOW',desc:'Reativo ENTRADA / SAÍDA / CLIQUE',status:'ok',label:'ATIVO',ping:'último ping: agora'},
-  {name:'WEBHOOK N8N',desc:'Supabase · AWS sa-east-1',status:'ok',label:'VALIDADO',ping:'operacional'},
-  {name:'SCOUT',desc:'Cron 5min · Rotação 3 tokens',status:'off',label:'PENDENTE',ping:'build não iniciado'},
-  {name:'ORCHESTRATOR',desc:'Cron 15min · Ping + leitura agent_signals',status:'off',label:'PENDENTE',ping:'build não iniciado'},
-  {name:'METRICS-FLOW',desc:'Cron 08h00 · Relatório formato mobile Telegram',status:'off',label:'PENDENTE',ping:'build não iniciado'},
-  {name:'MANUAL-DISPATCH',desc:'Split 50/50 · Delay 3s · Registro disparos com versao_ab',status:'off',label:'PENDENTE',ping:'build não iniciado'},
+  {name:'MASTER FLOW',desc:'Reativo ENTRADA / SAÍDA / CLIQUE',s:'ok',label:'ATIVO',ping:'último ping agora'},
+  {name:'WEBHOOK N8N',desc:'Supabase · AWS sa-east-1',s:'ok',label:'VALIDADO',ping:'operacional'},
+  {name:'SCOUT',desc:'Cron 5min · Rotação 3 tokens',s:'off',label:'PENDENTE',ping:'build não iniciado'},
+  {name:'ORCHESTRATOR',desc:'Cron 15min · Ping e leitura agent_signals',s:'off',label:'PENDENTE',ping:'build não iniciado'},
+  {name:'METRICS FLOW',desc:'Cron 08h00 · Relatório formato mobile Telegram',s:'off',label:'PENDENTE',ping:'build não iniciado'},
+  {name:'MANUAL DISPATCH',desc:'Split 50/50 · Delay 3s · Registro disparos com versao_ab',s:'off',label:'PENDENTE',ping:'build não iniciado'},
 ];
 
 const flows=[
@@ -674,69 +720,62 @@ const flows=[
 ];
 
 const tasks=[
-  {n:'01',text:'Novas chaves Supabase · anon key + service_role',u:'crítico'},
-  {n:'02',text:'Criar tabela agent_signals · id/from/to/signal/payload/created/processed',u:'crítico'},
-  {n:'03',text:'Mapeamento campos webhook · grupo_id → grupo',u:'alto'},
+  {n:'01',text:'Novas chaves Supabase · anon key e service_role',u:'crítico'},
+  {n:'02',text:'Criar tabela agent_signals · id / from / to / signal / payload / created / processed',u:'crítico'},
+  {n:'03',text:'Mapeamento campos webhook · grupo_id para grupo',u:'alto'},
   {n:'04',text:'Build SCOUT no N8N · workflow separado',u:'médio'},
   {n:'05',text:'Build ORCHESTRATOR no N8N · cron 15min',u:'médio'},
-  {n:'06',text:'Build METRICS-FLOW · formato mobile Telegram',u:'médio'},
-  {n:'07',text:'Build MANUAL-DISPATCH · split 50/50 matemático',u:'baixo'},
+  {n:'06',text:'Build METRICS FLOW · formato mobile Telegram',u:'médio'},
+  {n:'07',text:'Build MANUAL DISPATCH · split 50/50 matemático',u:'baixo'},
 ];
 
-const uc={'crítico':['rgba(255,68,68,0.12)','rgba(255,68,68,0.3)','#FF4444'],'alto':['rgba(245,166,35,0.1)','rgba(245,166,35,0.28)','#F5A623'],'médio':['rgba(255,107,0,0.08)','rgba(255,107,0,0.22)','#FF6B00'],'baixo':['rgba(106,95,85,0.1)','rgba(106,95,85,0.2)','#6A5F55']};
+const uc={crítico:['rgba(255,68,68,0.12)','rgba(255,68,68,0.3)','#FF4444'],alto:['rgba(245,166,35,0.1)','rgba(245,166,35,0.28)','#F5A623'],médio:['rgba(255,107,0,0.08)','rgba(255,107,0,0.22)','#FF6B00'],baixo:['rgba(106,95,85,0.1)','rgba(106,95,85,0.2)','#6A5F55']};
 
-function flowHTML(ids){
+function flowHTML(pfx){
   return flows.map((f,i)=>`
     <div class="flow-row">
       <span class="flow-label">${f.label}</span>
-      <div class="flow-track"><div class="flow-fill" id="${ids}${i}" style="background:${f.color}"></div></div>
+      <div class="flow-track"><div class="flow-fill" id="${pfx}${i}" style="background:${f.color}"></div></div>
       <span class="flow-val" style="color:${f.color}">${f.val}</span>
     </div>`).join('');
 }
 
-function animateFlow(){
-  ['fb','fo'].forEach(pfx=>{
-    flows.forEach((f,i)=>{
-      setTimeout(()=>{const el=document.getElementById(pfx+i);if(el)el.style.width=f.pct+'%';},i*140);
-    });
-  });
+function animFlow(){
+  ['fb','fo'].forEach(p=>{flows.forEach((f,i)=>setTimeout(()=>{const el=document.getElementById(p+i);if(el)el.style.width=f.pct+'%'},i*160))});
 }
 
 function initDashboard(){
   document.getElementById('agent-list').innerHTML=agents.map(a=>`
     <div class="agent-row">
       <div style="display:flex;align-items:center;flex:1">
-        <div class="agent-dot dot-${a.status==='ok'?'green':'gray'}"></div>
-        <div><div class="agent-name">${a.name}</div><div class="agent-desc">${a.desc}</div></div>
+        <div class="adot dot-${a.s==='ok'?'g':'gr'}"></div>
+        <div><div class="aname">${a.name}</div><div class="adesc">${a.desc}</div><div class="aping">${a.ping}</div></div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-        <span class="agent-status-pill sp-${a.status==='ok'?'ok':'off'}">${a.label}</span>
-        <span style="font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace">${a.ping}</span>
-      </div>
+      <span class="pill pill-${a.s==='ok'?'ok':'off'}">${a.label}</span>
     </div>`).join('');
 
-  document.getElementById('flow-bars').innerHTML=flowHTML('fb');
-  document.getElementById('flow-bars-op').innerHTML=flowHTML('fo');
-  setTimeout(animateFlow,400);
+  document.getElementById('fb').innerHTML=flowHTML('fb');
+  document.getElementById('fo').innerHTML=flowHTML('fo');
+  setTimeout(animFlow,500);
 
   document.getElementById('pend-list').innerHTML=tasks.map(t=>{
     const[bg,border,color]=uc[t.u];
-    return`<div class="task-item" style="background:${bg};border:1px solid ${border}" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+    return`<div class="task-item" style="background:${bg};border:1px solid ${border}" onmouseover="this.style.transform='translateY(-5px) scale(1.01)'" onmouseout="this.style.transform='none'">
       <span class="task-num" style="color:${color}">${t.n}</span>
       <div><div class="task-text">${t.text}</div><div class="task-urg" style="color:${color}">${t.u}</div></div>
     </div>`;}).join('');
 
-  addLog('MASTER-FLOW ativo — fluxo reativo operacional','ok');
+  addLog('MASTER FLOW ativo · fluxo reativo operacional','ok');
   addLog('WEBHOOK N8N validado e operacional','ok');
-  addLog('Importação de leads pendente — 6 canais','warn');
-  addLog('agent_signals: tabela não criada','err');
+  addLog('Importação de leads pendente · 6 canais','warn');
+  addLog('agent_signals · tabela não criada','err');
   addLog('Chaves Supabase aguardando rotação','warn');
 
   updateClock();updateSim();
   setInterval(updateClock,1000);
   setInterval(updateSim,15000);
   setInterval(()=>{
-    const m=[['Ping MASTER-FLOW · OK','ok'],['Webhook N8N · 200ms','ok'],['Supabase · conexão estável','ok'],['Importação base leads pendente','warn']];
+    const m=[['Ping MASTER FLOW · OK','ok'],['Webhook N8N · 200ms','ok'],['Supabase · conexão estável','ok'],['Importação base leads pendente','warn']];
     const r=m[Math.floor(Math.random()*m.length)];addLog(r[0],r[1]);
   },30000);
 }
@@ -746,29 +785,37 @@ function addLog(msg,type='ok'){
   const now=new Date();
   const t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
   const c={ok:'var(--green)',warn:'var(--yellow)',err:'var(--red)'};
-  logs.unshift({t,msg,color:c[type]||'var(--text-dim)'});
+  logs.unshift({t,msg,color:c[type]||'var(--dim)'});
   if(logs.length>50)logs.pop();
   const el=document.getElementById('log-list');
   if(el)el.innerHTML=logs.map(l=>`<div class="log-row"><span class="log-time">${l.t}</span><div class="log-dot" style="background:${l.color}"></div><span class="log-msg">${l.msg}</span></div>`).join('');
-  document.getElementById('log-badge').textContent=logs.length;
+  const b=document.getElementById('log-badge');if(b)b.textContent=logs.length;
 }
-function clearLog(){logs.length=0;const el=document.getElementById('log-list');if(el)el.innerHTML='';document.getElementById('log-badge').textContent='0';}
+function clearLog(){logs.length=0;const el=document.getElementById('log-list');if(el)el.innerHTML='';const b=document.getElementById('log-badge');if(b)b.textContent='0'}
 
-let notifTimer;
+let ntimer;
 function runCmd(msg,type){
   addLog(msg,type);
   const el=document.getElementById('notif');
   el.textContent=msg;el.classList.remove('hide');void el.offsetWidth;
-  el.classList.add('show');clearTimeout(notifTimer);
-  notifTimer=setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');},3000);
+  el.classList.add('show');clearTimeout(ntimer);
+  ntimer=setTimeout(()=>{el.classList.remove('show');el.classList.add('hide')},3200);
 }
-function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('pt-BR',{hour12:false})+' BRT';}
+function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('pt-BR',{hour12:false})+' BRT'}
 function updateSim(){
-  ['ov-ativos','ov-disparos'].forEach((id,i)=>{
-    const el=document.getElementById(id);
-    if(el)el.textContent=(i===0?Math.floor(1200+Math.random()*300):Math.floor(800+Math.random()*200)).toLocaleString('pt-BR');
-  });
+  const a=document.getElementById('ov1'),b=document.getElementById('ov2');
+  if(a)a.textContent=Math.floor(1200+Math.random()*300).toLocaleString('pt-BR');
+  if(b)b.textContent=Math.floor(800+Math.random()*200).toLocaleString('pt-BR');
 }
+
+window.addEventListener('DOMContentLoaded',()=>{
+  buildCasino();
+  const su=localStorage.getItem('ru'),sp=localStorage.getItem('rp'),ss=sessionStorage.getItem('rs');
+  if(ss){document.getElementById('login-screen').style.display='none';document.getElementById('dashboard').style.display='block';setUser(ss);initDashboard();}
+  else if(su&&sp&&USERS[su]===sp){document.getElementById('luser').value=su;document.getElementById('lpass').value=sp;rememberMe=true;document.getElementById('remcheck').classList.add('on');}
+  document.getElementById('lpass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+  document.getElementById('luser').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lpass').focus()});
+});
 </script>
 </body>
 </html>
