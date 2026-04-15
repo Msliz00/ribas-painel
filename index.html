@@ -196,7 +196,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);min-height:100v
 /* METRIC CARDS — square 3D */
 .mcard{background:linear-gradient(160deg,rgba(30,22,13,0.97),rgba(12,8,4,0.99));border:1px solid var(–border);border-radius:18px;padding:22px;animation:cardIn 0.5s ease both;position:relative;overflow:hidden;cursor:default;transition:transform 0.28s cubic-bezier(0.34,1.4,0.64,1),box-shadow 0.28s ease,border-color 0.28s;aspect-ratio:1;display:flex;flex-direction:column;justify-content:space-between}
 .mcard::after{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.04),transparent);opacity:0;transition:opacity 0.3s;pointer-events:none}
-.mcard:hover{transform:perspective(800px) rotateX(10deg) rotateY(-3deg) translateZ(40px) scale(1.04);z-index:20}
+.mcard:hover{transform:perspective(600px) translateZ(28px) scale(1.04);z-index:20}
 .mcard:hover::after{opacity:1}
 .mc-o:hover{border-color:rgba(255,107,0,0.55);box-shadow:0 32px 72px rgba(255,107,0,0.2),inset 0 1px 0 rgba(255,255,255,0.06)}
 .mc-g:hover{border-color:rgba(0,201,110,0.55);box-shadow:0 32px 72px rgba(0,201,110,0.16)}
@@ -243,7 +243,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);min-height:100v
 .agent-card{background:linear-gradient(160deg,rgba(26,18,10,0.98),rgba(8,5,2,0.99));border:1px solid var(–border);border-radius:22px;padding:26px;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.4,0.64,1);position:relative;overflow:hidden}
 .agent-card::after{content:’’;position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,107,0,0.04) 0%,transparent 60%);opacity:0;transition:opacity 0.4s;pointer-events:none}
 .agent-card:hover::after{opacity:1}
-.agent-card:hover{transform:perspective(800px) rotateX(8deg) rotateY(-3deg) translateZ(28px) scale(1.035);z-index:10}
+.agent-card:hover{transform:perspective(600px) translateZ(28px) scale(1.04);z-index:10}
 .agent-card.ok-c{border-left:3px solid var(–green)}
 .agent-card.ok-c:hover{border-color:rgba(0,201,110,0.45);box-shadow:0 24px 60px rgba(0,201,110,0.14),0 0 30px rgba(0,201,110,0.07)}
 .agent-card.off-c{border-left:3px solid rgba(106,95,85,0.4)}
@@ -269,7 +269,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);min-height:100v
 .cmd-card{background:linear-gradient(160deg,rgba(20,14,8,0.98),rgba(8,5,2,0.99));border:1px solid var(–border);border-radius:20px;padding:24px;cursor:pointer;text-align:left;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden}
 .cmd-card::before{content:’’;position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);transition:left 0.55s ease;pointer-events:none}
 .cmd-card:hover::before{left:100%}
-.cmd-card:hover{transform:perspective(800px) rotateX(10deg) rotateY(-2deg) translateZ(36px) scale(1.045);z-index:10}
+.cmd-card:hover{transform:perspective(600px) translateZ(28px) scale(1.04);z-index:10}
 .cmd-card.primary{border-color:rgba(255,107,0,0.25);background:linear-gradient(160deg,rgba(38,18,6,0.98),rgba(12,6,2,0.99))}
 .cmd-card:hover.primary{border-color:rgba(255,107,0,0.55);box-shadow:0 28px 65px rgba(255,107,0,0.18),0 0 40px rgba(255,107,0,0.08)}
 .cmd-card:hover:not(.primary):not(.danger-c){border-color:rgba(255,107,0,0.3);box-shadow:0 28px 65px rgba(0,0,0,0.5),0 0 30px rgba(255,107,0,0.06)}
