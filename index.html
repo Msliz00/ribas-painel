@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RIBAS CRM · BingoBet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -12,146 +14,173 @@
   --text:#F0ECE8;--text-dim:#6A5F55;--text-mid:#A09080;
   --green:#00C96E;--yellow:#F5A623;--red:#FF4444;--blue:#3B9EFF;
   --border:rgba(255,255,255,0.07);
+  --font-main:'Outfit',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono','Courier New',monospace;
 }
-body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;min-height:100vh;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font-main);min-height:100vh;overflow-x:hidden}
 
-@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeInScale{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
-@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,201,110,0.4)}50%{opacity:0.8;box-shadow:0 0 0 6px rgba(0,201,110,0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInScale{from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,201,110,0.4)}50%{box-shadow:0 0 0 6px rgba(0,201,110,0)}}
 @keyframes popIn{0%{opacity:0;transform:translateX(120%)}65%{transform:translateX(-4px)}100%{opacity:1;transform:translateX(0)}}
 @keyframes popOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(120%)}}
-@keyframes borderGlow{0%,100%{border-color:rgba(255,107,0,0.15)}50%{border-color:rgba(255,107,0,0.45)}}
-@keyframes cardEntry{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes borderGlow{0%,100%{border-color:rgba(255,107,0,0.15)}50%{border-color:rgba(255,107,0,0.5)}}
+@keyframes cardEntry{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes logoPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,0.3)}50%{box-shadow:0 0 24px 6px rgba(255,107,0,0.15)}}
+@keyframes tabIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fillBar{from{width:0}to{width:var(--w)}}
 
-/* LOGIN */
+/* ===== LOGIN ===== */
 #login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
 .login-wrap{width:100%;max-width:400px;padding:24px;animation:fadeInScale 0.5s cubic-bezier(0.34,1.56,0.64,1) both}
 .login-card{background:linear-gradient(165deg,rgba(28,20,12,0.99),rgba(16,12,7,1));border:1px solid rgba(255,107,0,0.15);border-radius:20px;padding:40px 34px 34px;box-shadow:0 40px 80px rgba(0,0,0,0.75);animation:borderGlow 3s ease-in-out infinite}
 .login-logo{text-align:center;margin-bottom:32px}
-.login-logo-icon{width:64px;height:64px;background:linear-gradient(130deg,#ff7a1a,#e05800);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;margin-bottom:16px;animation:logoPulse 2.5s ease-in-out infinite}
-.login-title{font-size:22px;font-weight:900;letter-spacing:0.03em}
+.login-logo-icon{width:64px;height:64px;background:linear-gradient(130deg,#ff7a1a,#e05800);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;margin-bottom:16px;animation:logoPulse 2.5s ease-in-out infinite;font-family:var(--font-main)}
+.login-title{font-size:24px;font-weight:900;letter-spacing:0.03em;font-family:var(--font-main)}
 .login-title span{color:var(--orange)}
-.login-sub{font-size:11px;color:var(--text-dim);font-family:'Courier New',monospace;letter-spacing:0.1em;margin-top:4px}
+.login-sub{font-size:11px;color:var(--text-dim);font-family:var(--font-mono);letter-spacing:0.1em;margin-top:4px}
 .login-divider{display:flex;align-items:center;gap:12px;margin:24px 0 20px}
 .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.login-divider-label{font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--text-dim);font-family:'Courier New',monospace;text-transform:uppercase}
+.login-divider-label{font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--text-dim);font-family:var(--font-mono);text-transform:uppercase}
 .login-field{margin-bottom:16px}
-.login-label{display:block;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-mid);font-family:'Courier New',monospace;margin-bottom:6px}
+.login-label{display:block;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-mid);font-family:var(--font-mono);margin-bottom:6px}
 .login-label span{color:var(--orange)}
-.login-input{width:100%;background:var(--surface2);border:1px solid rgba(255,255,255,0.07);border-radius:10px;color:var(--text);font-family:'Courier New',monospace;font-size:13.5px;padding:13px 15px;outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+.login-input{width:100%;background:var(--surface2);border:1px solid rgba(255,255,255,0.07);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:13.5px;padding:13px 15px;outline:none;transition:border-color 0.2s,box-shadow 0.2s}
 .login-input:focus{border-color:rgba(255,107,0,0.45);box-shadow:0 0 0 3px rgba(255,107,0,0.09)}
 .login-input::placeholder{color:var(--text-dim)}
 .remember-row{display:flex;align-items:center;gap:8px;margin-bottom:20px;cursor:pointer}
-.remember-check{width:16px;height:16px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;cursor:pointer}
+.remember-check{width:16px;height:16px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
 .remember-check.active{background:var(--orange);border-color:var(--orange)}
 .remember-check.active::after{content:'✓';font-size:10px;color:#fff;font-weight:700}
-.remember-label{font-size:11px;color:var(--text-dim);font-family:'Courier New',monospace}
-.login-btn{width:100%;background:linear-gradient(130deg,#ff7a1a 0%,#e05800 100%);color:#fff;border:none;border-radius:10px;font-family:system-ui,sans-serif;font-size:15px;font-weight:700;padding:15px;cursor:pointer;box-shadow:0 4px 28px rgba(255,107,0,0.28);transition:transform 0.15s,box-shadow 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.remember-label{font-size:11px;color:var(--text-dim);font-family:var(--font-mono)}
+.login-btn{width:100%;background:linear-gradient(130deg,#ff7a1a 0%,#e05800 100%);color:#fff;border:none;border-radius:10px;font-family:var(--font-main);font-size:15px;font-weight:700;padding:15px;cursor:pointer;box-shadow:0 4px 28px rgba(255,107,0,0.28);transition:transform 0.15s,box-shadow 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
 .login-btn:hover{transform:translateY(-1px);box-shadow:0 8px 36px rgba(255,107,0,0.38)}
 .login-btn:active{transform:scale(0.98)}
-.login-error{background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.25);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);font-family:'Courier New',monospace;margin-bottom:16px;display:none;animation:fadeIn 0.3s ease both}
+.login-error{background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.25);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);font-family:var(--font-mono);margin-bottom:16px;display:none;animation:fadeIn 0.3s ease both}
 .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;display:none}
 
-/* TOPBAR */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:rgba(12,9,5,0.98);position:sticky;top:0;z-index:100;animation:slideDown 0.5s ease both}
+/* ===== TOPBAR ===== */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:rgba(12,9,5,0.98);position:sticky;top:0;z-index:100;animation:slideDown 0.4s ease both}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:32px;height:32px;background:linear-gradient(130deg,#ff7a1a,#e05800);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff}
-.logo-text{font-size:20px;font-weight:900;letter-spacing:0.04em}
+.logo-icon{width:32px;height:32px;background:linear-gradient(130deg,#ff7a1a,#e05800);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;font-family:var(--font-main)}
+.logo-text{font-size:20px;font-weight:900;letter-spacing:0.04em;font-family:var(--font-main)}
 .logo-text span{color:var(--orange)}
-.badge-live{background:rgba(0,201,110,0.15);border:1px solid rgba(0,201,110,0.3);color:var(--green);font-size:10px;font-weight:700;letter-spacing:0.12em;padding:3px 8px;border-radius:4px;font-family:'Courier New',monospace}
-.topbar-right{display:flex;align-items:center;gap:16px}
-.topbar-meta{font-size:11px;color:var(--text-dim);font-family:'Courier New',monospace;letter-spacing:0.05em}
-.topbar-user{font-size:11px;font-weight:700;color:var(--orange);font-family:'Courier New',monospace;letter-spacing:0.08em;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.2);padding:4px 10px;border-radius:6px;cursor:pointer;transition:background 0.15s}
+.logo-sub{font-size:9px;color:var(--text-dim);font-family:var(--font-mono);letter-spacing:0.1em}
+.badge-live{background:rgba(0,201,110,0.15);border:1px solid rgba(0,201,110,0.3);color:var(--green);font-size:10px;font-weight:700;letter-spacing:0.12em;padding:3px 8px;border-radius:4px;font-family:var(--font-mono)}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.topbar-meta{font-size:11px;color:var(--text-dim);font-family:var(--font-mono);letter-spacing:0.05em}
+.topbar-user{font-size:11px;font-weight:700;color:var(--orange);font-family:var(--font-mono);letter-spacing:0.08em;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.2);padding:4px 10px;border-radius:6px;cursor:pointer;transition:background 0.15s}
 .topbar-user:hover{background:rgba(255,107,0,0.2)}
-.pulse{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px;animation:pulse 2s infinite}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px;animation:pulse 2s infinite}
 
-/* MAIN */
-.main{padding:20px 24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+/* ===== TABS NAV ===== */
+.tabs-nav{display:flex;align-items:center;gap:2px;padding:0 24px;border-bottom:1px solid var(--border);background:rgba(12,9,5,0.95);overflow-x:auto}
+.tabs-nav::-webkit-scrollbar{height:0}
+.tab-btn{display:flex;align-items:center;gap:7px;padding:14px 18px;font-family:var(--font-main);font-size:13px;font-weight:600;color:var(--text-dim);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:color 0.2s,border-color 0.2s;margin-bottom:-1px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--orange);border-bottom-color:var(--orange)}
+.tab-icon{font-size:14px}
+.tab-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;font-family:var(--font-mono)}
+.badge-ok{background:rgba(0,201,110,0.15);color:var(--green)}
+.badge-warn{background:rgba(245,166,35,0.15);color:var(--yellow)}
+.badge-err{background:rgba(255,68,68,0.15);color:var(--red)}
+.badge-off{background:rgba(106,95,85,0.12);color:var(--text-dim)}
 
-/* CARDS */
-.card{background:linear-gradient(165deg,rgba(28,20,12,0.98),rgba(16,12,7,0.99));border:1px solid var(--border);border-radius:16px;padding:20px;transition:border-color 0.2s}
+/* ===== TAB CONTENT ===== */
+.tab-content{display:none;padding:24px;animation:tabIn 0.3s ease both}
+.tab-content.active{display:block}
+
+/* ===== CARDS ===== */
+.card{background:linear-gradient(165deg,rgba(28,20,12,0.98),rgba(16,12,7,0.99));border:1px solid var(--border);border-radius:16px;padding:22px;transition:border-color 0.2s}
 .card:hover{border-color:rgba(255,107,0,0.12)}
-.card:nth-child(1){animation:cardEntry 0.5s 0.1s ease both}
-.card:nth-child(2){animation:cardEntry 0.5s 0.2s ease both}
-.card:nth-child(3){animation:cardEntry 0.5s 0.25s ease both}
-.card:nth-child(4){animation:cardEntry 0.5s 0.3s ease both}
-.card:nth-child(5){animation:cardEntry 0.5s 0.35s ease both}
-.card:nth-child(6){animation:cardEntry 0.5s 0.4s ease both}
-.card:nth-child(7){animation:cardEntry 0.5s 0.45s ease both}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.card-title{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-mid);font-family:'Courier New',monospace}
-.card-title-lg{font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid);font-family:'Courier New',monospace}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.card-title{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-mid);font-family:var(--font-mono)}
+.card-title-lg{font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-mid);font-family:var(--font-mono)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
 
-/* METRICS */
-.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.metric-tile{background:rgba(26,20,16,0.8);border:1px solid var(--border);border-radius:10px;padding:14px;transition:border-color 0.2s,transform 0.2s}
+/* ===== METRICS ===== */
+.metric-tile{background:rgba(26,20,16,0.8);border:1px solid var(--border);border-radius:12px;padding:18px;transition:border-color 0.2s,transform 0.2s}
 .metric-tile:hover{border-color:rgba(255,107,0,0.2);transform:translateY(-2px)}
-.metric-val{font-size:26px;font-weight:900;line-height:1;margin-bottom:4px}
-.metric-label{font-size:10px;color:var(--text-dim);font-family:'Courier New',monospace;letter-spacing:0.1em;text-transform:uppercase}
-.metric-delta{font-size:11px;margin-top:6px;font-family:'Courier New',monospace}
+.metric-val{font-size:32px;font-weight:900;line-height:1;margin-bottom:6px;font-family:var(--font-main)}
+.metric-label{font-size:10px;color:var(--text-dim);font-family:var(--font-mono);letter-spacing:0.1em;text-transform:uppercase}
+.metric-delta{font-size:12px;margin-top:8px;font-family:var(--font-mono);font-weight:500}
 .delta-up{color:var(--green)}.delta-warn{color:var(--yellow)}
+.accent{color:var(--orange)}
 
-/* AGENTS */
-.agent-list{display:flex;flex-direction:column;gap:8px}
-.agent-row{display:flex;align-items:center;justify-content:space-between;background:rgba(26,20,16,0.8);border:1px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:border-color 0.2s,transform 0.15s,background 0.15s}
-.agent-row:hover{border-color:rgba(255,107,0,0.3);transform:translateX(3px);background:rgba(255,107,0,0.03)}
-.agent-left{display:flex;align-items:center;gap:10px}
-.agent-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* ===== AGENTS ===== */
+.agent-list{display:flex;flex-direction:column;gap:10px}
+.agent-row{display:flex;align-items:center;justify-content:space-between;background:rgba(26,20,16,0.8);border:1px solid var(--border);border-radius:12px;padding:14px 18px;cursor:pointer;transition:border-color 0.2s,transform 0.15s,background 0.15s}
+.agent-row:hover{border-color:rgba(255,107,0,0.3);transform:translateX(4px);background:rgba(255,107,0,0.03)}
+.agent-left{display:flex;align-items:center;gap:12px}
+.agent-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .dot-green{background:var(--green);box-shadow:0 0 6px rgba(0,201,110,0.5);animation:pulse 2s infinite}
 .dot-gray{background:var(--text-dim)}
-.agent-name{font-size:13px;font-weight:700;color:var(--text)}
-.agent-desc{font-size:10px;color:var(--text-dim);margin-top:1px;font-family:'Courier New',monospace}
-.agent-status{font-size:10px;font-weight:700;letter-spacing:0.08em;padding:3px 8px;border-radius:4px;font-family:'Courier New',monospace}
+.dot-yellow{background:var(--yellow)}
+.dot-red{background:var(--red)}
+.agent-name{font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-main)}
+.agent-desc{font-size:11px;color:var(--text-dim);margin-top:2px;font-family:var(--font-mono)}
+.agent-status{font-size:10px;font-weight:700;letter-spacing:0.08em;padding:4px 10px;border-radius:4px;font-family:var(--font-mono)}
 .status-ok{background:rgba(0,201,110,0.1);color:var(--green);border:1px solid rgba(0,201,110,0.2)}
 .status-off{background:rgba(106,95,85,0.1);color:var(--text-dim);border:1px solid rgba(106,95,85,0.2)}
-.agent-ping{font-size:9px;color:var(--text-dim);font-family:'Courier New',monospace}
+.status-warn{background:rgba(245,166,35,0.1);color:var(--yellow);border:1px solid rgba(245,166,35,0.2)}
+.status-err{background:rgba(255,68,68,0.1);color:var(--red);border:1px solid rgba(255,68,68,0.2)}
+.agent-ping{font-size:10px;color:var(--text-dim);font-family:var(--font-mono);margin-top:3px}
 
-/* COMMANDS */
-.cmd-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.cmd-btn{background:rgba(26,20,16,0.9);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all 0.2s;text-align:left}
+/* ===== COMMANDS ===== */
+.cmd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cmd-btn{background:rgba(26,20,16,0.9);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all 0.2s;text-align:left}
 .cmd-btn:hover{border-color:rgba(255,107,0,0.4);background:rgba(255,107,0,0.05);transform:translateY(-2px)}
 .cmd-btn:active{transform:scale(0.97)}
-.cmd-icon{font-size:14px;margin-bottom:6px}
-.cmd-name{font-size:12px;font-weight:700;color:var(--text)}
-.cmd-desc{font-size:10px;color:var(--text-dim);margin-top:2px;font-family:'Courier New',monospace}
+.cmd-icon{font-size:18px;margin-bottom:10px}
+.cmd-name{font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-main)}
+.cmd-desc{font-size:11px;color:var(--text-dim);margin-top:4px;font-family:var(--font-mono)}
 .cmd-btn.danger{border-color:rgba(255,68,68,0.2)}
 .cmd-btn.danger:hover{border-color:rgba(255,68,68,0.5);background:rgba(255,68,68,0.05)}
 .cmd-btn.primary{border-color:rgba(255,107,0,0.3);background:rgba(255,107,0,0.06)}
 .cmd-btn.primary:hover{background:rgba(255,107,0,0.12)}
 
-/* LOG */
-.log-list{display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto}
+/* ===== LOG ===== */
+.log-list{display:flex;flex-direction:column;gap:8px;max-height:500px;overflow-y:auto}
 .log-list::-webkit-scrollbar{width:3px}
 .log-list::-webkit-scrollbar-thumb{background:var(--text-dim);border-radius:2px}
-.log-row{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:8px;background:rgba(26,20,16,0.6);animation:fadeIn 0.25s ease both}
-.log-time{font-size:9px;color:var(--text-dim);font-family:'Courier New',monospace;white-space:nowrap;padding-top:1px;min-width:38px}
-.log-dot{width:6px;height:6px;border-radius:50%;margin-top:3px;flex-shrink:0}
-.log-msg{font-size:11px;color:var(--text);font-family:'Courier New',monospace;line-height:1.4}
+.log-row{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(26,20,16,0.6);animation:fadeIn 0.25s ease both}
+.log-time{font-size:10px;color:var(--text-dim);font-family:var(--font-mono);white-space:nowrap;padding-top:1px;min-width:42px}
+.log-dot{width:7px;height:7px;border-radius:50%;margin-top:3px;flex-shrink:0}
+.log-msg{font-size:12px;color:var(--text);font-family:var(--font-mono);line-height:1.5}
 
-/* FLOW */
-.flow-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.flow-label{font-size:10px;color:var(--text-mid);font-family:'Courier New',monospace;width:85px;flex-shrink:0}
-.flow-track{flex:1;height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden}
-.flow-fill{height:100%;border-radius:3px;width:0%;transition:width 0.9s cubic-bezier(0.34,1.2,0.64,1)}
-.flow-val{font-size:10px;font-family:'Courier New',monospace;color:var(--text-mid);min-width:40px;text-align:right}
+/* ===== FLOW ===== */
+.flow-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.flow-label{font-size:11px;color:var(--text-mid);font-family:var(--font-mono);width:90px;flex-shrink:0}
+.flow-track{flex:1;height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden}
+.flow-fill{height:100%;border-radius:4px;width:0%;transition:width 1s cubic-bezier(0.34,1.2,0.64,1)}
+.flow-val{font-size:11px;font-family:var(--font-mono);color:var(--text-mid);min-width:44px;text-align:right;font-weight:600}
 
-/* UTILS */
-.tag{font-size:9px;font-weight:700;letter-spacing:0.1em;padding:2px 6px;border-radius:3px;font-family:'Courier New',monospace;text-transform:uppercase}
+/* ===== TAGS ===== */
+.tag{font-size:9px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:4px;font-family:var(--font-mono);text-transform:uppercase}
 .tag-orange{background:rgba(255,107,0,0.15);color:var(--orange);border:1px solid rgba(255,107,0,0.25)}
-.accent{color:var(--orange)}
-.col-span-2{grid-column:span 2}
-.col-span-3{grid-column:span 3}
-.section-div{display:flex;align-items:center;gap:10px;grid-column:span 3;margin:4px 0 -4px}
-.section-div::before,.section-div::after{content:'';flex:1;height:1px;background:var(--border)}
-.section-div-label{font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--text-dim);font-family:'Courier New',monospace;white-space:nowrap;text-transform:uppercase}
 
-/* NOTIF */
-.notif{position:fixed;top:16px;right:16px;background:linear-gradient(130deg,#ff7a1a,#e05800);color:#fff;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:700;font-family:system-ui,sans-serif;box-shadow:0 4px 28px rgba(255,107,0,0.4);z-index:9999;opacity:0;transform:translateX(120%);pointer-events:none}
+/* ===== TASKS ===== */
+.task-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.task-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;transition:transform 0.15s}
+.task-item:hover{transform:translateY(-2px)}
+.task-num{font-size:16px;font-weight:900;font-family:var(--font-mono);min-width:24px}
+.task-text{font-size:13px;font-weight:600;color:var(--text);font-family:var(--font-main)}
+.task-urgency{font-size:9px;font-family:var(--font-mono);margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700}
+
+/* ===== NOTIF ===== */
+.notif{position:fixed;top:16px;right:16px;background:linear-gradient(130deg,#ff7a1a,#e05800);color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:700;font-family:var(--font-main);box-shadow:0 4px 28px rgba(255,107,0,0.4);z-index:9999;opacity:0;transform:translateX(120%);pointer-events:none}
 .notif.show{animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards}
 .notif.hide{animation:popOut 0.3s ease forwards}
+
+/* ===== SECTION HEADER ===== */
+.section-header{margin-bottom:20px}
+.section-title{font-size:22px;font-weight:800;font-family:var(--font-main);color:var(--text)}
+.section-title span{color:var(--orange)}
+.section-sub{font-size:12px;color:var(--text-dim);font-family:var(--font-mono);margin-top:4px;letter-spacing:0.05em}
 
 #dashboard{display:none}
 </style>
@@ -193,146 +222,231 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
 
 <!-- DASHBOARD -->
 <div id="dashboard">
+
+  <!-- TOPBAR -->
   <div class="topbar">
     <div class="logo">
       <div class="logo-icon">R</div>
       <div>
         <div class="logo-text">RIBAS <span>CRM</span></div>
-        <div style="font-size:9px;color:var(--text-dim);font-family:'Courier New',monospace;letter-spacing:0.1em">BINGO BET · iGAMING</div>
+        <div class="logo-sub">BINGO BET · iGAMING</div>
       </div>
     </div>
     <div class="topbar-right">
-      <div class="topbar-meta"><span class="pulse"></span>SISTEMA ATIVO</div>
+      <div class="topbar-meta"><span class="pulse-dot"></span>SISTEMA ATIVO</div>
       <div class="topbar-meta" id="clock">--:--:--</div>
       <div class="badge-live">LIVE</div>
       <div class="topbar-user" id="user-badge" onclick="doLogout()">— SAIR</div>
     </div>
   </div>
 
-  <div class="main">
+  <!-- TABS NAV -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('overview',this)">
+      <span class="tab-icon">◈</span> Visão Geral
+      <span class="tab-badge badge-ok" id="badge-overview">LIVE</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('agents',this)">
+      <span class="tab-icon">◎</span> Agentes
+      <span class="tab-badge badge-ok" id="badge-agents">2 ATIVOS</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('operacao',this)">
+      <span class="tab-icon">◆</span> Operação
+      <span class="tab-badge badge-warn">A/B</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('comandos',this)">
+      <span class="tab-icon">▶</span> Comandos
+    </button>
+    <button class="tab-btn" onclick="switchTab('log',this)">
+      <span class="tab-icon">≡</span> Log
+      <span class="tab-badge badge-err" id="badge-log">5</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('pendencias',this)">
+      <span class="tab-icon">!</span> Pendências
+      <span class="tab-badge badge-err">7</span>
+    </button>
+  </div>
 
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Métricas · Base</span>
-        <span class="tag tag-orange">HOJE</span>
+  <!-- TAB: VISÃO GERAL -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="section-header">
+      <div class="section-title">Visão <span>Geral</span></div>
+      <div class="section-sub">Métricas consolidadas da base · Atualização automática a cada 15s</div>
+    </div>
+    <div class="grid-4" style="margin-bottom:20px">
+      <div class="metric-tile" style="animation:cardEntry 0.4s 0.05s ease both">
+        <div class="metric-val accent">32.873</div>
+        <div class="metric-label">Total Leads</div>
+        <div class="metric-delta delta-warn">importação pendente</div>
       </div>
-      <div class="metrics-grid">
-        <div class="metric-tile">
-          <div class="metric-val accent">32.873</div>
-          <div class="metric-label">Total Leads</div>
-          <div class="metric-delta delta-warn">importação pend.</div>
-        </div>
-        <div class="metric-tile">
-          <div class="metric-val" style="color:var(--blue)">6</div>
-          <div class="metric-label">Canais</div>
-          <div class="metric-delta delta-warn">aguardando</div>
-        </div>
-        <div class="metric-tile">
-          <div class="metric-val" style="color:var(--green)" id="active-count">—</div>
-          <div class="metric-label">Ativos Hoje</div>
-          <div class="metric-delta delta-up">ao vivo</div>
-        </div>
-        <div class="metric-tile">
-          <div class="metric-val" style="color:var(--yellow)" id="dispatch-count">—</div>
-          <div class="metric-label">Disparos</div>
-          <div class="metric-delta delta-warn">A/B ativo</div>
-        </div>
+      <div class="metric-tile" style="animation:cardEntry 0.4s 0.1s ease both">
+        <div class="metric-val" style="color:var(--blue)">6</div>
+        <div class="metric-label">Canais Ativos</div>
+        <div class="metric-delta delta-warn">aguardando importação</div>
+      </div>
+      <div class="metric-tile" style="animation:cardEntry 0.4s 0.15s ease both">
+        <div class="metric-val" style="color:var(--green)" id="active-count">—</div>
+        <div class="metric-label">Ativos Hoje</div>
+        <div class="metric-delta delta-up">simulado · sem integração</div>
+      </div>
+      <div class="metric-tile" style="animation:cardEntry 0.4s 0.2s ease both">
+        <div class="metric-val" style="color:var(--yellow)" id="dispatch-count">—</div>
+        <div class="metric-label">Disparos</div>
+        <div class="metric-delta delta-warn">A/B split ativo</div>
       </div>
     </div>
-
-    <div class="card col-span-2">
-      <div class="card-header">
-        <span class="card-title">Saúde dos Agentes · Real-time</span>
-        <span class="tag tag-orange">15 DESENHADOS</span>
-      </div>
-      <div class="agent-list" id="agent-list"></div>
-    </div>
-
-    <div class="section-div"><span class="section-div-label">Operação</span></div>
-
-    <div class="card">
-      <div class="card-header"><span class="card-title">Funil de Leads</span></div>
-      <div id="flow-bars"></div>
-      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
-        <div style="font-size:10px;color:var(--text-dim);font-family:'Courier New',monospace;letter-spacing:0.08em;margin-bottom:8px">VARIANTE A/B</div>
-        <div style="display:flex;gap:10px">
-          <div style="flex:1;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.2);border-radius:8px;padding:8px;text-align:center">
-            <div style="font-size:20px;font-weight:900;color:var(--orange)">A</div>
-            <div style="font-size:10px;color:var(--text-dim);font-family:'Courier New',monospace">50%</div>
+    <div class="grid-2">
+      <div class="card" style="animation:cardEntry 0.4s 0.25s ease both">
+        <div class="card-header"><span class="card-title">Status do Sistema</span><span class="tag tag-orange">REAL-TIME</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(0,201,110,0.06);border:1px solid rgba(0,201,110,0.15);border-radius:10px">
+            <div style="font-size:13px;font-weight:700;font-family:var(--font-main)">MASTER-FLOW</div>
+            <span class="agent-status status-ok">ATIVO</span>
           </div>
-          <div style="flex:1;background:rgba(59,158,255,0.1);border:1px solid rgba(59,158,255,0.2);border-radius:8px;padding:8px;text-align:center">
-            <div style="font-size:20px;font-weight:900;color:var(--blue)">B</div>
-            <div style="font-size:10px;color:var(--text-dim);font-family:'Courier New',monospace">50%</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(0,201,110,0.06);border:1px solid rgba(0,201,110,0.15);border-radius:10px">
+            <div style="font-size:13px;font-weight:700;font-family:var(--font-main)">WEBHOOK N8N</div>
+            <span class="agent-status status-ok">VALIDADO</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,68,68,0.06);border:1px solid rgba(255,68,68,0.15);border-radius:10px">
+            <div style="font-size:13px;font-weight:700;font-family:var(--font-main)">agent_signals</div>
+            <span class="agent-status status-err">NÃO CRIADO</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.15);border-radius:10px">
+            <div style="font-size:13px;font-weight:700;font-family:var(--font-main)">Chaves Supabase</div>
+            <span class="agent-status status-warn">RENOVAR</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="animation:cardEntry 0.4s 0.3s ease both">
+        <div class="card-header"><span class="card-title">Distribuição A/B</span></div>
+        <div style="display:flex;gap:14px;margin-bottom:16px">
+          <div style="flex:1;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.2);border-radius:12px;padding:20px;text-align:center">
+            <div style="font-size:36px;font-weight:900;color:var(--orange);font-family:var(--font-main)">A</div>
+            <div style="font-size:22px;font-weight:800;color:var(--orange);font-family:var(--font-main)">50%</div>
+            <div style="font-size:10px;color:var(--text-dim);font-family:var(--font-mono);margin-top:4px">16.436 leads</div>
+          </div>
+          <div style="flex:1;background:rgba(59,158,255,0.1);border:1px solid rgba(59,158,255,0.2);border-radius:12px;padding:20px;text-align:center">
+            <div style="font-size:36px;font-weight:900;color:var(--blue);font-family:var(--font-main)">B</div>
+            <div style="font-size:22px;font-weight:800;color:var(--blue);font-family:var(--font-main)">50%</div>
+            <div style="font-size:10px;color:var(--text-dim);font-family:var(--font-mono);margin-top:4px">16.437 leads</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);text-align:center;padding-top:12px;border-top:1px solid var(--border)">Split matemático · Delay 3s entre disparos · Registro automático</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: AGENTES -->
+  <div class="tab-content" id="tab-agents">
+    <div class="section-header">
+      <div class="section-title"><span>Agentes</span> · Saúde Real-time</div>
+      <div class="section-sub">15 agentes desenhados · 6 camadas · Construção não iniciada</div>
+    </div>
+    <div class="agent-list" id="agent-list"></div>
+  </div>
+
+  <!-- TAB: OPERAÇÃO -->
+  <div class="tab-content" id="tab-operacao">
+    <div class="section-header">
+      <div class="section-title">Funil de <span>Leads</span></div>
+      <div class="section-sub">Dados estáticos · Integração Supabase pendente</div>
+    </div>
+    <div class="card">
+      <div id="flow-bars" style="margin-bottom:20px"></div>
+      <div style="padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;color:var(--text-mid);font-family:var(--font-mono);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px">Resumo do Funil</div>
+        <div class="grid-4">
+          <div style="text-align:center;padding:14px;background:rgba(255,107,0,0.08);border-radius:10px;border:1px solid rgba(255,107,0,0.15)">
+            <div style="font-size:20px;font-weight:900;color:var(--orange);font-family:var(--font-main)">68%</div>
+            <div style="font-size:10px;color:var(--text-dim);font-family:var(--font-mono);margin-top:4px">RETENÇÃO</div>
+          </div>
+          <div style="text-align:center;padding:14px;background:rgba(59,158,255,0.08);border-radius:10px;border:1px solid rgba(59,158,255,0.15)">
+            <div style="font-size:20px;font-weight:900;color:var(--blue);font-family:var(--font-main)">18%</div>
+            <div style="font-size:10px;color:var(--text-dim);font-family:var(--font-mono);margin-top:4px">CONVERSÃO</div>
+          </div>
+          <div style="text-align:center;padding:14px;background:rgba(245,166,35,0.08);border-radius:10px;border:1px solid rgba(245,166,35,0.15)">
+            <div style="font-size:20px;font-weight:900;color:var(--yellow);font-family:var(--font-main)">32%</div>
+            <div style="font-size:10px;color:var(--text-dim);font-family:var(--font-mono);margin-top:4px">RMKT</div>
+          </div>
+          <div style="text-align:center;padding:14px;background:rgba(255,68,68,0.08);border-radius:10px;border:1px solid rgba(255,68,68,0.15)">
+            <div style="font-size:20px;font-weight:900;color:var(--red);font-family:var(--font-main)">8%</div>
+            <div style="font-size:10px;color:var(--text-dim);font-family:var(--font-mono);margin-top:4px">SAÍDA</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="card">
-      <div class="card-header"><span class="card-title">Comandos Rápidos</span></div>
-      <div class="cmd-grid">
-        <div class="cmd-btn primary" onclick="runCmd('MASTER-FLOW reiniciado com sucesso.','ok')">
-          <div class="cmd-icon">▶</div>
-          <div class="cmd-name">MASTER FLOW</div>
-          <div class="cmd-desc">reiniciar</div>
-        </div>
-        <div class="cmd-btn" onclick="runCmd('METRICS-FLOW disparado. Relatório enviado ao Telegram.','ok')">
-          <div class="cmd-icon">◈</div>
-          <div class="cmd-name">METRICS-FLOW</div>
-          <div class="cmd-desc">disparar agora</div>
-        </div>
-        <div class="cmd-btn" onclick="runCmd('SCOUT ativo. Rotação de 3 tokens iniciada.','ok')">
-          <div class="cmd-icon">◎</div>
-          <div class="cmd-name">SCOUT</div>
-          <div class="cmd-desc">executar scan</div>
-        </div>
-        <div class="cmd-btn" onclick="runCmd('ORCHESTRATOR verificando agent_signals...','warn')">
-          <div class="cmd-icon">⚙</div>
-          <div class="cmd-name">ORCHESTRATOR</div>
-          <div class="cmd-desc">ping status</div>
-        </div>
-        <div class="cmd-btn" onclick="runCmd('MANUAL-DISPATCH: aguardando segmento.','warn')">
-          <div class="cmd-icon">◆</div>
-          <div class="cmd-name">DISPARO MANUAL</div>
-          <div class="cmd-desc">split 50/50</div>
-        </div>
-        <div class="cmd-btn danger" onclick="runCmd('EMERGÊNCIA: todos os workflows suspensos.','err')">
-          <div class="cmd-icon" style="color:var(--red)">■</div>
-          <div class="cmd-name" style="color:var(--red)">EMERGÊNCIA</div>
-          <div class="cmd-desc">pausar tudo</div>
-        </div>
+  <!-- TAB: COMANDOS -->
+  <div class="tab-content" id="tab-comandos">
+    <div class="section-header">
+      <div class="section-title">Comandos <span>Rápidos</span></div>
+      <div class="section-sub">Ações diretas nos workflows · Clique para executar</div>
+    </div>
+    <div class="cmd-grid">
+      <div class="cmd-btn primary" onclick="runCmd('MASTER-FLOW reiniciado com sucesso.','ok')">
+        <div class="cmd-icon">▶</div>
+        <div class="cmd-name">MASTER FLOW</div>
+        <div class="cmd-desc">Reiniciar fluxo principal</div>
+      </div>
+      <div class="cmd-btn" onclick="runCmd('METRICS-FLOW disparado. Relatório enviado ao Telegram.','ok')">
+        <div class="cmd-icon">◈</div>
+        <div class="cmd-name">METRICS-FLOW</div>
+        <div class="cmd-desc">Disparar relatório agora</div>
+      </div>
+      <div class="cmd-btn" onclick="runCmd('SCOUT ativo. Rotação de 3 tokens iniciada.','ok')">
+        <div class="cmd-icon">◎</div>
+        <div class="cmd-name">SCOUT</div>
+        <div class="cmd-desc">Executar scan de membros</div>
+      </div>
+      <div class="cmd-btn" onclick="runCmd('ORCHESTRATOR verificando agent_signals...','warn')">
+        <div class="cmd-icon">⚙</div>
+        <div class="cmd-name">ORCHESTRATOR</div>
+        <div class="cmd-desc">Ping e verificação de status</div>
+      </div>
+      <div class="cmd-btn" onclick="runCmd('MANUAL-DISPATCH: aguardando seleção de segmento.','warn')">
+        <div class="cmd-icon">◆</div>
+        <div class="cmd-name">DISPARO MANUAL</div>
+        <div class="cmd-desc">Split 50/50 · Delay 3s</div>
+      </div>
+      <div class="cmd-btn danger" onclick="runCmd('EMERGÊNCIA: todos os workflows suspensos.','err')">
+        <div class="cmd-icon" style="color:var(--red)">■</div>
+        <div class="cmd-name" style="color:var(--red)">EMERGÊNCIA</div>
+        <div class="cmd-desc">Pausar todos os workflows</div>
       </div>
     </div>
+  </div>
 
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Log de Atividade</span>
-        <span class="tag tag-orange" style="cursor:pointer" onclick="clearLog()">LIMPAR</span>
+  <!-- TAB: LOG -->
+  <div class="tab-content" id="tab-log">
+    <div class="section-header" style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div class="section-title">Log de <span>Atividade</span></div>
+        <div class="section-sub">Eventos do sistema em tempo real</div>
       </div>
+      <button onclick="clearLog()" style="background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.25);color:var(--orange);padding:8px 16px;border-radius:8px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:0.08em">LIMPAR LOG</button>
+    </div>
+    <div class="card">
       <div class="log-list" id="log-list"></div>
     </div>
-
-    <div class="section-div"><span class="section-div-label">Pendências · Execução</span></div>
-
-    <div class="card col-span-3">
-      <div class="card-header">
-        <span class="card-title-lg">Ordem de Execução — Demandas Abertas</span>
-        <span class="tag tag-orange">7 TASKS</span>
-      </div>
-      <div id="pend-list"></div>
-    </div>
-
   </div>
-</div>
+
+  <!-- TAB: PENDÊNCIAS -->
+  <div class="tab-content" id="tab-pendencias">
+    <div class="section-header">
+      <div class="section-title">Ordem de <span>Execução</span></div>
+      <div class="section-sub">7 demandas abertas · Prioridade definida · Nenhuma iniciada</div>
+    </div>
+    <div class="task-grid" id="pend-list"></div>
+  </div>
+
+</div><!-- /dashboard -->
 
 <script>
 const USERS={'00baby':'Bekas00!','toni':'PaiDeGay00!','bigão':'Bigão00!'};
 let rememberMe=false;
 
-function toggleRemember(){
-  rememberMe=!rememberMe;
-  document.getElementById('remember-check').classList.toggle('active',rememberMe);
-}
+function toggleRemember(){rememberMe=!rememberMe;document.getElementById('remember-check').classList.toggle('active',rememberMe);}
 
 function doLogin(){
   const user=document.getElementById('login-user').value.trim().toLowerCase();
@@ -364,6 +478,14 @@ function doLogin(){
 
 function doLogout(){sessionStorage.removeItem('ribas_s');location.reload();}
 
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='operacao') animateFlowBars();
+}
+
 window.addEventListener('DOMContentLoaded',()=>{
   const su=localStorage.getItem('ribas_u'),sp=localStorage.getItem('ribas_p'),ss=sessionStorage.getItem('ribas_s');
   if(ss){document.getElementById('login-screen').style.display='none';document.getElementById('dashboard').style.display='block';document.getElementById('user-badge').textContent=ss.toUpperCase()+' · SAIR';initDashboard();}
@@ -373,13 +495,14 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 const agents=[
-  {name:'MASTER-FLOW',desc:'Reativo ENTRADA/SAÍDA/CLIQUE',status:'ok',label:'ATIVO',ping:'último ping: agora'},
+  {name:'MASTER-FLOW',desc:'Reativo ENTRADA / SAÍDA / CLIQUE',status:'ok',label:'ATIVO',ping:'último ping: agora'},
   {name:'WEBHOOK N8N',desc:'Supabase · AWS sa-east-1',status:'ok',label:'VALIDADO',ping:'operacional'},
   {name:'SCOUT',desc:'Cron 5min · Rotação 3 tokens',status:'off',label:'PENDENTE',ping:'build não iniciado'},
-  {name:'ORCHESTRATOR',desc:'Cron 15min · Ping + signals',status:'off',label:'PENDENTE',ping:'build não iniciado'},
-  {name:'METRICS-FLOW',desc:'Cron 08h00 · Relatório mobile',status:'off',label:'PENDENTE',ping:'build não iniciado'},
-  {name:'MANUAL-DISPATCH',desc:'Split 50/50 · Delay 3s · Registro A/B',status:'off',label:'PENDENTE',ping:'build não iniciado'},
+  {name:'ORCHESTRATOR',desc:'Cron 15min · Ping + leitura agent_signals',status:'off',label:'PENDENTE',ping:'build não iniciado'},
+  {name:'METRICS-FLOW',desc:'Cron 08h00 · Relatório formato mobile Telegram',status:'off',label:'PENDENTE',ping:'build não iniciado'},
+  {name:'MANUAL-DISPATCH',desc:'Split 50/50 · Delay 3s · Registro disparos com versao_ab',status:'off',label:'PENDENTE',ping:'build não iniciado'},
 ];
+
 const tasks=[
   {n:'01',text:'Novas chaves Supabase · anon key + service_role',u:'crítico'},
   {n:'02',text:'Criar tabela agent_signals · id/from/to/signal/payload/created/processed',u:'crítico'},
@@ -389,6 +512,7 @@ const tasks=[
   {n:'06',text:'Build METRICS-FLOW · formato mobile Telegram',u:'médio'},
   {n:'07',text:'Build MANUAL-DISPATCH · split 50/50 matemático',u:'baixo'},
 ];
+
 const flows=[
   {label:'Entrada',pct:100,val:'32.873',color:'var(--orange)'},
   {label:'Ativos',pct:68,val:'22.353',color:'var(--green)'},
@@ -396,6 +520,7 @@ const flows=[
   {label:'Convertidos',pct:18,val:'5.917',color:'var(--blue)'},
   {label:'Saída',pct:8,val:'2.630',color:'var(--red)'},
 ];
+
 const uc={'crítico':['rgba(255,68,68,0.12)','rgba(255,68,68,0.35)','#FF4444'],'alto':['rgba(245,166,35,0.1)','rgba(245,166,35,0.3)','#F5A623'],'médio':['rgba(255,107,0,0.08)','rgba(255,107,0,0.25)','#FF6B00'],'baixo':['rgba(106,95,85,0.1)','rgba(106,95,85,0.2)','#6A5F55']};
 
 function initDashboard(){
@@ -405,7 +530,7 @@ function initDashboard(){
         <div class="agent-dot dot-${a.status==='ok'?'green':'gray'}"></div>
         <div><div class="agent-name">${a.name}</div><div class="agent-desc">${a.desc}</div></div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
         <span class="agent-status status-${a.status==='ok'?'ok':'off'}">${a.label}</span>
         <span class="agent-ping">${a.ping}</span>
       </div>
@@ -417,25 +542,31 @@ function initDashboard(){
       <div class="flow-track"><div class="flow-fill" id="ff${i}" style="background:${f.color}"></div></div>
       <span class="flow-val" style="color:${f.color}">${f.val}</span>
     </div>`).join('');
-  setTimeout(()=>flows.forEach((f,i)=>setTimeout(()=>document.getElementById('ff'+i).style.width=f.pct+'%',i*120)),400);
 
-  document.getElementById('pend-list').innerHTML=
-    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px">'+
-    tasks.map(t=>{const[bg,border,color]=uc[t.u];return`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:${bg};border:1px solid ${border};border-radius:8px;transition:transform 0.15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-      <span style="font-size:15px;font-weight:900;color:${color};font-family:'Courier New',monospace;min-width:22px">${t.n}</span>
-      <div><div style="font-size:12px;font-weight:600;color:#F0ECE8">${t.text}</div>
-      <div style="font-size:9px;color:${color};font-family:'Courier New',monospace;margin-top:3px;letter-spacing:0.08em;text-transform:uppercase">${t.u}</div></div>
-    </div>`;}).join('')+'</div>';
+  document.getElementById('pend-list').innerHTML=tasks.map(t=>{
+    const[bg,border,color]=uc[t.u];
+    return`<div class="task-item" style="background:${bg};border:1px solid ${border}" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+      <span class="task-num" style="color:${color}">${t.n}</span>
+      <div><div class="task-text">${t.text}</div><div class="task-urgency" style="color:${color}">${t.u}</div></div>
+    </div>`;}).join('');
 
   addLog('MASTER-FLOW ativo — fluxo reativo operacional','ok');
   addLog('WEBHOOK N8N validado e operacional','ok');
   addLog('Importação de leads pendente — 6 canais','warn');
   addLog('agent_signals: tabela não criada','err');
   addLog('Chaves Supabase aguardando rotação','warn');
+
   updateClock();updateSim();
   setInterval(updateClock,1000);
   setInterval(updateSim,15000);
-  setInterval(()=>{const m=[['Ping MASTER-FLOW · OK','ok'],['Webhook N8N · 200ms','ok'],['Supabase · conexão estável','ok'],['Importação base leads pendente','warn']];const r=m[Math.floor(Math.random()*m.length)];addLog(r[0],r[1]);},30000);
+  setInterval(()=>{
+    const m=[['Ping MASTER-FLOW · OK','ok'],['Webhook N8N · 200ms','ok'],['Supabase · conexão estável','ok'],['Importação base leads pendente','warn']];
+    const r=m[Math.floor(Math.random()*m.length)];addLog(r[0],r[1]);
+  },30000);
+}
+
+function animateFlowBars(){
+  flows.forEach((f,i)=>setTimeout(()=>{const el=document.getElementById('ff'+i);if(el)el.style.width=f.pct+'%';},i*150));
 }
 
 const logs=[];
@@ -444,26 +575,30 @@ function addLog(msg,type='ok'){
   const t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
   const c={ok:'var(--green)',warn:'var(--yellow)',err:'var(--red)'};
   logs.unshift({t,msg,color:c[type]||'var(--text-dim)'});
-  if(logs.length>30)logs.pop();
-  document.getElementById('log-list').innerHTML=logs.map(l=>`
+  if(logs.length>50)logs.pop();
+  const el=document.getElementById('log-list');
+  if(el)el.innerHTML=logs.map(l=>`
     <div class="log-row"><span class="log-time">${l.t}</span><div class="log-dot" style="background:${l.color}"></div><span class="log-msg">${l.msg}</span></div>`).join('');
+  document.getElementById('badge-log').textContent=logs.length;
 }
-function clearLog(){logs.length=0;document.getElementById('log-list').innerHTML='';}
+
+function clearLog(){logs.length=0;const el=document.getElementById('log-list');if(el)el.innerHTML='';document.getElementById('badge-log').textContent='0';}
 
 let notifTimer;
 function runCmd(msg,type){
   addLog(msg,type);
   const el=document.getElementById('notif');
-  el.textContent=msg;
-  el.classList.remove('hide');void el.offsetWidth;
-  el.classList.add('show');
-  clearTimeout(notifTimer);
+  el.textContent=msg;el.classList.remove('hide');void el.offsetWidth;
+  el.classList.add('show');clearTimeout(notifTimer);
   notifTimer=setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');},3000);
 }
+
 function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('pt-BR',{hour12:false})+' BRT';}
 function updateSim(){
-  document.getElementById('active-count').textContent=Math.floor(1200+Math.random()*300).toLocaleString('pt-BR');
-  document.getElementById('dispatch-count').textContent=Math.floor(800+Math.random()*200).toLocaleString('pt-BR');
+  const ac=document.getElementById('active-count');
+  const dc=document.getElementById('dispatch-count');
+  if(ac)ac.textContent=Math.floor(1200+Math.random()*300).toLocaleString('pt-BR');
+  if(dc)dc.textContent=Math.floor(800+Math.random()*200).toLocaleString('pt-BR');
 }
 </script>
 </body>
