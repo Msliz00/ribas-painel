@@ -641,7 +641,7 @@ let allLeadsCache=[];
 
 async function loadAllLeads(){
   try{
-    const data=await sbGet('leads','select=telegram_id,username,primeiro_nome,grupo_origem,score_qualidade,is_premium,coletado_em,variante_ab&order=coletado_em.desc&limit=50000');
+    const data=await sbGet('leads','select=telegram_id,username,primeiro_nome,grupo_origem,score_qualidade,is_premium,coletado_em,variante_ab&order=coletado_em.desc&limit=20000');
     if(data){
       allLeadsCache=data;
       popularFiltroCanal(data);
@@ -717,7 +717,7 @@ async function exportCSV(){
 
   try{
     // Busca todos os leads com todos os campos
-    const data=await sbGet('leads','select=telegram_id,username,primeiro_nome,grupo_origem,score_qualidade,is_premium,variante_ab,coletado_em,validado_em&order=coletado_em.desc&limit=50000');
+    const data=await sbGet('leads','select=telegram_id,username,primeiro_nome,grupo_origem,score_qualidade,is_premium,variante_ab,coletado_em,validado_em&order=coletado_em.desc&limit=20000');
     if(!data||!data.length){pushNotif('Nenhum dado para exportar','warn','Export CSV');return;}
 
     // Aplica filtros ativos
@@ -838,7 +838,7 @@ async function loadColetaCards(){
 
 async function loadColetaTable(){
   try{
-    const data=await sbGet('leads','select=grupo_origem,score_qualidade,is_premium,coletado_em&order=coletado_em.desc&limit=1000');
+    const data=await sbGet('leads','select=grupo_origem,score_qualidade,is_premium,coletado_em&order=coletado_em.desc&limit=20000');
     if(!data||!data.length){document.getElementById('c-table-body').innerHTML='<tr><td colspan="5" style="padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Nenhum dado ainda</td></tr>';return;}
 
     const grouped={};
