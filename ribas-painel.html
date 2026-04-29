@@ -296,6 +296,38 @@ select.fi option{background:var(--bg2)}
   .agent-grid{grid-template-columns:1fr}
   .sc-grid{grid-template-columns:repeat(2,1fr)}
 }
+
+/* CANAL CARDS */
+#canal-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cn-card{background:rgba(14,9,2,0.97);border:1px solid rgba(255,107,0,0.12);border-left:4px solid rgba(106,95,85,0.4);border-radius:16px;padding:18px;transition:transform .2s,border-color .2s,box-shadow .2s;cursor:pointer;position:relative;will-change:transform}
+.cn-card:hover{transform:perspective(600px) translateZ(28px) scale(1.04);border-color:rgba(255,107,0,0.45);box-shadow:0 24px 60px rgba(255,107,0,0.14)}
+.cn-card.expanded{border-color:rgba(255,107,0,0.5);box-shadow:0 24px 60px rgba(255,107,0,0.14);grid-column:span 2}
+.cn-rank{position:absolute;top:12px;right:14px;font-size:.6rem;font-weight:800;font-family:var(--fm);background:rgba(255,107,0,0.12);color:var(--orange);padding:3px 9px;border-radius:20px;letter-spacing:.06em;border:1px solid rgba(255,107,0,0.2)}
+.cn-emoji{font-size:32px;line-height:1;margin-bottom:8px}
+.cn-name{font-size:.95rem;font-weight:900;margin-bottom:12px;color:var(--text);padding-right:42px;line-height:1.2}
+.cn-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-family:var(--fm)}
+.cn-metric{display:flex;flex-direction:column;min-width:0}
+.cn-metric-l{font-size:.55rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;font-weight:700}
+.cn-metric-v{font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cn-expand{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,107,0,0.12);display:none;animation:fadeUp .25s ease both}
+.cn-card.expanded .cn-expand{display:block}
+.cn-section-l{font-size:.6rem;color:var(--dim);font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-weight:700}
+.cn-bar{height:9px;background:rgba(255,255,255,0.05);border-radius:6px;overflow:hidden;margin-bottom:14px}
+.cn-bar-fill{height:100%;border-radius:6px;transition:width .5s ease}
+.cn-dist{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.cn-dist-row{display:flex;align-items:center;gap:10px;font-family:var(--fm);font-size:.72rem}
+.cn-dist-tag{width:96px;font-weight:700;flex-shrink:0}
+.cn-dist-bar{flex:1;height:5px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden}
+.cn-dist-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.cn-dist-val{min-width:90px;text-align:right;color:var(--text);font-weight:700}
+.cn-premium{font-size:.82rem;font-family:var(--fm);color:var(--purple);margin:10px 0;display:flex;align-items:center;gap:7px;font-weight:700}
+.cn-premium-star{font-size:1.05rem;color:var(--purple)}
+.cn-close{margin-top:8px;width:100%;background:rgba(255,107,0,0.06);border:1px solid rgba(255,107,0,0.18);color:var(--orange);font-family:var(--f);font-size:.74rem;font-weight:800;padding:9px;border-radius:9px;cursor:pointer;letter-spacing:.06em;transition:all .18s}
+.cn-close:hover{background:rgba(255,107,0,0.14)}
+@media(max-width:768px){
+  #canal-cards{grid-template-columns:1fr}
+  .cn-card.expanded{grid-column:span 1}
+}
 </style>
 </head>
 <body>
@@ -476,44 +508,37 @@ select.fi option{background:var(--bg2)}
         </div>
       </div>
 
-      <!-- TABELA + GRÁFICO -->
-      <div class="g2">
-        <!-- TABELA CANAIS -->
-        <div class="ccard">
-          <div class="ccard-h" style="justify-content:space-between">
-            <span>📡 Por Canal</span>
-            <span style="font-size:.65rem;color:var(--dim);font-family:var(--fm)" id="c-table-update">—</span>
+      <!-- CARDS POR CANAL -->
+      <div class="ccard">
+        <div class="ccard-h" style="justify-content:space-between">
+          <span>📡 Por Canal</span>
+          <span style="font-size:.65rem;color:var(--dim);font-family:var(--fm)" id="c-table-update">—</span>
+        </div>
+        <div class="ccard-b">
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <input class="fi" type="text" id="canal-search" placeholder="🔍 Buscar canal..." oninput="filterCanalCards()" style="flex:1;min-width:160px">
+            <select class="fi" id="canal-score-f" onchange="filterCanalCards()" style="min-width:160px">
+              <option value="">Todos os scores</option>
+              <option value="alta">Alta ≥70</option>
+              <option value="media">Média 50-69</option>
+              <option value="baixa">Baixa &lt;50</option>
+            </select>
           </div>
-          <div class="ccard-b" style="padding:0">
-            <div style="overflow-x:auto">
-              <table style="width:100%;border-collapse:collapse" id="c-table">
-                <thead>
-                  <tr style="border-bottom:1px solid var(--border)">
-                    <th style="font-size:.62rem;font-weight:800;letter-spacing:.08em;color:var(--dim);font-family:var(--fm);text-transform:uppercase;padding:10px 16px;text-align:left">Canal</th>
-                    <th style="font-size:.62rem;font-weight:800;letter-spacing:.08em;color:var(--dim);font-family:var(--fm);text-transform:uppercase;padding:10px 8px;text-align:right">Total</th>
-                    <th style="font-size:.62rem;font-weight:800;letter-spacing:.08em;color:var(--dim);font-family:var(--fm);text-transform:uppercase;padding:10px 8px;text-align:right">Premium</th>
-                    <th style="font-size:.62rem;font-weight:800;letter-spacing:.08em;color:var(--dim);font-family:var(--fm);text-transform:uppercase;padding:10px 8px;text-align:right">Score</th>
-                    <th style="font-size:.62rem;font-weight:800;letter-spacing:.08em;color:var(--dim);font-family:var(--fm);text-transform:uppercase;padding:10px 16px;text-align:right">Última coleta</th>
-                  </tr>
-                </thead>
-                <tbody id="c-table-body">
-                  <tr><td colspan="5" style="padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Carregando...</td></tr>
-                </tbody>
-              </table>
-            </div>
+          <div id="canal-cards">
+            <div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Carregando...</div>
           </div>
         </div>
+      </div>
 
-        <!-- GRÁFICO EVOLUÇÃO -->
-        <div class="chart-box">
-          <div class="chart-hdr">
-            <span class="chart-ttl">📈 Coletas por Minuto · Última Hora</span>
-          </div>
-          <div style="position:relative;height:260px">
-            <canvas id="cColeta"></canvas>
-          </div>
-          <div style="font-size:.62rem;color:var(--dim);font-family:var(--fm);margin-top:8px;text-align:right" id="c-chart-update">—</div>
+      <!-- GRÁFICO EVOLUÇÃO -->
+      <div class="chart-box">
+        <div class="chart-hdr">
+          <span class="chart-ttl">📈 Coletas por Minuto · Última Hora</span>
         </div>
+        <div style="position:relative;height:260px">
+          <canvas id="cColeta"></canvas>
+        </div>
+        <div style="font-size:.62rem;color:var(--dim);font-family:var(--fm);margin-top:8px;text-align:right" id="c-chart-update">—</div>
       </div>
 
       <!-- LOG DE COLETA -->
@@ -892,45 +917,117 @@ async function loadColetaCards(){
   }catch(e){console.error('coleta cards',e);}
 }
 
+let canalDataCache=[];
+let canalExpanded=null;
+const CANAL_EMOJIS=['🎰','🎲','🎯','♠️','♣️','♦️','♥️','🃏','🎳','💎','💰','🪙','⚡','🔥','🎮','🏆','👑','🔔','🎁'];
+function emojiForCanal(canal){
+  let h=0;for(let i=0;i<canal.length;i++)h=(h*31+canal.charCodeAt(i))>>>0;
+  return CANAL_EMOJIS[h%CANAL_EMOJIS.length];
+}
+function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
 async function loadColetaTable(){
   try{
     const res=await fetch(`${SB_URL}/rest/v1/v_leads_stats?select=*&order=total_leads.desc`,{
       headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}
     });
     if(!res.ok)throw new Error(res.status);
-    const data=await res.json();
-    if(!data||!data.length){document.getElementById('c-table-body').innerHTML='<tr><td colspan="5" style="padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Nenhum dado ainda</td></tr>';return;}
-
-    document.getElementById('c-table-body').innerHTML=data.map(r=>{
-      const canal=r.grupo_origem||'Desconhecido';
-      const total=r.total_leads||0;
-      const premium=r.leads_premium||0;
-      const score=r.score_medio?Math.round(r.score_medio):0;
-      const ultima=r.ultima_coleta?new Date(r.ultima_coleta).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):'—';
-      const scoreColor=score>=70?'var(--green)':score>=50?'var(--yellow)':'var(--red)';
-      return`<tr style="border-bottom:1px solid var(--border)">
-        <td style="padding:10px 16px;font-size:.8rem;font-weight:700;color:var(--text)">${canal}</td>
-        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:800;color:var(--orange);font-family:var(--fm)">${total.toLocaleString('pt-BR')}</td>
-        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:700;color:var(--purple);font-family:var(--fm)">${premium.toLocaleString('pt-BR')}</td>
-        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:800;color:${scoreColor};font-family:var(--fm)">${score}</td>
-        <td style="padding:10px 16px;text-align:right;font-size:.72rem;color:var(--dim);font-family:var(--fm)">${ultima}</td>
-      </tr>`;
-    }).join('');
+    canalDataCache=await res.json()||[];
 
     const sel=document.getElementById('f-canal');
     if(sel){
       const current=sel.value;
-      sel.innerHTML='<option value="">Todos os canais</option>'+data.map(r=>{
+      sel.innerHTML='<option value="">Todos os canais</option>'+canalDataCache.map(r=>{
         const c=r.grupo_origem||'';
         if(!c)return'';
         const sels=c===current?' selected':'';
-        return`<option value="${c}"${sels}>${c}</option>`;
+        return`<option value="${escAttr(c)}"${sels}>${escHtml(c)}</option>`;
       }).join('');
     }
 
+    renderCanalCards();
     document.getElementById('c-table-update').textContent='atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
   }catch(e){console.error('coleta table',e);}
 }
+
+function renderCanalCards(){
+  const cards=document.getElementById('canal-cards');
+  if(!cards)return;
+
+  if(!canalDataCache.length){
+    cards.innerHTML='<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Nenhum dado ainda</div>';
+    return;
+  }
+
+  const search=(document.getElementById('canal-search')?.value||'').toLowerCase().trim();
+  const scoreFilter=document.getElementById('canal-score-f')?.value||'';
+
+  const list=canalDataCache.filter(r=>{
+    const canal=(r.grupo_origem||'').toLowerCase();
+    if(search&&!canal.includes(search))return false;
+    const score=Math.round(r.score_medio||0);
+    if(scoreFilter==='alta'&&score<70)return false;
+    if(scoreFilter==='media'&&(score<50||score>=70))return false;
+    if(scoreFilter==='baixa'&&score>=50)return false;
+    return true;
+  });
+
+  if(!list.length){
+    cards.innerHTML='<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Nenhum canal encontrado</div>';
+    return;
+  }
+
+  cards.innerHTML=list.map(r=>{
+    const canal=r.grupo_origem||'Desconhecido';
+    const total=r.total_leads||0;
+    const premium=r.leads_premium||0;
+    const alta=r.leads_alta_qualidade||0;
+    const media=r.leads_media_qualidade||0;
+    const baixa=r.leads_baixa_qualidade||0;
+    const score=Math.round(r.score_medio||0);
+    const ultima=r.ultima_coleta?new Date(r.ultima_coleta).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):'—';
+    const sideColor=score>=70?'var(--green)':score>=50?'var(--yellow)':'var(--orange)';
+    const scoreColor=sideColor;
+    const pct=v=>total?Math.round(v/total*100):0;
+    const isExp=canalExpanded===canal;
+    const rank=canalDataCache.indexOf(r)+1;
+    const cAttr=escAttr(canal);
+    const cHtml=escHtml(canal);
+    return`<div class="cn-card${isExp?' expanded':''}" style="border-left-color:${sideColor}" onclick="toggleCanal('${cAttr}',event)">
+      <div class="cn-rank">${rank}º</div>
+      <div class="cn-emoji">${emojiForCanal(canal)}</div>
+      <div class="cn-name">${cHtml}</div>
+      <div class="cn-metrics">
+        <div class="cn-metric"><span class="cn-metric-l">Total</span><span class="cn-metric-v" style="color:var(--orange)">${total.toLocaleString('pt-BR')}</span></div>
+        <div class="cn-metric"><span class="cn-metric-l">Premium</span><span class="cn-metric-v" style="color:var(--purple)">${premium.toLocaleString('pt-BR')}</span></div>
+        <div class="cn-metric"><span class="cn-metric-l">Score</span><span class="cn-metric-v" style="color:${scoreColor}">${score}</span></div>
+        <div class="cn-metric"><span class="cn-metric-l">Última</span><span class="cn-metric-v" style="color:var(--text);font-size:.72rem">${ultima}</span></div>
+      </div>
+      <div class="cn-expand" onclick="event.stopPropagation()">
+        <div class="cn-section-l">Score Médio · ${score}/100</div>
+        <div class="cn-bar"><div class="cn-bar-fill" style="width:${score}%;background:${sideColor}"></div></div>
+        <div class="cn-section-l">Distribuição de Qualidade</div>
+        <div class="cn-dist">
+          <div class="cn-dist-row"><span class="cn-dist-tag" style="color:var(--green)">Alta ≥70</span><div class="cn-dist-bar"><div class="cn-dist-bar-fill" style="width:${pct(alta)}%;background:var(--green)"></div></div><span class="cn-dist-val">${alta.toLocaleString('pt-BR')} (${pct(alta)}%)</span></div>
+          <div class="cn-dist-row"><span class="cn-dist-tag" style="color:var(--yellow)">Média 50-69</span><div class="cn-dist-bar"><div class="cn-dist-bar-fill" style="width:${pct(media)}%;background:var(--yellow)"></div></div><span class="cn-dist-val">${media.toLocaleString('pt-BR')} (${pct(media)}%)</span></div>
+          <div class="cn-dist-row"><span class="cn-dist-tag" style="color:var(--orange)">Baixa &lt;50</span><div class="cn-dist-bar"><div class="cn-dist-bar-fill" style="width:${pct(baixa)}%;background:var(--orange)"></div></div><span class="cn-dist-val">${baixa.toLocaleString('pt-BR')} (${pct(baixa)}%)</span></div>
+        </div>
+        <div class="cn-premium"><span class="cn-premium-star">★</span> ${premium.toLocaleString('pt-BR')} leads premium</div>
+        <button class="cn-close" onclick="toggleCanal(null,event)">Fechar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCanal(canal,e){
+  if(e)e.stopPropagation();
+  if(!canal||canalExpanded===canal)canalExpanded=null;
+  else canalExpanded=canal;
+  renderCanalCards();
+}
+
+function filterCanalCards(){renderCanalCards();}
 
 async function loadColetaChart(){
   try{
