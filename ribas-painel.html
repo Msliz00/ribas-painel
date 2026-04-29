@@ -297,6 +297,16 @@ select.fi option{background:var(--bg2)}
   .sc-grid{grid-template-columns:repeat(2,1fr)}
 }
 
+/* COLETA BUTTONS & BADGES */
+.coleta-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(106,95,85,.1);border:1px solid rgba(106,95,85,.2);color:var(--dim);font-size:.7rem;font-weight:800;font-family:var(--fm);padding:6px 14px;border-radius:20px;letter-spacing:.08em;transition:all .25s}
+.coleta-badge.active{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.28);color:var(--green)}
+.coleta-dot{width:8px;height:8px;border-radius:50%;background:var(--dim);display:inline-block;transition:background .25s}
+.coleta-badge.active .coleta-dot{background:var(--green);animation:pulseO 2s ease-in-out infinite}
+.csv-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#22C55E,#16a34a);border:none;color:#fff;font-size:.72rem;font-weight:800;font-family:var(--fm);padding:8px 18px;border-radius:12px;letter-spacing:.06em;cursor:pointer;box-shadow:0 4px 20px rgba(34,197,94,0.35);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.csv-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.28) 50%,transparent 60%);background-size:200% auto;animation:shine 2.5s linear infinite;pointer-events:none}
+.csv-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(34,197,94,0.5)}
+.csv-btn:disabled{opacity:.6;cursor:wait}
+
 /* CANAL CARDS */
 #canal-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .cn-card{background:rgba(14,9,2,0.97);border:1px solid rgba(255,107,0,0.12);border-left:4px solid rgba(106,95,85,0.4);border-radius:16px;padding:18px;transition:transform .2s,border-color .2s,box-shadow .2s;cursor:pointer;position:relative;will-change:transform}
@@ -454,30 +464,15 @@ select.fi option{background:var(--bg2)}
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
         <div style="font-size:.72rem;color:var(--dim);font-family:var(--fm);letter-spacing:.1em;text-transform:uppercase">Etapa 1 · Coleta de Leads · Dados Reais Supabase</div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <div id="coleta-badge" style="display:inline-flex;align-items:center;gap:6px;background:rgba(106,95,85,.1);border:1px solid rgba(106,95,85,.2);color:var(--dim);font-size:.68rem;font-weight:800;font-family:var(--fm);padding:5px 12px;border-radius:20px;letter-spacing:.08em">
-            <span id="coleta-dot" style="width:7px;height:7px;border-radius:50%;background:var(--dim);display:inline-block"></span>
+          <div id="coleta-badge" class="coleta-badge">
+            <span id="coleta-dot" class="coleta-dot"></span>
             <span id="coleta-status-txt">AGUARDANDO</span>
           </div>
-          <button onclick="exportCSV()" id="csv-btn" style="display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:var(--green);font-size:.68rem;font-weight:800;font-family:var(--fm);padding:5px 12px;border-radius:20px;letter-spacing:.08em;cursor:pointer;transition:all .2s">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            EXPORT CSV
+          <button onclick="exportCSV()" id="csv-btn" class="csv-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>EXPORT CSV</span>
           </button>
         </div>
-      </div>
-
-      <!-- FILTROS -->
-      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-        <select class="fi" id="f-canal" onchange="aplicarFiltros()" style="flex:1;min-width:140px">
-          <option value="">Todos os canais</option>
-        </select>
-        <select class="fi" id="f-score" onchange="aplicarFiltros()" style="min-width:140px">
-          <option value="">Todos os scores</option>
-          <option value="70">Alta qualidade (≥70)</option>
-          <option value="50">Média (50–69)</option>
-          <option value="0">Baixa (&lt;50)</option>
-        </select>
-        <input class="fi" type="date" id="f-data" onchange="aplicarFiltros()" style="min-width:140px">
-        <button onclick="limparFiltros()" style="background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--dim);font-family:var(--fm);font-size:.72rem;font-weight:700;padding:8px 14px;border-radius:9px;cursor:pointer">Limpar</button>
       </div>
 
       <!-- 4 CARDS TOPO -->
@@ -508,6 +503,29 @@ select.fi option{background:var(--bg2)}
         </div>
       </div>
 
+      <!-- STREAM DE COLETA -->
+      <div class="log-terminal" style="margin-bottom:16px">
+        <div class="log-bar">
+          <div class="log-dots"><span style="background:#ff4444"></span><span style="background:#f5a623"></span><span style="background:#22c55e"></span></div>
+          <span class="log-title">● STREAM DE COLETA · TEMPO REAL</span>
+          <div style="margin-left:auto;font-size:.65rem;color:var(--dim);font-family:var(--fm)" id="c-log-count">0 registros</div>
+        </div>
+        <div class="log-toolbar">
+          <select class="fi" id="f-canal" onchange="aplicarFiltros()" style="flex:1;min-width:160px">
+            <option value="">Todos os canais</option>
+          </select>
+          <select class="fi" id="f-score" onchange="aplicarFiltros()" style="min-width:140px">
+            <option value="">Todos os scores</option>
+            <option value="70">Alta (≥70)</option>
+            <option value="50">Média (50-69)</option>
+            <option value="0">Baixa (&lt;50)</option>
+          </select>
+          <input class="fi" type="date" id="f-data" onchange="aplicarFiltros()" style="min-width:140px">
+          <button onclick="limparFiltros()" style="background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--dim);font-family:var(--fm);font-size:.72rem;font-weight:700;padding:8px 14px;border-radius:9px;cursor:pointer">Limpar</button>
+        </div>
+        <div class="log-body"><div id="c-log-list" style="display:flex;flex-direction:column;gap:5px"><div style="padding:16px;color:var(--dim);font-family:var(--fm);font-size:.75rem;text-align:center">Aguardando dados...</div></div></div>
+      </div>
+
       <!-- CARDS POR CANAL -->
       <div class="ccard">
         <div class="ccard-h" style="justify-content:space-between">
@@ -528,27 +546,6 @@ select.fi option{background:var(--bg2)}
             <div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Carregando...</div>
           </div>
         </div>
-      </div>
-
-      <!-- GRÁFICO EVOLUÇÃO -->
-      <div class="chart-box">
-        <div class="chart-hdr">
-          <span class="chart-ttl">📈 Coletas por Minuto · Última Hora</span>
-        </div>
-        <div style="position:relative;height:260px">
-          <canvas id="cColeta"></canvas>
-        </div>
-        <div style="font-size:.62rem;color:var(--dim);font-family:var(--fm);margin-top:8px;text-align:right" id="c-chart-update">—</div>
-      </div>
-
-      <!-- LOG DE COLETA -->
-      <div class="log-terminal" style="margin-top:4px">
-        <div class="log-bar">
-          <div class="log-dots"><span style="background:#ff4444"></span><span style="background:#f5a623"></span><span style="background:#22c55e"></span></div>
-          <span class="log-title">● STREAM DE COLETA · TEMPO REAL</span>
-          <div style="margin-left:auto;font-size:.65rem;color:var(--dim);font-family:var(--fm)" id="c-log-count">0 registros</div>
-        </div>
-        <div class="log-body"><div id="c-log-list" style="display:flex;flex-direction:column;gap:5px"><div style="padding:16px;color:var(--dim);font-family:var(--fm);font-size:.75rem;text-align:center">Aguardando dados...</div></div></div>
       </div>
     </div>
 
@@ -676,7 +673,7 @@ async function loadAllLeads(){
 }
 
 function popularFiltroCanal(leads){
-  const canais=new Set(leads.map(l=>l.grupo_origem).filter(Boolean));
+  const canais=new Set(leads.map(l=>l.grupo_origem).filter(c=>typeof isCanalReal==='function'?isCanalReal(c):!!c));
   const sel=document.getElementById('f-canal');
   if(!sel)return;
   const current=sel.value;
@@ -788,7 +785,6 @@ async function exportCSV(){
 
 const SB_URL='https://oaenyqkiheipyaiculza.supabase.co';
 const SB_KEY='sb_publishable_gH1O53o9IQkekYX0oOGI3Q_uAGS_nKy';
-let coletaChart=null;
 let coletaIntervals=[];
 
 async function sbQuery(query){
@@ -902,15 +898,12 @@ async function loadColetaCards(){
       const c=recentes.headers.get('content-range');
       const n=c?parseInt(c.split('/')[1]):0;
       const badge=document.getElementById('coleta-badge');
-      const dot=document.getElementById('coleta-dot');
       const txt=document.getElementById('coleta-status-txt');
       if(n>0){
-        badge.style.cssText='display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--green);font-size:.68rem;font-weight:800;font-family:var(--fm);padding:5px 12px;border-radius:20px;letter-spacing:.08em';
-        dot.style.background='var(--green)';
+        badge.classList.add('active');
         txt.textContent='COLETA ATIVA';
       } else {
-        badge.style.cssText='display:inline-flex;align-items:center;gap:6px;background:rgba(106,95,85,.1);border:1px solid rgba(106,95,85,.2);color:var(--dim);font-size:.68rem;font-weight:800;font-family:var(--fm);padding:5px 12px;border-radius:20px;letter-spacing:.08em';
-        dot.style.background='var(--dim)';
+        badge.classList.remove('active');
         txt.textContent='AGUARDANDO';
       }
     }
@@ -926,6 +919,14 @@ function emojiForCanal(canal){
 }
 function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function isCanalReal(c){
+  if(!c)return false;
+  const s=String(c).trim();
+  if(!s)return false;
+  if(s.startsWith('-'))return false;
+  if(/^-?\d+$/.test(s))return false;
+  return true;
+}
 
 async function loadColetaTable(){
   try{
@@ -933,7 +934,8 @@ async function loadColetaTable(){
       headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}
     });
     if(!res.ok)throw new Error(res.status);
-    canalDataCache=await res.json()||[];
+    const raw=await res.json()||[];
+    canalDataCache=raw.filter(r=>isCanalReal(r.grupo_origem));
 
     const sel=document.getElementById('f-canal');
     if(sel){
@@ -995,7 +997,7 @@ function renderCanalCards(){
     const cAttr=escAttr(canal);
     const cHtml=escHtml(canal);
     return`<div class="cn-card${isExp?' expanded':''}" style="border-left-color:${sideColor}" onclick="toggleCanal('${cAttr}',event)">
-      <div class="cn-rank">${rank}º</div>
+      <div class="cn-rank">#${rank}</div>
       <div class="cn-emoji">${emojiForCanal(canal)}</div>
       <div class="cn-name">${cHtml}</div>
       <div class="cn-metrics">
@@ -1029,58 +1031,6 @@ function toggleCanal(canal,e){
 
 function filterCanalCards(){renderCanalCards();}
 
-async function loadColetaChart(){
-  try{
-    const since=new Date(Date.now()-3600000).toISOString();
-    const data=await sbGet('leads',`select=coletado_em&coletado_em=gte.${since}&order=coletado_em.asc&limit=2000`);
-    if(!data||!data.length){
-      document.getElementById('c-chart-update').textContent='sem dados na última hora';
-      return;
-    }
-
-    const byMin={};
-    data.forEach(l=>{
-      const d=new Date(l.coletado_em);
-      const key=`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-      byMin[key]=(byMin[key]||0)+1;
-    });
-
-    const labels=Object.keys(byMin).sort();
-    const values=labels.map(k=>byMin[k]);
-
-    const ctx=document.getElementById('cColeta');
-    if(!ctx)return;
-
-    if(coletaChart)coletaChart.destroy();
-    coletaChart=new Chart(ctx,{
-      type:'line',
-      data:{
-        labels,
-        datasets:[{
-          label:'Coletas',
-          data:values,
-          borderColor:'rgba(255,107,0,0.8)',
-          backgroundColor:'rgba(255,107,0,0.08)',
-          tension:0.4,
-          fill:true,
-          pointRadius:3,
-          pointBackgroundColor:'var(--orange)',
-          borderWidth:2
-        }]
-      },
-      options:{
-        responsive:true,maintainAspectRatio:false,animation:false,
-        plugins:{legend:{display:false}},
-        scales:{
-          x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#6b6058',font:{family:'JetBrains Mono',size:9},maxTicksLimit:8}},
-          y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#6b6058',font:{family:'JetBrains Mono',size:9}},beginAtZero:true}
-        }
-      }
-    });
-    document.getElementById('c-chart-update').textContent='atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  }catch(e){console.error('coleta chart',e);}
-}
-
 async function loadColetaLog(){
   try{
     const data=await loadAllLeads();
@@ -1091,11 +1041,10 @@ async function loadColetaLog(){
 }
 
 function startColeta(){
-  loadColetaCards();loadColetaTable();loadColetaChart();loadColetaLog();
+  loadColetaCards();loadColetaTable();loadColetaLog();
   const i1=setInterval(()=>{loadColetaCards();loadColetaLog();},5000);
   const i2=setInterval(loadColetaTable,5000);
-  const i3=setInterval(loadColetaChart,10000);
-  coletaIntervals=[i1,i2,i3];
+  coletaIntervals=[i1,i2];
 }
 
 function stopColeta(){coletaIntervals.forEach(clearInterval);coletaIntervals=[];}
