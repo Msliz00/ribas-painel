@@ -894,32 +894,40 @@ async function loadColetaCards(){
 
 async function loadColetaTable(){
   try{
-    const data=await sbGetAll('leads','select=grupo_origem,score_qualidade,is_premium,coletado_em');
+    const res=await fetch(`${SB_URL}/rest/v1/v_leads_stats?select=*&order=total_leads.desc`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}
+    });
+    if(!res.ok)throw new Error(res.status);
+    const data=await res.json();
     if(!data||!data.length){document.getElementById('c-table-body').innerHTML='<tr><td colspan="5" style="padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Nenhum dado ainda</td></tr>';return;}
 
-    const grouped={};
-    data.forEach(l=>{
-      const g=l.grupo_origem||'Desconhecido';
-      if(!grouped[g])grouped[g]={total:0,premium:0,scores:[],ultima:null};
-      grouped[g].total++;
-      if(l.is_premium)grouped[g].premium++;
-      if(l.score_qualidade)grouped[g].scores.push(l.score_qualidade);
-      if(!grouped[g].ultima||l.coletado_em>grouped[g].ultima)grouped[g].ultima=l.coletado_em;
-    });
-
-    const rows=Object.entries(grouped).sort((a,b)=>b[1].total-a[1].total);
-    document.getElementById('c-table-body').innerHTML=rows.map(([canal,d])=>{
-      const score=d.scores.length?Math.round(d.scores.reduce((a,b)=>a+b,0)/d.scores.length):0;
-      const ultima=d.ultima?new Date(d.ultima).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):'—';
+    document.getElementById('c-table-body').innerHTML=data.map(r=>{
+      const canal=r.grupo_origem||'Desconhecido';
+      const total=r.total_leads||0;
+      const premium=r.leads_premium||0;
+      const score=r.score_medio?Math.round(r.score_medio):0;
+      const ultima=r.ultima_coleta?new Date(r.ultima_coleta).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):'—';
       const scoreColor=score>=70?'var(--green)':score>=50?'var(--yellow)':'var(--red)';
       return`<tr style="border-bottom:1px solid var(--border)">
         <td style="padding:10px 16px;font-size:.8rem;font-weight:700;color:var(--text)">${canal}</td>
-        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:800;color:var(--orange);font-family:var(--fm)">${d.total}</td>
-        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:700;color:var(--purple);font-family:var(--fm)">${d.premium}</td>
+        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:800;color:var(--orange);font-family:var(--fm)">${total.toLocaleString('pt-BR')}</td>
+        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:700;color:var(--purple);font-family:var(--fm)">${premium.toLocaleString('pt-BR')}</td>
         <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:800;color:${scoreColor};font-family:var(--fm)">${score}</td>
         <td style="padding:10px 16px;text-align:right;font-size:.72rem;color:var(--dim);font-family:var(--fm)">${ultima}</td>
       </tr>`;
     }).join('');
+
+    const sel=document.getElementById('f-canal');
+    if(sel){
+      const current=sel.value;
+      sel.innerHTML='<option value="">Todos os canais</option>'+data.map(r=>{
+        const c=r.grupo_origem||'';
+        if(!c)return'';
+        const sels=c===current?' selected':'';
+        return`<option value="${c}"${sels}>${c}</option>`;
+      }).join('');
+    }
+
     document.getElementById('c-table-update').textContent='atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
   }catch(e){console.error('coleta table',e);}
 }
