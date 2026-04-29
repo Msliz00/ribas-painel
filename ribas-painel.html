@@ -1203,9 +1203,8 @@ function initDashboard(){
     const r=m[Math.floor(Math.random()*m.length)];addLog(r[0],r[1]);
   },30000);
   setTimeout(()=>{
-    pushNotif('Chaves Supabase precisam ser renovadas urgente','warn','Segurança');
-    setTimeout(()=>pushNotif('agent_signals ainda não foi criado','err','Sistema'),2200);
-  },1500);
+    pushNotif('OPS ROOM conectado · Supabase ativo','ok','Sistema');
+  },1200);
 }
 
 window.addEventListener('DOMContentLoaded',()=>{
