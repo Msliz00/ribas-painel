@@ -781,7 +781,7 @@ async function sbQuery(query){
 async function sbGet(table,params=''){
   try{
     const res=await fetch(`${SB_URL}/rest/v1/${table}?${params}`,{
-      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Range':'0-19999','Prefer':'count=exact'}
     });
     if(!res.ok)throw new Error(res.status);
     return await res.json();
@@ -801,18 +801,29 @@ async function loadColetaCards(){
     const hora=await fetch(`${SB_URL}/rest/v1/leads?select=count&coletado_em=gte.${new Date(Date.now()-3600000).toISOString()}`,{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'count=exact'}});
     if(hora.ok){const c=hora.headers.get('content-range');if(c)document.getElementById('c-hora').textContent=parseInt(c.split('/')[1]).toLocaleString('pt-BR');}
 
-    // Score médio
-    const score=await sbGet('leads','select=score_qualidade');
-    if(score&&score.length>0){
-      const avg=Math.round(score.reduce((a,b)=>a+(b.score_qualidade||0),0)/score.length);
-      document.getElementById('c-score').textContent=avg;
+    // Score médio via RPC view
+    const scoreRes=await fetch(`${SB_URL}/rest/v1/leads?select=score_qualidade`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Range':'0-19999'}
+    });
+    if(scoreRes.ok){
+      const scores=await scoreRes.json();
+      if(scores&&scores.length>0){
+        const valid=scores.filter(s=>s.score_qualidade>0);
+        const avg=valid.length?Math.round(valid.reduce((a,b)=>a+(b.score_qualidade||0),0)/valid.length):0;
+        document.getElementById('c-score').textContent=avg;
+      }
     }
 
     // Canais únicos
-    const canais=await sbGet('leads','select=grupo_origem');
-    if(canais){
-      const uniq=new Set(canais.map(l=>l.grupo_origem).filter(Boolean));
-      document.getElementById('c-canais').textContent=uniq.size;
+    const canaisRes=await fetch(`${SB_URL}/rest/v1/leads?select=grupo_origem`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Range':'0-19999'}
+    });
+    if(canaisRes.ok){
+      const canais=await canaisRes.json();
+      if(canais){
+        const uniq=new Set(canais.map(l=>l.grupo_origem).filter(Boolean));
+        document.getElementById('c-canais').textContent=uniq.size;
+      }
     }
 
     // Status coleta ativa (60s)
