@@ -312,17 +312,19 @@ select.fi option{background:var(--bg2)}
 
 /* CANAL CARDS */
 #canal-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.cn-card{background:rgba(14,9,2,0.97);border:1px solid rgba(255,107,0,0.12);border-left:4px solid rgba(106,95,85,0.4);border-radius:16px;padding:18px;transition:transform .2s,border-color .2s,box-shadow .2s;cursor:pointer;position:relative;will-change:transform}
-.cn-card:hover{transform:perspective(600px) translateZ(28px) scale(1.04);border-color:rgba(255,107,0,0.45);box-shadow:0 24px 60px rgba(255,107,0,0.14)}
-.cn-card.expanded{border-color:rgba(255,107,0,0.5);box-shadow:0 24px 60px rgba(255,107,0,0.14);grid-column:span 2}
-.cn-rank{position:absolute;top:12px;right:14px;font-size:.6rem;font-weight:800;font-family:var(--fm);background:rgba(255,107,0,0.12);color:var(--orange);padding:3px 9px;border-radius:20px;letter-spacing:.06em;border:1px solid rgba(255,107,0,0.2)}
-.cn-emoji{font-size:32px;line-height:1;margin-bottom:8px}
-.cn-name{font-size:.95rem;font-weight:900;margin-bottom:12px;color:var(--text);padding-right:42px;line-height:1.2}
-.cn-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-family:var(--fm)}
+.cn-card{background:rgba(14,9,2,0.97);border:1px solid rgba(255,107,0,0.08);border-bottom:3px solid rgba(106,95,85,0.4);border-radius:18px;padding:24px;transition:all .2s;cursor:pointer;position:relative;will-change:transform}
+.cn-card:hover{transform:perspective(600px) translateZ(28px) scale(1.04);border-color:rgba(255,107,0,0.45);box-shadow:0 24px 60px rgba(255,107,0,0.12)}
+.cn-card.expanded{border-color:rgba(255,107,0,0.5);box-shadow:0 24px 60px rgba(255,107,0,0.12);grid-column:span 2}
+.cn-rank{position:absolute;top:14px;right:16px;font-size:.6rem;font-weight:800;font-family:var(--fm);background:rgba(255,107,0,0.12);color:var(--orange);padding:3px 9px;border-radius:20px;letter-spacing:.06em;border:1px solid rgba(255,107,0,0.2)}
+.cn-icon-box{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;background:rgba(255,107,0,0.12)}
+.cn-name{font-size:16px;font-weight:800;margin-bottom:16px;color:var(--text);padding-right:54px;line-height:1.25}
+.cn-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;align-items:end}
 .cn-metric{display:flex;flex-direction:column;min-width:0}
-.cn-metric-l{font-size:.55rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;font-weight:700}
-.cn-metric-v{font-size:.85rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cn-expand{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,107,0,0.12);display:none;animation:fadeUp .25s ease both}
+.cn-metric-l{font-size:.65rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;font-weight:700;font-family:var(--fm)}
+.cn-metric-v{font-size:1.1rem;font-weight:800;font-family:var(--fm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1}
+.cn-total-v{font-size:2rem;font-weight:900;color:var(--orange);font-family:'Outfit',sans-serif;line-height:1}
+.cn-foot{font-size:.65rem;color:var(--dim);font-family:var(--fm);padding-top:12px;border-top:1px solid rgba(255,255,255,0.05)}
+.cn-expand{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,107,0,0.12);display:none;animation:fadeUp .25s ease both}
 .cn-card.expanded .cn-expand{display:block}
 .cn-section-l{font-size:.6rem;color:var(--dim);font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-weight:700}
 .cn-bar{height:9px;background:rgba(255,255,255,0.05);border-radius:6px;overflow:hidden;margin-bottom:14px}
@@ -1012,16 +1014,16 @@ function renderCanalCards(){
     const rank=canalDataCache.indexOf(r)+1;
     const cAttr=escAttr(canal);
     const cHtml=escHtml(canal);
-    return`<div class="cn-card${isExp?' expanded':''}" style="border-left-color:${sideColor}" onclick="toggleCanal('${cAttr}',event)">
+    return`<div class="cn-card${isExp?' expanded':''}" style="border-bottom-color:${sideColor}" onclick="toggleCanal('${cAttr}',event)">
       <div class="cn-rank">#${rank}</div>
-      <div class="cn-emoji">${emojiForCanal(canal)}</div>
+      <div class="cn-icon-box">${emojiForCanal(canal)}</div>
       <div class="cn-name">${cHtml}</div>
       <div class="cn-metrics">
-        <div class="cn-metric"><span class="cn-metric-l">Total</span><span class="cn-metric-v" style="color:var(--orange)">${total.toLocaleString('pt-BR')}</span></div>
+        <div class="cn-metric"><span class="cn-metric-l">Total</span><span class="cn-metric-v cn-total-v">${total.toLocaleString('pt-BR')}</span></div>
         <div class="cn-metric"><span class="cn-metric-l">Premium</span><span class="cn-metric-v" style="color:var(--purple)">${premium.toLocaleString('pt-BR')}</span></div>
         <div class="cn-metric"><span class="cn-metric-l">Score</span><span class="cn-metric-v" style="color:${scoreColor}">${score}</span></div>
-        <div class="cn-metric"><span class="cn-metric-l">Última</span><span class="cn-metric-v" style="color:var(--text);font-size:.72rem">${ultima}</span></div>
       </div>
+      <div class="cn-foot">Última coleta · ${ultima}</div>
       <div class="cn-expand" onclick="event.stopPropagation()">
         <div class="cn-section-l">Score Médio · ${score}/100</div>
         <div class="cn-bar"><div class="cn-bar-fill" style="width:${score}%;background:${sideColor}"></div></div>
