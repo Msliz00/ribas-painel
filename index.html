@@ -368,7 +368,418 @@ select.fi option{background:var(--s2)}
 .cl-empty-em{font-size:32px;margin-bottom:8px;opacity:.5}
 .cl-error{padding:24px;border:1px solid rgba(255,68,68,.3);background:rgba(255,68,68,.05);border-radius:12px;color:var(--red);font-family:var(--fm);font-size:11px;line-height:1.6}
 .cl-error b{display:block;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;font-size:10px}
+
+/* === D4 CSS (mesclado, sem regras globais body/html/*) === */
+
+
+:root{
+  --orange:#FF6B00;--bg:#080503;--s1:#110C07;--s2:#1A1208;
+  --text:#F0EDE8;--mid:#C8C0B4;--dim:#7A6F65;
+  --green:#00C96E;--yellow:#F5A623;--red:#FF4444;--blue:#3B9EFF;
+  --border:rgba(255,255,255,0.07);
+  --f:'Bebas Neue',sans-serif;--f2:'Oswald',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+
+
+body, .nav-label, .sb-name, .sb-sub, .sb-badge, .feed-title, .feed-live, .topbar-center,
+.kpi-l, .kpi-d, .kpi-v, .bm-l, .bm-v, .batch-canal-name, .batch-id, .batch-when, .batch-when-d,
+.batch-pct, .audit-tipo, .audit-msg, .audit-autor, .audit-target, .audit-time, .audit-msg b,
+.diff-h, .diff-pre, .pill, .tb-label, .state-ttl, .state-sub, .state-btn, .tw-l, .tw-r, .tw-t,
+.tw-fab, .nav-sec, .nav-badge, select.fi, input.fi, .l-label, .clock-d, .clock-t,
+.su-nm, .su-rl, .nav-em{ text-transform:uppercase; letter-spacing:.04em }
+.fm-stack, .audit-target, .batch-id, .bm-v, .audit-time, .clock-t, .nav-badge, .pill, .diff-pre, .audit-tipo, .kpi-d{font-family:var(--fm)}
+h1,h2,h3,.title-d{font-family:var(--f);letter-spacing:.06em}
+
+/* casino background */
+@keyframes bgFall{
+  0%{transform:translate3d(0,-80px,0) rotate(0);opacity:0}
+  6%{opacity:var(--bgo,.06)}
+  94%{opacity:var(--bgo,.06)}
+  100%{transform:translate3d(var(--dx,0),110vh,0) rotate(var(--rot,360deg));opacity:0}
+}
+@keyframes bgPulse{0%,100%{transform:scale(1);opacity:.04}50%{transform:scale(1.08);opacity:.09}}
+@keyframes neonScan{0%{transform:translateX(-110%)}100%{transform:translateX(110%)}}
+@keyframes ringRot{to{transform:rotate(360deg)}}
+@keyframes flicker{0%,18%,22%,25%,53%,57%,100%{opacity:1;text-shadow:0 0 6px currentColor,0 0 14px currentColor}20%,24%,55%{opacity:.7;text-shadow:none}}
+@keyframes drift{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+@keyframes glowOrange{0%,100%{box-shadow:0 0 0 1px rgba(255,107,0,.18),0 0 22px rgba(255,107,0,.06)}50%{box-shadow:0 0 0 1px rgba(255,107,0,.35),0 0 38px rgba(255,107,0,.18)}}
+@keyframes spark{0%{transform:scale(.4);opacity:0}40%{opacity:1}100%{transform:scale(2.2);opacity:0}}
+@keyframes coinSpin{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
+@keyframes sweep{0%{left:-60%}100%{left:160%}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulseO{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,.4)}50%{box-shadow:0 0 0 8px rgba(255,107,0,0)}}
+@keyframes pulseB{0%,100%{box-shadow:0 0 0 0 rgba(59,158,255,.55)}50%{box-shadow:0 0 0 7px rgba(59,158,255,0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes gameEntry{0%{opacity:0;transform:perspective(900px) rotateY(-40deg) translateX(-40px) scale(.88)}60%{opacity:1;transform:perspective(900px) rotateY(4deg) translateX(4px) scale(1.01)}100%{opacity:1;transform:perspective(900px) rotateY(0) translateX(0) scale(1)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes progBar{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+/* CASINO BG */
+.bg-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-vignette{position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at top,transparent 0%,rgba(8,5,3,.15) 60%,rgba(8,5,3,.55) 100%),radial-gradient(circle at 20% 80%,rgba(255,107,0,.04),transparent 50%)}
+.bgo{position:absolute;animation:bgFall linear infinite;user-select:none;will-change:transform;filter:drop-shadow(0 0 16px rgba(255,107,0,.6)) drop-shadow(0 0 32px rgba(255,107,0,.3));mix-blend-mode:screen;display:flex;align-items:center;justify-content:center}
+.bgo svg{width:100%;height:100%;display:block}
+.bg-glow{position:absolute;width:220px;height:220px;border-radius:50%;filter:blur(80px);animation:bgPulse 8s ease-in-out infinite;mix-blend-mode:screen}
+.layout, .topbar, .tweaks, .tw-fab, .notif-cont{position:relative;z-index:5}
+
+/* === Layout (idêntico ao painel) === */
+.layout{display:flex;height:100vh}
+.sidebar{width:258px;flex-shrink:0;background:rgba(5,3,1,.97);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh}
+.sb-brand{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
+.sb-logo{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+.sb-icon{width:38px;height:38px;background:linear-gradient(135deg,#ff8520,#d94e00);border-radius:10px;display:flex;align-items:center;justify-content:center;animation:pulseO 3s ease-in-out infinite;flex-shrink:0}
+.sb-icon svg{width:18px;height:18px;stroke:white;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+/* === DISPARA FUTURE — title with FX === */
+.sb-name{font-size:26px;font-weight:400;font-family:var(--f);letter-spacing:.14em;line-height:.95;position:relative;display:inline-block}
+.sb-name b{font-weight:400;background:linear-gradient(180deg,#fff 0%,#ffb066 35%,#ff6b00 70%,#7a2c00 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 12px rgba(255,107,0,.5))}
+.sb-name i{font-style:normal;font-weight:400;background:linear-gradient(180deg,#fff 0%,#ffe0b8 25%,#ff9544 60%,#ff6b00 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.34em;display:block;font-size:.42em;margin-top:1px;filter:drop-shadow(0 0 8px rgba(255,107,0,.5));position:relative;font-weight:600}
+.sb-name i::before{content:'';position:absolute;left:-2px;right:-2px;top:50%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,0,.4),transparent);transform:translateY(-50%);z-index:-1}
+.sb-name::before{content:'DISPARA';position:absolute;left:0;top:0;font-family:var(--f);letter-spacing:.14em;color:rgba(92,224,255,.0);animation:glitchA 4.5s infinite}
+.sb-name::after{content:'DISPARA';position:absolute;left:0;top:0;font-family:var(--f);letter-spacing:.14em;color:rgba(255,92,246,.0);animation:glitchB 4.5s infinite}
+@keyframes glitchA{0%,92%,100%{transform:translate(0,0);color:rgba(92,224,255,0)}93%{transform:translate(-2px,1px);color:rgba(92,224,255,.55)}96%{transform:translate(1px,-1px);color:rgba(92,224,255,.4)}}
+@keyframes glitchB{0%,92%,100%{transform:translate(0,0);color:rgba(255,92,246,0)}94%{transform:translate(2px,-1px);color:rgba(255,92,246,.55)}97%{transform:translate(-1px,1px);color:rgba(255,92,246,.4)}}
+.sb-name-wrap{display:flex;flex-direction:column}
+.sb-badge{display:inline-flex;align-items:center;margin-top:8px;background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.22);color:var(--orange);font-size:9px;font-weight:700;font-family:var(--fm);letter-spacing:.1em;padding:3px 9px;border-radius:5px;text-transform:uppercase}
+.sb-nav{flex:1;padding:8px;overflow-y:auto}.sb-nav::-webkit-scrollbar{width:0}
+.nav-sec{font-size:9px;font-weight:700;letter-spacing:.22em;color:var(--orange);font-family:var(--fm);text-transform:uppercase;padding:14px 12px 6px;text-shadow:0 0 14px rgba(255,107,0,.4)}
+.nav-item{display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:11px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.4,.64,1);margin-bottom:3px;border:1px solid transparent;position:relative}
+.nav-item:hover{background:rgba(255,255,255,.04);transform:translateX(4px)}
+.nav-item.active{background:linear-gradient(130deg,rgba(255,107,0,.18),rgba(255,107,0,.05));border-color:rgba(255,107,0,.3);transform:translateX(5px)}
+.nav-item.active .nav-label{color:var(--orange);font-weight:700;text-shadow:0 0 10px rgba(255,107,0,.35)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;background:var(--orange);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(255,107,0,.6)}
+.nav-em{font-size:0;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--mid);transition:color .22s,transform .22s,filter .22s}
+.nav-em svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-item:hover .nav-em{color:var(--orange);transform:scale(1.08);filter:drop-shadow(0 0 8px rgba(255,107,0,.5))}
+.nav-item.active .nav-em{color:var(--orange);filter:drop-shadow(0 0 8px rgba(255,107,0,.55))}
+.nav-txt{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}
+.nav-label{font-size:13px;font-weight:500;color:var(--mid);letter-spacing:.08em;font-family:var(--f2);text-transform:uppercase}
+.nav-sub{font-size:8px;font-weight:500;color:var(--dim);font-family:var(--fm);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.nav-sub::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.7;flex-shrink:0}
+.nav-sub.s-live{color:var(--green)}
+.nav-sub.s-live::before{background:var(--green);box-shadow:0 0 6px rgba(0,201,110,.7);animation:pulseO 1.5s infinite}
+.nav-sub.s-warn{color:var(--yellow)}
+.nav-sub.s-err{color:var(--red)}
+.nav-sub.s-blue{color:var(--blue)}
+.nav-badge{font-size:8px;font-weight:700;padding:2px 6px;border-radius:6px;font-family:var(--fm)}
+.nb-ok{background:rgba(0,201,110,.14);color:var(--green);border:1px solid rgba(0,201,110,.22)}
+.nb-warn{background:rgba(245,166,35,.14);color:var(--yellow);border:1px solid rgba(245,166,35,.22)}
+.nb-err{background:rgba(255,68,68,.14);color:var(--red);border:1px solid rgba(255,68,68,.22)}
+.nb-blue{background:rgba(59,158,255,.14);color:var(--blue);border:1px solid rgba(59,158,255,.22)}
+.sb-user{padding:14px;border-top:1px solid var(--border)}
+.su-inner{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:11px;background:var(--s1);border:1px solid var(--border);position:relative;overflow:hidden}
+.su-exit{margin-left:auto;width:34px;height:34px;border-radius:9px;border:1px solid rgba(255,68,68,.28);background:rgba(255,68,68,.06);color:var(--red);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s cubic-bezier(.34,1.4,.64,1);position:relative;flex-shrink:0}
+.su-exit svg{width:15px;height:15px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+.su-exit::before{content:'';position:absolute;inset:-1px;border-radius:9px;background:linear-gradient(135deg,rgba(255,68,68,.4),rgba(255,68,68,0));opacity:0;transition:opacity .2s;z-index:-1}
+.su-exit:hover{background:rgba(255,68,68,.16);border-color:var(--red);box-shadow:0 0 18px rgba(255,68,68,.35),inset 0 0 12px rgba(255,68,68,.15);transform:scale(1.05)}
+.su-exit:hover svg{transform:translateX(2px)}
+.su-exit:hover::before{opacity:1}
+.su-exit-tip{position:absolute;bottom:calc(100% + 8px);right:0;background:var(--bg);border:1px solid var(--red);color:var(--red);padding:5px 9px;border-radius:6px;font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.12em;white-space:nowrap;opacity:0;pointer-events:none;transition:all .2s;text-shadow:0 0 6px rgba(255,68,68,.5);box-shadow:0 0 14px rgba(255,68,68,.3)}
+.su-exit:hover .su-exit-tip{opacity:1;transform:translateY(-2px)}
+.su-av{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,rgba(255,107,0,.25),rgba(255,107,0,.07));border:1.5px solid rgba(255,107,0,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--orange);flex-shrink:0}
+.su-nm{font-size:12px;font-weight:700;color:var(--text)}
+.su-rl{font-size:9px;color:var(--dim);font-family:var(--fm);margin-top:1px}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:11px 24px;border-bottom:1px solid var(--border);background:rgba(6,4,2,.96);position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
+.topbar-center{position:absolute;left:50%;transform:translateX(-50%);font-size:18px;font-weight:400;color:var(--orange);font-family:var(--f);letter-spacing:.18em;text-shadow:0 0 14px rgba(255,107,0,.5),0 0 28px rgba(255,107,0,.2);text-transform:uppercase;animation:flicker 12s infinite}
+.tb-r{display:flex;align-items:center;gap:12px;margin-left:auto}
+/* === Clock — HUD console === */
+.clock{display:flex;align-items:center;gap:0;background:radial-gradient(ellipse at center,rgba(255,107,0,.08) 0%,#000 70%),#000;border:1px solid rgba(255,107,0,.32);border-radius:10px;padding:0 2px 0 0;overflow:hidden;box-shadow:inset 0 0 18px rgba(255,107,0,.15),0 0 22px rgba(255,107,0,.22),inset 0 0 0 1px rgba(0,0,0,.6);position:relative;height:38px}
+.clock::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,transparent 0,transparent 1px,rgba(255,107,0,.04) 1px,rgba(255,107,0,.04) 2px);pointer-events:none;mix-blend-mode:overlay}
+.clock::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,0,.35),transparent);z-index:2;pointer-events:none}
+.clock-pulse{width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 8px var(--orange),0 0 16px var(--orange);margin:0 8px 0 10px;animation:clockPulse 1s ease-in-out infinite;flex-shrink:0}
+@keyframes clockPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.clock-seg{font-family:var(--fm);font-size:19px;font-weight:700;color:var(--orange);letter-spacing:.04em;padding:0 7px;text-shadow:0 0 8px rgba(255,107,0,.8),0 0 16px rgba(255,107,0,.4),0 1px 0 rgba(0,0,0,.6);position:relative;display:flex;align-items:center;justify-content:center;min-width:26px;font-variant-numeric:tabular-nums;line-height:1}
+.clock-colon{font-family:var(--fm);font-size:18px;font-weight:700;color:var(--orange);text-shadow:0 0 8px var(--orange);animation:colonBlink 1s ease-in-out infinite;align-self:center}
+@keyframes colonBlink{0%,100%{opacity:1}50%{opacity:.25}}
+.clock-seg.sec{color:#ff8520;font-size:12px;min-width:22px;letter-spacing:.05em;opacity:.85}
+.clock-d-tag{font-family:var(--fm);font-size:8px;font-weight:700;color:var(--dim);letter-spacing:.2em;padding:0 11px 0 9px;display:flex;flex-direction:column;align-items:flex-start;gap:1px;border-left:1px solid rgba(255,107,0,.2);height:100%;justify-content:center;margin-left:6px;background:rgba(255,107,0,.04)}
+.clock-d-tag i{font-style:normal;color:var(--orange);font-size:9px;letter-spacing:.18em}
+.clock-d-tag span{color:var(--mid);font-size:7.5px;letter-spacing:.22em}
+.sb-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(0,201,110,.6)}
+.main-content{flex:1;overflow-y:auto;height:100vh;background:transparent}
+.page{background:transparent}
+.main-content::-webkit-scrollbar{width:3px}
+.main-content::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+.page{display:none;padding:22px}
+.page.active{display:block;animation:gameEntry .5s cubic-bezier(.34,1.2,.64,1) forwards}
+
+/* === Page header — destacado === */
+.page-hd{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:24px 28px 22px;margin-bottom:18px;background:linear-gradient(135deg,rgba(255,107,0,.10) 0%,rgba(255,107,0,.04) 40%,rgba(8,5,3,.6) 100%);border:1px solid rgba(255,107,0,.22);border-radius:20px;overflow:hidden;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.page-hd::before{content:attr(data-page);position:absolute;right:-20px;bottom:-30px;font-family:var(--f);font-size:160px;font-weight:400;color:rgba(255,107,0,.05);letter-spacing:.04em;line-height:.85;pointer-events:none;white-space:nowrap;text-shadow:0 0 60px rgba(255,107,0,.15)}
+.page-hd::after{content:'';position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange) 30%,#ff9544 50%,var(--orange) 70%,transparent);box-shadow:0 0 16px rgba(255,107,0,.5);animation:hdScan 3.5s ease-in-out infinite}
+@keyframes hdScan{0%,100%{opacity:.4;transform:scaleX(.7)}50%{opacity:1;transform:scaleX(1)}}
+.page-hd-l{position:relative;z-index:2;flex:1;min-width:0}
+.page-hd-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--fm);font-size:10px;font-weight:700;color:var(--orange);letter-spacing:.24em;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(255,107,0,.32);border-radius:50px;background:rgba(255,107,0,.06);margin-bottom:14px}
+.page-hd-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 8px var(--orange);animation:clockPulse 1.6s ease-in-out infinite}
+.page-hd-ttl{font-family:var(--f);font-size:64px;font-weight:400;color:var(--text);letter-spacing:.04em;line-height:.95;margin:0 0 8px;text-transform:uppercase;background:linear-gradient(180deg,#fff 0%,#ffe0b8 35%,#ff9544 65%,#ff6b00 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 4px 24px rgba(255,107,0,.35))}
+.page-hd-sub{font-family:var(--f2);font-size:13px;color:var(--mid);font-weight:500;letter-spacing:.04em;max-width:560px;line-height:1.4}
+.page-hd-r{position:relative;z-index:2;display:flex;gap:10px;flex-shrink:0}
+.page-hd-meta{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:10px 14px;background:rgba(0,0,0,.4);border:1px solid rgba(255,107,0,.18);border-radius:10px;min-width:78px}
+.phm-l{font-family:var(--fm);font-size:8px;font-weight:700;color:var(--dim);letter-spacing:.2em;text-transform:uppercase}
+.phm-v{font-family:var(--f);font-size:22px;font-weight:400;color:var(--orange);letter-spacing:.04em;line-height:1;text-shadow:0 0 10px rgba(255,107,0,.5)}
+.phm-v i{font-style:normal;font-family:var(--fm);font-size:11px;color:var(--mid);font-weight:600;letter-spacing:.06em;margin-left:3px}
+
+/* === Ambient panel motion === */
+.feed-wrap{position:relative}
+.feed-wrap::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,0,.4) 50%,transparent);animation:feedScan 5s ease-in-out infinite;pointer-events:none;z-index:3}
+@keyframes feedScan{0%{transform:translateX(-100%);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateX(100%);opacity:0}}
+.batch{position:relative}
+.batch::after{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,var(--orange),transparent);opacity:.0;animation:batchPulse 4s ease-in-out infinite;pointer-events:none}
+.batch:nth-child(2n)::after{animation-delay:.6s}
+.batch:nth-child(3n)::after{animation-delay:1.2s}
+@keyframes batchPulse{0%,100%{opacity:0}50%{opacity:.6;box-shadow:0 0 12px var(--orange)}}
+
+/* === Pills/badges (do design system) === */
+.pill{font-size:9px;font-weight:700;padding:4px 8px;border-radius:5px;font-family:var(--fm);letter-spacing:.08em;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;text-transform:uppercase;line-height:1}
+.pill .pill-ico{font-size:9px;display:inline-flex;align-items:center;justify-content:center;width:10px;height:10px;font-style:normal}
+.pill .pill-lbl{font-size:9px;letter-spacing:.1em}
+.p-ok{background:rgba(0,201,110,.1);color:var(--green);border:1px solid rgba(0,201,110,.3);text-shadow:0 0 8px rgba(0,201,110,.5);box-shadow:inset 0 0 10px rgba(0,201,110,.08)}
+.p-err{background:rgba(255,68,68,.1);color:var(--red);border:1px solid rgba(255,68,68,.3);text-shadow:0 0 8px rgba(255,68,68,.5);box-shadow:inset 0 0 10px rgba(255,68,68,.08);animation:flicker 4s infinite}
+.p-warn{background:rgba(245,166,35,.1);color:var(--yellow);border:1px solid rgba(245,166,35,.3);text-shadow:0 0 8px rgba(245,166,35,.5);box-shadow:inset 0 0 10px rgba(245,166,35,.08)}
+.p-blue{background:rgba(59,158,255,.1);color:var(--blue);border:1px solid rgba(59,158,255,.3);text-shadow:0 0 8px rgba(59,158,255,.5);box-shadow:inset 0 0 10px rgba(59,158,255,.08)}
+.p-off{background:rgba(106,95,85,.1);color:var(--dim);border:1px solid rgba(106,95,85,.18)}
+.p-blue.live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulseB 1.6s infinite}
+
+/* === Social brand logos === */
+.social-ico{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;flex-shrink:0;position:relative;overflow:hidden}
+.social-ico svg{width:18px;height:18px;display:block}
+.social-ico.tg{background:linear-gradient(135deg,#37aee2,#1e96c8)}
+.social-ico.tg svg{fill:#fff}
+.social-ico.wa{background:linear-gradient(135deg,#25d366,#128c7e)}
+.social-ico.wa svg{fill:#fff}
+.social-ico.ig{background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)}
+.social-ico.ig svg{fill:#fff}
+.social-ico.dc{background:linear-gradient(135deg,#5865f2,#404eed)}
+.social-ico.dc svg{fill:#fff}
+.social-ico.mn{background:linear-gradient(135deg,#7a6f65,#3a342e);border:1px solid rgba(255,255,255,.08)}
+.social-ico.mn svg{fill:#fff}
+.batch-ico{font-size:0;line-height:0}
+
+select.fi,input.fi{background:linear-gradient(180deg,rgba(20,15,10,.85),rgba(10,7,4,.95));border:1px solid rgba(255,107,0,.2);border-radius:9px;color:var(--text);font-family:var(--fm);font-size:11px;padding:10px 32px 10px 14px;outline:none;transition:all .2s;font-weight:700;letter-spacing:.08em;text-transform:uppercase;-webkit-appearance:none;-moz-appearance:none;appearance:none;cursor:pointer;background-repeat:no-repeat;background-position:right 11px center;background-size:10px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6b00' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>")}
+select.fi:focus,input.fi:focus{border-color:rgba(255,107,0,.55);box-shadow:0 0 0 3px rgba(255,107,0,.08),inset 0 0 14px rgba(255,107,0,.07)}
+select.fi:hover,input.fi:hover{border-color:rgba(255,107,0,.36)}
+select.fi option{background:#0d0905;text-transform:uppercase}
+input.fi{padding-left:38px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6b00' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.5' y2='16.5'/></svg>");background-position:left 13px center;background-size:13px;flex:1;min-width:240px}
+.toolbar{display:flex;align-items:center;gap:10px;padding:14px 18px;background:linear-gradient(180deg,rgba(255,107,0,.05) 0%,rgba(255,107,0,.02) 100%);border-bottom:1px solid rgba(255,107,0,.12);flex-wrap:wrap}
+.tb-label{display:none}
+.tb-spacer{flex:1}
+
+/* === Wrapper genérico (estilo feed) === */
+.feed-wrap{background:rgba(3,2,1,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,107,0,.18);border-radius:18px;overflow:hidden;margin-bottom:18px}
+.feed-bar{display:flex;align-items:center;gap:10px;padding:14px 18px;background:rgba(255,107,0,.04);border-bottom:1px solid rgba(255,107,0,.1)}
+.feed-title{font-size:11px;font-weight:700;color:var(--orange);font-family:var(--fm);letter-spacing:.14em;margin-left:6px;text-shadow:0 0 12px rgba(255,107,0,.5);animation:flicker 8s infinite}
+.feed-live{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--green);font-family:var(--fm);margin-left:auto}
+.feed-live span{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulseO 2s infinite}
+.feed-body{padding:14px 18px;max-height:560px;overflow-y:auto}
+.feed-body::-webkit-scrollbar{width:3px}
+.feed-body::-webkit-scrollbar-thumb{background:rgba(255,107,0,.2);border-radius:2px}
+
+/* === KPI strip — enhanced === */
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:0;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(255,107,0,.03) 0%,transparent 100%)}
+.kpi{display:grid;grid-template-rows:auto auto auto;gap:6px;position:relative;padding:18px 22px;border-right:1px solid rgba(255,107,0,.08);overflow:hidden;transition:background .25s}
+.kpi:last-child{border-right:none}
+.kpi:hover{background:rgba(255,107,0,.04)}
+.kpi::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,107,0,.06) 50%,transparent 70%);background-size:300% 100%;animation:shimmer 6s linear infinite;pointer-events:none}
+.kpi::before{content:'';position:absolute;left:22px;top:0;width:36px;height:2px;background:currentColor;opacity:.55;color:var(--orange);box-shadow:0 0 12px currentColor}
+.kpi[data-tone="green"]::before{color:var(--green)}
+.kpi[data-tone="yellow"]::before{color:var(--yellow)}
+.kpi[data-tone="blue"]::before{color:var(--blue)}
+.kpi-l{font-size:9px;font-weight:700;color:var(--dim);font-family:var(--fm);letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.kpi-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.kpi-v{font-size:38px;font-weight:400;font-family:var(--f);letter-spacing:.02em;line-height:1;text-shadow:0 0 20px currentColor}
+.kpi-unit{font-family:var(--fm);font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+.kpi-d{font-size:9px;font-family:var(--fm);color:var(--mid);font-weight:600;display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border-radius:4px;background:rgba(255,255,255,.04);width:fit-content;letter-spacing:.06em}
+.kpi-d.up{background:rgba(0,201,110,.1);color:var(--green);border:1px solid rgba(0,201,110,.22)}
+.kpi-d.down{background:rgba(255,68,68,.1);color:var(--red);border:1px solid rgba(255,68,68,.22)}
+.kpi-d.neutral{background:rgba(106,95,85,.1);color:var(--mid);border:1px solid rgba(106,95,85,.18)}
+.kpi-arrow{font-family:var(--fm);font-weight:700;font-size:10px}
+
+/* === Batch card (Coletas) === */
+.batch-list{display:flex;flex-direction:column;gap:10px}
+.batch{background:linear-gradient(160deg,rgba(22,14,8,.98),rgba(8,5,2,.99));border:1px solid var(--border);border-radius:14px;padding:14px 16px;transition:all .22s cubic-bezier(.34,1.4,.64,1);animation:fadeUp .3s ease both;position:relative;overflow:hidden}
+.batch::before{content:'';position:absolute;top:0;width:60%;height:100%;left:-60%;background:linear-gradient(90deg,transparent,rgba(255,107,0,.08),transparent);transition:none;pointer-events:none}
+.batch:hover{transform:translateY(-2px) scale(1.005);border-color:rgba(255,107,0,.4);box-shadow:0 14px 36px rgba(0,0,0,.5),0 0 26px rgba(255,107,0,.12)}
+.batch:hover::before{animation:sweep 1.1s ease-out forwards}
+.batch.b-run{animation:fadeUp .3s ease both, glowOrange 2.4s ease-in-out infinite}
+.batch.b-ok{border-left:3px solid var(--green)}
+.batch.b-warn{border-left:3px solid var(--yellow)}
+.batch.b-err{border-left:3px solid var(--red)}
+.batch.b-run{border-left:3px solid var(--blue);background:linear-gradient(160deg,rgba(8,18,32,.97),rgba(8,5,2,.99))}
+.batch.b-run::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);animation:progBar 1.6s linear infinite}
+
+.batch-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.batch-canal{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.batch-ico{display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.batch-canal-name{font-size:13px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.04em}
+.batch-id{font-size:9px;font-family:var(--fm);color:var(--dim);margin-top:1px}
+.batch-when{font-size:10px;font-family:var(--fm);color:var(--mid);font-weight:600;text-align:right}
+.batch-when-d{font-size:8px;color:var(--dim);margin-top:1px}
+
+.batch-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px 12px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:10px;margin-bottom:10px}
+.bm{display:flex;flex-direction:column;gap:1px}
+.bm-l{font-size:8px;font-weight:700;color:var(--dim);font-family:var(--fm);letter-spacing:.12em;text-transform:uppercase}
+.bm-v{font-size:14px;font-weight:700;font-family:var(--fm);color:var(--text);letter-spacing:-.01em;line-height:1.15}
+.bm-v.success{color:var(--green)}
+.bm-v.warn{color:var(--yellow)}
+.bm-v.err{color:var(--red)}
+.bm-v.info{color:var(--blue)}
+
+.batch-foot{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.batch-bar{flex:1;height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;min-width:120px}
+.batch-bar-fill{height:100%;border-radius:3px;transition:width .4s ease}
+.bbf-ok{background:linear-gradient(90deg,var(--green),#00e57e)}
+.bbf-warn{background:linear-gradient(90deg,var(--yellow),#ffb947)}
+.bbf-err{background:linear-gradient(90deg,var(--red),#ff6b6b)}
+.bbf-run{background:linear-gradient(90deg,var(--blue),#6bb8ff);position:relative}
+.bbf-run::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);animation:progBar 1.4s linear infinite}
+.batch-pct{font-size:10px;font-family:var(--fm);font-weight:700;color:var(--mid);min-width:42px;text-align:right}
+
+/* === Audit timeline === */
+.audit-list{display:flex;flex-direction:column;gap:0;position:relative;padding-left:30px}
+.audit-list::before{content:'';position:absolute;left:13px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,rgba(255,107,0,.3),rgba(255,107,0,.05))}
+.audit{position:relative;padding:12px 0 14px 16px;animation:fadeUp .3s ease both;border-bottom:1px solid var(--border)}
+.audit:last-child{border-bottom:none}
+.audit::before{content:'';position:absolute;left:-21px;top:18px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--orange);box-shadow:0 0 0 3px var(--bg),0 0 0 4px rgba(255,107,0,.2),0 0 12px rgba(255,107,0,.5)}
+.audit::after{content:'';position:absolute;left:-23px;top:16px;width:15px;height:15px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,0,.6) 0%,transparent 70%);opacity:0;animation:spark 3.5s ease-out infinite;animation-delay:var(--sd,0s);pointer-events:none}
+.audit.a-create::before{border-color:var(--green)}
+.audit.a-update::before{border-color:var(--blue)}
+.audit.a-delete::before{border-color:var(--red)}
+.audit.a-login::before{border-color:var(--yellow)}
+.audit.a-config::before{border-color:var(--orange)}
+
+.audit-head{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.audit-tipo{font-size:8px;font-weight:700;font-family:var(--fm);letter-spacing:.1em;padding:2px 7px;border-radius:4px}
+.at-create{background:rgba(0,201,110,.12);color:var(--green)}
+.at-update{background:rgba(59,158,255,.12);color:var(--blue)}
+.at-delete{background:rgba(255,68,68,.12);color:var(--red)}
+.at-login{background:rgba(245,166,35,.12);color:var(--yellow)}
+.at-config{background:rgba(255,107,0,.12);color:var(--orange)}
+.audit-msg{font-size:12px;font-family:var(--fm);color:var(--text);font-weight:500;flex:1;line-height:1.4}
+.audit-msg b{color:var(--orange);font-weight:700}
+.audit-meta{display:flex;align-items:center;gap:10px;margin-top:5px;padding-left:0}
+.audit-autor{font-size:9px;font-family:var(--fm);font-weight:700;color:var(--mid);display:flex;align-items:center;gap:5px}
+.audit-autor::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--orange)}
+.audit-time{font-size:9px;font-family:var(--fm);color:var(--dim)}
+.audit-target{font-size:9px;font-family:var(--fm);color:var(--mid);background:rgba(255,107,0,.06);border:1px solid rgba(255,107,0,.14);padding:1px 6px;border-radius:4px}
+.audit-chev{margin-left:auto;color:var(--dim);font-family:var(--fm);font-size:11px;transition:transform .2s}
+.audit.open .audit-chev{transform:rotate(90deg);color:var(--orange)}
+
+.audit-body{max-height:0;overflow:hidden;transition:max-height .3s ease;margin-top:0}
+.audit.open .audit-body{max-height:500px;margin-top:10px}
+.diff{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:10px;padding:10px}
+.diff-col{display:flex;flex-direction:column;gap:4px}
+.diff-h{font-size:8px;font-weight:700;font-family:var(--fm);letter-spacing:.12em;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.diff-h.before{color:var(--red)}
+.diff-h.after{color:var(--green)}
+.diff-pre{font-family:var(--fm);font-size:10px;color:var(--mid);line-height:1.55;white-space:pre-wrap;word-break:break-all;padding:4px 0}
+.diff-line.changed{color:var(--text);background:rgba(255,107,0,.06);padding:2px 4px;border-radius:3px;margin:1px -4px}
+
+/* === Estados (empty, loading, error) === */
+.state{padding:48px 24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.state-ico{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(255,107,0,.06);border:1px solid rgba(255,107,0,.15)}
+.state-ico.err{background:rgba(255,68,68,.06);border-color:rgba(255,68,68,.18)}
+.state-ttl{font-size:14px;font-weight:700;color:var(--text);letter-spacing:.02em}
+.state-sub{font-size:11px;font-family:var(--fm);color:var(--dim);max-width:340px;line-height:1.6}
+.state-btn{margin-top:6px;background:rgba(255,107,0,.08);border:1px solid rgba(255,107,0,.25);color:var(--orange);font-family:var(--f);font-size:11px;font-weight:700;padding:8px 16px;border-radius:9px;cursor:pointer;transition:all .2s;letter-spacing:.04em}
+.state-btn:hover{background:rgba(255,107,0,.16);transform:translateY(-1px)}
+
+/* skeleton */
+.sk-batch{background:linear-gradient(160deg,rgba(22,14,8,.98),rgba(8,5,2,.99));border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.sk-line{height:11px;border-radius:4px;background:linear-gradient(90deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.07) 50%,rgba(255,255,255,.03) 100%);background-size:400px 100%;animation:shimmer 1.4s infinite linear}
+.sk-line.w40{width:40%}.sk-line.w60{width:60%}.sk-line.w25{width:25%}.sk-line.w80{width:80%}
+.sk-row{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.sk-circ{width:34px;height:34px;border-radius:9px;background:linear-gradient(90deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.07) 50%,rgba(255,255,255,.03) 100%);background-size:400px 100%;animation:shimmer 1.4s infinite linear;flex-shrink:0}
+.sk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.sk-cell{height:30px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.05) 50%,rgba(255,255,255,.02) 100%);background-size:400px 100%;animation:shimmer 1.4s infinite linear}
+
+/* === Tweaks panel === */
+.tweaks{position:fixed;top:80px;right:18px;width:280px;background:linear-gradient(160deg,rgba(28,18,8,.99),rgba(8,5,2,1));border:1px solid rgba(255,107,0,.28);border-radius:16px;padding:16px;z-index:90;box-shadow:0 20px 60px rgba(0,0,0,.7);display:none;animation:fadeUp .25s ease both}
+.tweaks.show{display:block}
+.tw-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.tw-t{font-size:11px;font-weight:700;color:var(--orange);font-family:var(--fm);letter-spacing:.14em;text-transform:uppercase}
+.tw-x{cursor:pointer;background:none;border:none;color:var(--dim);font-size:18px}
+.tw-x:hover{color:var(--text)}
+.tw-sec{margin-bottom:14px}
+.tw-l{font-size:9px;font-weight:700;color:var(--mid);font-family:var(--fm);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.tw-radio{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:3px}
+.tw-r{font-size:10px;font-weight:700;font-family:var(--fm);color:var(--mid);padding:6px 8px;border-radius:6px;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.05em}
+.tw-r.on{background:rgba(255,107,0,.16);color:var(--orange)}
+.tw-radio.col-4{grid-template-columns:repeat(4,1fr)}
+
+.tw-fab{position:fixed;bottom:24px;right:24px;z-index:80;background:linear-gradient(135deg,#ff8520,#d94e00);color:#fff;border:none;border-radius:50px;font-family:var(--f);font-size:11px;font-weight:700;padding:11px 18px;cursor:pointer;letter-spacing:.08em;box-shadow:0 8px 30px rgba(255,107,0,.45);transition:all .2s;display:flex;align-items:center;gap:8px;text-transform:uppercase}
+.tw-fab:hover{transform:translateY(-2px) scale(1.04)}
+.tw-divider{height:1px;background:linear-gradient(90deg,transparent,var(--orange) 50%,transparent);margin:18px 0 10px;opacity:.4}
+.tw-vibe-hint{font-size:9px;font-weight:700;color:var(--orange);font-family:var(--fm);letter-spacing:.18em;text-transform:uppercase;text-align:center;margin-bottom:14px;text-shadow:0 0 10px rgba(255,107,0,.5)}
+.tw-l-sub{font-size:8px;font-weight:500;color:var(--dim);letter-spacing:.06em;margin-left:6px;text-transform:none}
+
+/* ============ VIBE — repaints --orange and friends ============ */
+body[data-vibe="acid"]{ --orange:#9eff3d; --dim:#5a7a3a }
+body[data-vibe="acid"] .bgo{filter:drop-shadow(0 0 12px rgba(158,255,61,.4)) hue-rotate(80deg)}
+body[data-vibe="acid"] .bg-glow{filter:blur(80px) hue-rotate(80deg)}
+
+body[data-vibe="noir"]{ --orange:#e8e4dc; --dim:#5d5a55 }
+body[data-vibe="noir"] .bgo{filter:drop-shadow(0 0 10px rgba(232,228,220,.25)) saturate(0)}
+body[data-vibe="noir"] .bg-glow{filter:blur(80px) saturate(0) brightness(.7)}
+body[data-vibe="noir"] .kpi-v, body[data-vibe="noir"] .feed-title, body[data-vibe="noir"] .topbar-center{text-shadow:0 0 10px rgba(255,255,255,.2)}
+
+body[data-vibe="vapor"]{ --orange:#ff5cf6; --green:#5ce0ff; --blue:#5ce0ff; --dim:#7a4f78 }
+body[data-vibe="vapor"] .bgo{filter:drop-shadow(0 0 14px rgba(255,92,246,.5)) hue-rotate(280deg)}
+body[data-vibe="vapor"] .bg-glow{filter:blur(80px) hue-rotate(280deg)}
+body[data-vibe="vapor"] .kpi-v{text-shadow:-1px 0 #5ce0ff,1px 0 #ff5cf6,0 0 18px currentColor}
+
+/* ============ PULSO — animation intensity ============ */
+body[data-pulso="morto"] *, body[data-pulso="morto"] *::before, body[data-pulso="morto"] *::after{
+  animation-play-state:paused !important;
+}
+body[data-pulso="morto"] .bgo, body[data-pulso="morto"] .bg-glow{display:none}
+body[data-pulso="morto"] .kpi::after{display:none}
+
+body[data-pulso="frenetico"] .kpi-v, body[data-pulso="frenetico"] .feed-title,
+body[data-pulso="frenetico"] .topbar-center, body[data-pulso="frenetico"] .sb-name span{
+  animation:flicker 0.8s infinite !important;
+}
+body[data-pulso="frenetico"] .kpi::after{animation-duration:1.8s !important}
+body[data-pulso="frenetico"] .pill{animation:flicker 1.2s infinite !important}
+body[data-pulso="frenetico"] .bgo{animation-duration:8s !important;font-size:36px}
+body[data-pulso="frenetico"] .bg-glow{animation-duration:3s !important}
+body[data-pulso="frenetico"] .audit::after{animation-duration:1.4s !important}
+
+/* ============ MODO — visual language ============ */
+body[data-modo="brutalist"]{ --r:0px }
+body[data-modo="brutalist"] 
+body[data-modo="brutalist"] .bgo, body[data-modo="brutalist"] .bg-glow{display:none}
+body[data-modo="brutalist"] body, body[data-modo="brutalist"] .kpi-v, body[data-modo="brutalist"] .nav-label,
+body[data-modo="brutalist"] .feed-title, body[data-modo="brutalist"] .topbar-center, body[data-modo="brutalist"] .sb-name{
+  font-family:var(--fm) !important
+}
+body[data-modo="brutalist"] .kpi-v{font-weight:700;letter-spacing:0}
+body[data-modo="brutalist"] .pill{border-width:2px !important}
+body[data-modo="brutalist"] .card, body[data-modo="brutalist"] .batch, body[data-modo="brutalist"] .audit, body[data-modo="brutalist"] .sidebar, body[data-modo="brutalist"] .topbar, body[data-modo="brutalist"] .tweaks{border-width:2px !important}
+
+body[data-modo="holo"] .card, body[data-modo="holo"] .batch, body[data-modo="holo"] .audit, body[data-modo="holo"] .topbar, body[data-modo="holo"] .sidebar, body[data-modo="holo"] .tweaks{
+  backdrop-filter:blur(12px) saturate(1.4); background:rgba(13,11,8,.6) !important;
+  border:1px solid rgba(255,107,0,.25) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 0 40px rgba(255,107,0,.08) !important;
+}
+body[data-modo="holo"] .layout::before{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:200;
+  background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(255,107,0,.03) 2px,rgba(255,107,0,.03) 3px);
+  mix-blend-mode:screen;
+}
+body[data-modo="holo"] .layout::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:201;
+  background:linear-gradient(180deg,transparent 0%,rgba(255,107,0,.04) 50%,transparent 100%);
+  background-size:100% 8px; animation:scanline 8s linear infinite; mix-blend-mode:screen;
+}
+@keyframes scanline{0%{background-position:0 0}100%{background-position:0 100vh}}
+body[data-modo="holo"] .kpi-v{text-shadow:-1.5px 0 rgba(92,224,255,.6),1.5px 0 rgba(255,92,246,.6),0 0 18px currentColor}
+body[data-modo="holo"] .feed-title, body[data-modo="holo"] .topbar-center{text-shadow:-1px 0 rgba(92,224,255,.5),1px 0 rgba(255,92,246,.5),0 0 14px currentColor}
+
+/* === FIM D4 CSS === */
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="bg-canvas" id="bgCanvas"></div>
@@ -504,59 +915,597 @@ select.fi option{background:var(--s2)}
     </div>
 
     <div class="page" id="page-coletas">
-      <div class="cl-kpis" id="cl-kpis"></div>
-      <div class="cl-toolbar">
-        <div class="cl-tb-l">
-          <select class="cl-sel" id="cl-flt-canal" onchange="renderColetasList()">
-            <option value="all">TODOS CANAIS</option>
-            <option value="telegram">TELEGRAM</option>
-            <option value="whatsapp">WHATSAPP</option>
-            <option value="instagram">INSTAGRAM</option>
-            <option value="discord">DISCORD</option>
-            <option value="manual">MANUAL</option>
-          </select>
-          <select class="cl-sel" id="cl-flt-status" onchange="renderColetasList()">
-            <option value="all">TODOS STATUS</option>
-            <option value="success">SUCESSO</option>
-            <option value="running">EM ANDAMENTO</option>
-            <option value="error">ERRO</option>
-            <option value="partial">PARCIAL</option>
-          </select>
-          <select class="cl-sel" id="cl-flt-range" onchange="loadColetas()">
-            <option value="24h">ÚLTIMAS 24H</option>
-            <option value="7d">ÚLTIMOS 7 DIAS</option>
-            <option value="30d">ÚLTIMOS 30 DIAS</option>
-          </select>
+      <div class="page-hd" data-page="COLETAS">
+        <div class="page-hd-l">
+          <div class="page-hd-eyebrow"><span class="page-hd-dot"></span>SISTEMA · D4</div>
+          <h1 class="page-hd-ttl">Coletas</h1>
+          <div class="page-hd-sub">Histórico de batches — import_log · jobs de SCOUT/ORCHESTRATOR/MANUAL</div>
         </div>
-        <input class="cl-search" id="cl-search" placeholder="Buscar batch_id, executor..." oninput="renderColetasList()"/>
+        <div class="page-hd-r">
+          <div class="page-hd-meta"><span class="phm-l">UPTIME</span><span class="phm-v">99.7%</span></div>
+          <div class="page-hd-meta"><span class="phm-l">QUEUE</span><span class="phm-v">3</span></div>
+          <div class="page-hd-meta"><span class="phm-l">RATE</span><span class="phm-v">42<i>/min</i></span></div>
+        </div>
       </div>
-      <div class="cl-list" id="cl-list"><div class="sb-loading"><div class="spinner"></div>Carregando coletas...</div></div>
+      <div class="feed-wrap">
+        <div class="feed-bar">
+          <div style="display:flex;gap:6px"><span style="width:11px;height:11px;border-radius:50%;background:#ff4444;display:block"></span><span style="width:11px;height:11px;border-radius:50%;background:#f5a623;display:block"></span><span style="width:11px;height:11px;border-radius:50%;background:#00c96e;display:block"></span></div>
+          <span class="feed-title">● BATCHES DE COLETA</span>
+          <div class="feed-live"><span></span>LIVE</div>
+        </div>
+
+        <div class="kpi-strip" id="coletas-kpis">
+          <div class="kpi" data-tone="orange"><div class="kpi-l">Batches 24h<svg class="kpi-l-spark" viewBox="0 0 42 14" preserveAspectRatio="none"><polyline points="0,10 6,8 12,9 18,5 24,7 30,3 36,4 42,1" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--orange)"/></svg></div><div class="kpi-row"><div class="kpi-v" style="color:var(--orange)" id="kpi-total">10</div><span class="kpi-unit">runs</span></div><div class="kpi-d up" id="kpi-total-d"><span class="kpi-arrow">↑</span> +3 vs ontem</div></div>
+          <div class="kpi" data-tone="green"><div class="kpi-l">Leads coletados<svg class="kpi-l-spark" viewBox="0 0 42 14" preserveAspectRatio="none"><polyline points="0,12 6,11 12,9 18,8 24,5 30,6 36,3 42,1" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--green)"/></svg></div><div class="kpi-row"><div class="kpi-v" style="color:var(--green)" id="kpi-leads">8.718</div><span class="kpi-unit">leads</span></div><div class="kpi-d up" id="kpi-leads-d"><span class="kpi-arrow">↑</span> +12% vs 7d</div></div>
+          <div class="kpi" data-tone="yellow"><div class="kpi-l">Taxa de sucesso<svg class="kpi-l-spark" viewBox="0 0 42 14" preserveAspectRatio="none"><polyline points="0,4 6,5 12,7 18,3 24,8 30,5 36,9 42,6" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--yellow)"/></svg></div><div class="kpi-row"><div class="kpi-v" style="color:var(--yellow)" id="kpi-tax">60</div><span class="kpi-unit">% · 6/10</span></div><div class="kpi-d down" id="kpi-tax-d"><span class="kpi-arrow">↓</span> -8% vs 7d</div></div>
+          <div class="kpi" data-tone="blue"><div class="kpi-l">Duração média<svg class="kpi-l-spark" viewBox="0 0 42 14" preserveAspectRatio="none"><polyline points="0,6 6,7 12,5 18,8 24,4 30,7 36,5 42,6" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--blue)"/></svg></div><div class="kpi-row"><div class="kpi-v" style="color:var(--blue)" id="kpi-dur">3:42</div><span class="kpi-unit">min</span></div><div class="kpi-d neutral" id="kpi-dur-d"><span class="kpi-arrow">→</span> estável</div></div>
+        </div>
+
+        <div class="toolbar">
+          <select class="fi" id="f-canal" onchange="renderColetas()">
+            <option value="all">Todos os canais</option>
+            <option value="telegram">Telegram</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="instagram">Instagram</option>
+            <option value="discord">Discord</option>
+            <option value="manual">Manual</option>
+          </select>
+          <select class="fi" id="f-status" onchange="renderColetas()">
+            <option value="all">Todos os status</option>
+            <option value="ok">Sucesso</option>
+            <option value="warn">Parcial</option>
+            <option value="err">Falha</option>
+            <option value="run">Em andamento</option>
+          </select>
+          <select class="fi" id="f-data" onchange="renderColetas()">
+            <option value="24h">Últimas 24h</option>
+            <option value="7d">Últimos 7 dias</option>
+            <option value="30d">Últimos 30 dias</option>
+            <option value="all">Todo o histórico</option>
+          </select>
+          <input class="fi" type="text" id="f-search" placeholder="Buscar batch_id ou canal..." oninput="renderColetas()" style="flex:1;min-width:160px">
+        </div>
+
+        <div class="feed-body">
+          <div id="coletas-list"><div class="batch-list"><div class="batch b-run">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico tg"><svg viewBox="0 0 24 24"><path d="M21.7 3.3 2.5 10.7c-1 .4-1 1.7 0 2.1l4.7 1.5 1.8 5.6c.2.6 1 .8 1.4.4l2.7-2.5 5 3.7c.6.4 1.4.1 1.5-.6l3-15.7c.2-.7-.5-1.3-1.1-.9zM10 14.6l-.4 4.4-1.5-4.5 9.4-7.9-7.5 8z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">Telegram</div>
+              <div class="batch-id">btc_8a3f29 · SCOUT</div>
+            </div>
+          </div>
+          <span class="pill p-blue live"><i class="pill-ico">▶</i><span class="pill-lbl">RUN</span></span>
+          <div class="batch-when">
+            2min atrás
+            <div class="batch-when-d">17:33</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v success">847</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">1.500</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">2m 4s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v info">7/s</div></div>
+        </div>
+
+        
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-run" style="width:56%"></div></div>
+          <span class="batch-pct">56%</span>
+        </div>
+      </div><div class="batch b-ok">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico wa"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1-.8.9-.9 1.1-.3.2-.5.1c-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5s.1-.4 0-.5-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.2 3 2 3 4.8 4.2c.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.3 1.2 4.7L2 22l5.4-1.4c1.4.7 2.9 1.1 4.6 1.1 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3C4.5 14.9 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">WhatsApp</div>
+              <div class="batch-id">btc_7e2c14 · SCOUT</div>
+            </div>
+          </div>
+          <span class="pill p-ok">SUCESSO</span>
+          <div class="batch-when">
+            18min atrás
+            <div class="batch-when-d">17:17</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v success">1.243</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">1.243</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">5m 12s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v success">SUCESSO</div></div>
+        </div>
+
+        
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-ok" style="width:100%"></div></div>
+          <span class="batch-pct">100%</span>
+        </div>
+      </div><div class="batch b-warn">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico tg"><svg viewBox="0 0 24 24"><path d="M21.7 3.3 2.5 10.7c-1 .4-1 1.7 0 2.1l4.7 1.5 1.8 5.6c.2.6 1 .8 1.4.4l2.7-2.5 5 3.7c.6.4 1.4.1 1.5-.6l3-15.7c.2-.7-.5-1.3-1.1-.9zM10 14.6l-.4 4.4-1.5-4.5 9.4-7.9-7.5 8z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">Telegram</div>
+              <div class="batch-id">btc_6d9b03 · SCOUT</div>
+            </div>
+          </div>
+          <span class="pill p-warn">PARCIAL</span>
+          <div class="batch-when">
+            47min atrás
+            <div class="batch-when-d">16:48</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v success">489</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">800</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">3m 21s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v warn">PARCIAL</div></div>
+        </div>
+
+        <div style="font-size:10px;font-family:var(--fm);color:var(--yellow);margin-bottom:8px;padding-left:2px">▸ rate-limit em 311 leads</div>
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-warn" style="width:61%"></div></div>
+          <span class="batch-pct">61%</span>
+        </div>
+      </div><div class="batch b-err">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico ig"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.9.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.9.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.9-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.9-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 5.8.1 5 .3 4.2.6c-.8.3-1.5.7-2.2 1.4S.9 3.4.6 4.2c-.3.8-.5 1.6-.5 2.9C0 8.3 0 8.7 0 12s0 3.7.1 4.9c0 1.3.2 2.1.5 2.9.3.8.7 1.5 1.4 2.2.7.7 1.4 1.1 2.2 1.4.8.3 1.6.5 2.9.5C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c1.3 0 2.1-.2 2.9-.5.8-.3 1.5-.7 2.2-1.4.7-.7 1.1-1.4 1.4-2.2.3-.8.5-1.6.5-2.9C24 15.7 24 15.3 24 12s0-3.7-.1-4.9c0-1.3-.2-2.1-.5-2.9-.3-.8-.7-1.5-1.4-2.2C21.3 1.3 20.6.9 19.8.6c-.8-.3-1.6-.5-2.9-.5C15.7 0 15.3 0 12 0zm0 5.8C8.6 5.8 5.8 8.6 5.8 12s2.8 6.2 6.2 6.2 6.2-2.8 6.2-6.2S15.4 5.8 12 5.8zM12 16c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4zm6.4-11.8c-.8 0-1.4.6-1.4 1.4s.6 1.4 1.4 1.4 1.4-.6 1.4-1.4-.6-1.4-1.4-1.4z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">Instagram</div>
+              <div class="batch-id">btc_5c8a12 · ORCHESTRATOR</div>
+            </div>
+          </div>
+          <span class="pill p-err">FALHA</span>
+          <div class="batch-when">
+            1h atrás
+            <div class="batch-when-d">16:23</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v err">0</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">600</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">18s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v err">FALHA</div></div>
+        </div>
+
+        <div style="font-size:10px;font-family:var(--fm);color:var(--red);margin-bottom:8px;padding-left:2px">▸ sessão Instagram expirada</div>
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-err" style="width:0%"></div></div>
+          <span class="batch-pct">0%</span>
+        </div>
+      </div><div class="batch b-ok">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico dc"><svg viewBox="0 0 24 24"><path d="M19.6 5c-1.5-.7-3.1-1.2-4.7-1.4-.2.4-.5.9-.7 1.3-1.7-.3-3.5-.3-5.2 0-.2-.4-.4-.9-.7-1.3C6.7 3.8 5.1 4.3 3.6 5 1 8.9.3 12.7.7 16.4c1.9 1.4 3.7 2.2 5.5 2.8.4-.6.8-1.2 1.1-1.9-.6-.2-1.2-.5-1.8-.9.2-.1.3-.2.4-.4 3.5 1.6 7.3 1.6 10.7 0 .2.1.3.2.4.4-.6.3-1.2.6-1.8.9.3.7.7 1.3 1.1 1.9 1.8-.6 3.6-1.4 5.5-2.8.5-4.3-.5-8.1-3.2-11.4zM8.5 14.4c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2zm7 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">Discord</div>
+              <div class="batch-id">btc_4b7910 · SCOUT</div>
+            </div>
+          </div>
+          <span class="pill p-ok">SUCESSO</span>
+          <div class="batch-when">
+            1h atrás
+            <div class="batch-when-d">15:59</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v success">572</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">572</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">3m 18s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v success">SUCESSO</div></div>
+        </div>
+
+        
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-ok" style="width:100%"></div></div>
+          <span class="batch-pct">100%</span>
+        </div>
+      </div><div class="batch b-ok">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico wa"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1-.8.9-.9 1.1-.3.2-.5.1c-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5s.1-.4 0-.5-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.2 3 2 3 4.8 4.2c.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.3 1.2 4.7L2 22l5.4-1.4c1.4.7 2.9 1.1 4.6 1.1 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3C4.5 14.9 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">WhatsApp</div>
+              <div class="batch-id">btc_3a6829 · MANUAL DISPATCH</div>
+            </div>
+          </div>
+          <span class="pill p-ok">SUCESSO</span>
+          <div class="batch-when">
+            3h atrás
+            <div class="batch-when-d">14:35</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v success">889</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">889</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">4m 27s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v success">SUCESSO</div></div>
+        </div>
+
+        
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-ok" style="width:100%"></div></div>
+          <span class="batch-pct">100%</span>
+        </div>
+      </div><div class="batch b-ok">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico tg"><svg viewBox="0 0 24 24"><path d="M21.7 3.3 2.5 10.7c-1 .4-1 1.7 0 2.1l4.7 1.5 1.8 5.6c.2.6 1 .8 1.4.4l2.7-2.5 5 3.7c.6.4 1.4.1 1.5-.6l3-15.7c.2-.7-.5-1.3-1.1-.9zM10 14.6l-.4 4.4-1.5-4.5 9.4-7.9-7.5 8z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">Telegram</div>
+              <div class="batch-id">btc_2f5731 · SCOUT</div>
+            </div>
+          </div>
+          <span class="pill p-ok">SUCESSO</span>
+          <div class="batch-when">
+            4h atrás
+            <div class="batch-when-d">13:35</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v success">2.104</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">2.104</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">7m 1s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v success">SUCESSO</div></div>
+        </div>
+
+        
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-ok" style="width:100%"></div></div>
+          <span class="batch-pct">100%</span>
+        </div>
+      </div><div class="batch b-ok">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico mn"><svg viewBox="0 0 24 24"><path d="M11 1.5c-.8 0-1.5.7-1.5 1.5v6.5h-1V4c0-.8-.7-1.5-1.5-1.5S5.5 3.2 5.5 4v9.5l-1.4-1.4c-.6-.6-1.5-.6-2.1 0-.6.6-.6 1.5 0 2.1l3.6 3.6c.4.4 1.5 1.7 2.5 2.7 1 1 2 1.5 4.4 1.5h2.5c2.5 0 4.5-2 4.5-4.5v-7c0-.8-.7-1.5-1.5-1.5s-1.5.7-1.5 1.5v3h-1V5c0-.8-.7-1.5-1.5-1.5S13 4.2 13 5v4h-1V3c0-.8-.7-1.5-1.5-1.5z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">Manual</div>
+              <div class="batch-id">btc_1e4640 · 00baby</div>
+            </div>
+          </div>
+          <span class="pill p-ok">SUCESSO</span>
+          <div class="batch-when">
+            6h atrás
+            <div class="batch-when-d">11:35</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v success">120</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">120</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">14s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v success">SUCESSO</div></div>
+        </div>
+
+        
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-ok" style="width:100%"></div></div>
+          <span class="batch-pct">100%</span>
+        </div>
+      </div><div class="batch b-warn">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico tg"><svg viewBox="0 0 24 24"><path d="M21.7 3.3 2.5 10.7c-1 .4-1 1.7 0 2.1l4.7 1.5 1.8 5.6c.2.6 1 .8 1.4.4l2.7-2.5 5 3.7c.6.4 1.4.1 1.5-.6l3-15.7c.2-.7-.5-1.3-1.1-.9zM10 14.6l-.4 4.4-1.5-4.5 9.4-7.9-7.5 8z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">Telegram</div>
+              <div class="batch-id">btc_0d3559 · SCOUT</div>
+            </div>
+          </div>
+          <span class="pill p-warn">PARCIAL</span>
+          <div class="batch-when">
+            9h atrás
+            <div class="batch-when-d">08:35</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v success">1.456</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">2.000</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">6m 20s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v warn">PARCIAL</div></div>
+        </div>
+
+        <div style="font-size:10px;font-family:var(--fm);color:var(--yellow);margin-bottom:8px;padding-left:2px">▸ 544 leads sem username</div>
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-warn" style="width:73%"></div></div>
+          <span class="batch-pct">73%</span>
+        </div>
+      </div><div class="batch b-ok">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico wa"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1-.8.9-.9 1.1-.3.2-.5.1c-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5s.1-.4 0-.5-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.2 3 2 3 4.8 4.2c.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.3 1.2 4.7L2 22l5.4-1.4c1.4.7 2.9 1.1 4.6 1.1 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3C4.5 14.9 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg></span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">WhatsApp</div>
+              <div class="batch-id">btc_9c2468 · SCOUT</div>
+            </div>
+          </div>
+          <span class="pill p-ok">SUCESSO</span>
+          <div class="batch-when">
+            12h atrás
+            <div class="batch-when-d">05:35</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v success">998</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">998</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">4m 49s</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v success">SUCESSO</div></div>
+        </div>
+
+        
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill bbf-ok" style="width:100%"></div></div>
+          <span class="batch-pct">100%</span>
+        </div>
+      </div></div></div>
+        </div>
+      </div>
     </div>
 
     <div class="page" id="page-audit">
-      <div class="cl-kpis" id="au-kpis"></div>
-      <div class="cl-toolbar">
-        <div class="cl-tb-l">
-          <select class="cl-sel" id="au-flt-tipo" onchange="renderAuditList()">
-            <option value="all">TODOS EVENTOS</option>
-            <option value="login">LOGIN</option>
-            <option value="config">CONFIG</option>
-            <option value="dispatch">DISPATCH</option>
-            <option value="block">BLOQUEIO</option>
-            <option value="kanban">KANBAN</option>
-          </select>
-          <select class="cl-sel" id="au-flt-autor" onchange="renderAuditList()">
-            <option value="all">TODOS AUTORES</option>
-          </select>
-          <select class="cl-sel" id="au-flt-range" onchange="loadAudit()">
-            <option value="24h">ÚLTIMAS 24H</option>
-            <option value="7d">ÚLTIMOS 7 DIAS</option>
-            <option value="30d">ÚLTIMOS 30 DIAS</option>
-          </select>
+      <div class="page-hd" data-page="AUDITORIA">
+        <div class="page-hd-l">
+          <div class="page-hd-eyebrow"><span class="page-hd-dot"></span>SISTEMA · D4</div>
+          <h1 class="page-hd-ttl">Auditoria</h1>
+          <div class="page-hd-sub">Trilha imutável — audit_log · quem fez · quando · antes/depois</div>
         </div>
-        <input class="cl-search" id="au-search" placeholder="Buscar mensagem, target..." oninput="renderAuditList()"/>
+        <div class="page-hd-r">
+          <div class="page-hd-meta"><span class="phm-l">RETENÇÃO</span><span class="phm-v">90<i>d</i></span></div>
+          <div class="page-hd-meta"><span class="phm-l">EVENTOS</span><span class="phm-v">10</span></div>
+          <div class="page-hd-meta"><span class="phm-l">RLS</span><span class="phm-v">ON</span></div>
+        </div>
       </div>
-      <div class="au-timeline" id="au-list"><div class="sb-loading"><div class="spinner"></div>Carregando auditoria...</div></div>
+      <div class="feed-wrap">
+        <div class="feed-bar">
+          <div style="display:flex;gap:6px"><span style="width:11px;height:11px;border-radius:50%;background:#ff4444;display:block"></span><span style="width:11px;height:11px;border-radius:50%;background:#f5a623;display:block"></span><span style="width:11px;height:11px;border-radius:50%;background:#00c96e;display:block"></span></div>
+          <span class="feed-title">● TRILHA DE AUDITORIA</span>
+          <div class="feed-live"><span></span>SYNCED</div>
+        </div>
+
+        <div class="kpi-strip">
+          <div class="kpi" data-tone="orange"><div class="kpi-l">Eventos 24h<svg class="kpi-l-spark" viewBox="0 0 42 14" preserveAspectRatio="none"><polyline points="0,8 6,7 12,9 18,5 24,6 30,4 36,5 42,2" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--orange)"/></svg></div><div class="kpi-row"><div class="kpi-v" style="color:var(--orange)" id="aud-total">10</div><span class="kpi-unit">total</span></div><div class="kpi-d up"><span class="kpi-arrow">↑</span> +5 vs ontem</div></div>
+          <div class="kpi" data-tone="green"><div class="kpi-l">CREATE</div><div class="kpi-row"><div class="kpi-v" style="color:var(--green)" id="aud-create">2</div><span class="kpi-unit">novos</span></div><div class="kpi-d neutral"><span class="kpi-arrow">+</span> registros criados</div></div>
+          <div class="kpi" data-tone="blue"><div class="kpi-l">UPDATE</div><div class="kpi-row"><div class="kpi-v" style="color:var(--blue)" id="aud-update">3</div><span class="kpi-unit">edits</span></div><div class="kpi-d neutral"><span class="kpi-arrow">✎</span> modificações</div></div>
+          <div class="kpi" data-tone="orange" style="--accent:var(--red)"><div class="kpi-l">DELETE</div><div class="kpi-row"><div class="kpi-v" style="color:var(--red)" id="aud-delete">1</div><span class="kpi-unit">remov</span></div><div class="kpi-d down"><span class="kpi-arrow">✖</span> 1 hard delete</div></div>
+        </div>
+
+        <div class="toolbar">
+          <select class="fi" id="af-tipo" onchange="renderAudit()">
+            <option value="all">Todos os eventos</option>
+            <option value="CREATE">CREATE</option>
+            <option value="UPDATE">UPDATE</option>
+            <option value="DELETE">DELETE</option>
+            <option value="LOGIN">LOGIN</option>
+            <option value="CONFIG">CONFIG</option>
+          </select>
+          <select class="fi" id="af-autor" onchange="renderAudit()">
+            <option value="all">Todos os autores</option>
+            <option value="00baby">00baby</option>
+            <option value="toni">toni</option>
+            <option value="bigao">bigão</option>
+            <option value="painel">painel</option>
+            <option value="system">system</option>
+          </select>
+          <input class="fi" type="text" id="af-search" placeholder="Buscar em mensagem ou target..." oninput="renderAudit()" style="flex:1;min-width:160px">
+        </div>
+
+        <div class="feed-body">
+          <div id="audit-list"><div class="audit-list"><div class="audit a-config" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-config">CONFIG</span>
+        <div class="audit-msg">Workflow <b>MASTER FLOW</b> reativado após manutenção</div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">00baby</span>
+        <span class="audit-target">agent_signals</span>
+        <span class="audit-time">30/04, 17:31:09 · 4min atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff">
+        <div class="diff-col"><div class="diff-h before">▾ BEFORE</div><div class="diff-pre">{
+  "ativo": false,
+  "last_run": null,
+  "status": "paused"
+}</div></div>
+        <div class="diff-col"><div class="diff-h after">▴ AFTER</div><div class="diff-pre">{
+  "ativo": true,
+  "last_run": "2026-04-30T14:22Z",
+  "status": "running"
+}</div></div>
+      </div></div>
+    </div><div class="audit a-update" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-update">UPDATE</span>
+        <div class="audit-msg">Lead <b>tg:@bingofan2024</b> movido para tag <b>HOT</b></div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">toni</span>
+        <span class="audit-target">leads/8439</span>
+        <span class="audit-time">30/04, 17:23:09 · 12min atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff">
+        <div class="diff-col"><div class="diff-h before">▾ BEFORE</div><div class="diff-pre">{
+  "tag": "morno",
+  "score": 54
+}</div></div>
+        <div class="diff-col"><div class="diff-h after">▴ AFTER</div><div class="diff-pre">{
+  "tag": "hot",
+  "score": 78
+}</div></div>
+      </div></div>
+    </div><div class="audit a-create" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-create">CREATE</span>
+        <div class="audit-msg">Novo batch de coleta iniciado · canal <b>telegram</b></div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">system</span>
+        <span class="audit-target">import_log/btc_8a3f29</span>
+        <span class="audit-time">30/04, 17:33:09 · 2min atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff" style="grid-template-columns:1fr"><div class="diff-col"><div class="diff-h" style="color:var(--orange)">PAYLOAD</div><div class="diff-pre">{
+  "batch_id": "btc_8a3f29",
+  "canal": "telegram",
+  "alvo": 1500,
+  "by": "SCOUT"
+}</div></div></div></div>
+    </div><div class="audit a-delete" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-delete">DELETE</span>
+        <div class="audit-msg">Card <b>"Validar webhooks N8N"</b> removido do Kanban</div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">00baby</span>
+        <span class="audit-target">kanban_cards/72</span>
+        <span class="audit-time">30/04, 17:07:09 · 28min atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff">
+        <div class="diff-col"><div class="diff-h before">▾ BEFORE</div><div class="diff-pre">{
+  "titulo": "Validar webhooks N8N",
+  "coluna": "concluido",
+  "responsavel": "toni"
+}</div></div>
+        <div class="diff-col"><div class="diff-h after">▴ AFTER</div><div class="diff-pre"><em style="color:var(--dim)">— removido —</em></div></div>
+      </div></div>
+    </div><div class="audit a-login" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-login">LOGIN</span>
+        <div class="audit-msg">Login bem-sucedido · IP <b>177.43.x.x</b> · BRT</div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">bigao</span>
+        <span class="audit-target">session</span>
+        <span class="audit-time">30/04, 16:53:09 · 42min atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff" style="grid-template-columns:1fr"><div class="diff-col"><div class="diff-h" style="color:var(--orange)">PAYLOAD</div><div class="diff-pre">{
+  "ip": "177.43.x.x",
+  "ua": "Chrome 120",
+  "role": "OPERADOR"
+}</div></div></div></div>
+    </div><div class="audit a-update" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-update">UPDATE</span>
+        <div class="audit-msg">Métricas recalculadas após batch <b>btc_7e2c14</b></div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">painel</span>
+        <span class="audit-target">metricas_ultimas_24h</span>
+        <span class="audit-time">30/04, 16:30:09 · 1h atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff">
+        <div class="diff-col"><div class="diff-h before">▾ BEFORE</div><div class="diff-pre">{
+  "leads_24h": 30782,
+  "conversao": 17.4
+}</div></div>
+        <div class="diff-col"><div class="diff-h after">▴ AFTER</div><div class="diff-pre">{
+  "leads_24h": 32873,
+  "conversao": 18
+}</div></div>
+      </div></div>
+    </div><div class="audit a-config" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-config">CONFIG</span>
+        <div class="audit-msg">Split A/B alterado de <b>70/30</b> para <b>50/50</b></div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">00baby</span>
+        <span class="audit-target">config/split_test</span>
+        <span class="audit-time">30/04, 15:35:09 · 2h atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff">
+        <div class="diff-col"><div class="diff-h before">▾ BEFORE</div><div class="diff-pre">{
+  "split": "70/30",
+  "variant_a": 0.7
+}</div></div>
+        <div class="diff-col"><div class="diff-h after">▴ AFTER</div><div class="diff-pre">{
+  "split": "50/50",
+  "variant_a": 0.5
+}</div></div>
+      </div></div>
+    </div><div class="audit a-create" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-create">CREATE</span>
+        <div class="audit-msg">Bloqueio <b>"Sessão Instagram expirada"</b> reportado por <b>system</b></div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">system</span>
+        <span class="audit-target">bloqueios/14</span>
+        <span class="audit-time">30/04, 14:35:09 · 3h atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff" style="grid-template-columns:1fr"><div class="diff-col"><div class="diff-h" style="color:var(--orange)">PAYLOAD</div><div class="diff-pre">{
+  "titulo": "Sessão Instagram expirada",
+  "prioridade": "alto",
+  "batch": "btc_5c8a12"
+}</div></div></div></div>
+    </div><div class="audit a-update" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-update">UPDATE</span>
+        <div class="audit-msg">Update editado · tipo alterado de <b>INFO</b> para <b>ALERTA</b></div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">toni</span>
+        <span class="audit-target">ops_updates/489</span>
+        <span class="audit-time">30/04, 13:35:09 · 4h atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff">
+        <div class="diff-col"><div class="diff-h before">▾ BEFORE</div><div class="diff-pre">{
+  "tipo": "INFO",
+  "tags": []
+}</div></div>
+        <div class="diff-col"><div class="diff-h after">▴ AFTER</div><div class="diff-pre">{
+  "tipo": "ALERTA",
+  "tags": [
+    "urgente"
+  ]
+}</div></div>
+      </div></div>
+    </div><div class="audit a-login" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo at-login">LOGIN</span>
+        <div class="audit-msg">Login bem-sucedido · IP <b>200.150.x.x</b></div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">00baby</span>
+        <span class="audit-target">session</span>
+        <span class="audit-time">30/04, 10:35:09 · 7h atrás</span>
+      </div>
+      <div class="audit-body"><div class="diff" style="grid-template-columns:1fr"><div class="diff-col"><div class="diff-h" style="color:var(--orange)">PAYLOAD</div><div class="diff-pre">{
+  "ip": "200.150.x.x",
+  "ua": "Chrome 120",
+  "role": "MASTER"
+}</div></div></div></div>
+    </div></div></div>
+        </div>
+      </div>
     </div>
 
     <div class="page" id="page-infra"><div class="card"><div id="infra-status"></div></div></div>
@@ -1085,6 +2034,405 @@ window.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('lpass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
   document.getElementById('luser').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lpass').focus();});
 });
+
+/* === D4 JS (escopado em IIFE) === */
+(function(){
+
+/* =============== STATE =============== */
+const state = {
+  coletas: 'data',
+  audit: 'data',
+  density: 'comfortable',
+  alayout: 'timeline'
+};
+
+/* =============== MOCK DATA =============== */
+const CANAIS = {
+  telegram: {type:'tg', label:'Telegram'},
+  whatsapp: {type:'wa', label:'WhatsApp'},
+  instagram:{type:'ig', label:'Instagram'},
+  discord:  {type:'dc', label:'Discord'},
+  manual:   {type:'mn', label:'Manual'}
+};
+const SOCIAL_SVG = {
+  tg:`<svg viewBox="0 0 24 24"><path d="M21.7 3.3 2.5 10.7c-1 .4-1 1.7 0 2.1l4.7 1.5 1.8 5.6c.2.6 1 .8 1.4.4l2.7-2.5 5 3.7c.6.4 1.4.1 1.5-.6l3-15.7c.2-.7-.5-1.3-1.1-.9zM10 14.6l-.4 4.4-1.5-4.5 9.4-7.9-7.5 8z"/></svg>`, wa:`<svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1-.8.9-.9 1.1-.3.2-.5.1c-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5s.1-.4 0-.5-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.2 3 2 3 4.8 4.2c.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.3 1.2 4.7L2 22l5.4-1.4c1.4.7 2.9 1.1 4.6 1.1 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3C4.5 14.9 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg>`, ig:`<svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.9.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.9.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.9-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.9-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 5.8.1 5 .3 4.2.6c-.8.3-1.5.7-2.2 1.4S.9 3.4.6 4.2c-.3.8-.5 1.6-.5 2.9C0 8.3 0 8.7 0 12s0 3.7.1 4.9c0 1.3.2 2.1.5 2.9.3.8.7 1.5 1.4 2.2.7.7 1.4 1.1 2.2 1.4.8.3 1.6.5 2.9.5C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c1.3 0 2.1-.2 2.9-.5.8-.3 1.5-.7 2.2-1.4.7-.7 1.1-1.4 1.4-2.2.3-.8.5-1.6.5-2.9C24 15.7 24 15.3 24 12s0-3.7-.1-4.9c0-1.3-.2-2.1-.5-2.9-.3-.8-.7-1.5-1.4-2.2C21.3 1.3 20.6.9 19.8.6c-.8-.3-1.6-.5-2.9-.5C15.7 0 15.3 0 12 0zm0 5.8C8.6 5.8 5.8 8.6 5.8 12s2.8 6.2 6.2 6.2 6.2-2.8 6.2-6.2S15.4 5.8 12 5.8zM12 16c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4zm6.4-11.8c-.8 0-1.4.6-1.4 1.4s.6 1.4 1.4 1.4 1.4-.6 1.4-1.4-.6-1.4-1.4-1.4z"/></svg>`, dc:`<svg viewBox="0 0 24 24"><path d="M19.6 5c-1.5-.7-3.1-1.2-4.7-1.4-.2.4-.5.9-.7 1.3-1.7-.3-3.5-.3-5.2 0-.2-.4-.4-.9-.7-1.3C6.7 3.8 5.1 4.3 3.6 5 1 8.9.3 12.7.7 16.4c1.9 1.4 3.7 2.2 5.5 2.8.4-.6.8-1.2 1.1-1.9-.6-.2-1.2-.5-1.8-.9.2-.1.3-.2.4-.4 3.5 1.6 7.3 1.6 10.7 0 .2.1.3.2.4.4-.6.3-1.2.6-1.8.9.3.7.7 1.3 1.1 1.9 1.8-.6 3.6-1.4 5.5-2.8.5-4.3-.5-8.1-3.2-11.4zM8.5 14.4c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2zm7 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2z"/></svg>`, mn:`<svg viewBox="0 0 24 24"><path d="M11 1.5c-.8 0-1.5.7-1.5 1.5v6.5h-1V4c0-.8-.7-1.5-1.5-1.5S5.5 3.2 5.5 4v9.5l-1.4-1.4c-.6-.6-1.5-.6-2.1 0-.6.6-.6 1.5 0 2.1l3.6 3.6c.4.4 1.5 1.7 2.5 2.7 1 1 2 1.5 4.4 1.5h2.5c2.5 0 4.5-2 4.5-4.5v-7c0-.8-.7-1.5-1.5-1.5s-1.5.7-1.5 1.5v3h-1V5c0-.8-.7-1.5-1.5-1.5S13 4.2 13 5v4h-1V3c0-.8-.7-1.5-1.5-1.5z"/></svg>`
+};
+
+const BATCHES = [
+  {id:'btc_8a3f29', canal:'telegram', status:'run',  qtd:847,  alvo:1500, dur:124, started:Date.now()-1000*60*2,  by:'SCOUT'},
+  {id:'btc_7e2c14', canal:'whatsapp', status:'ok',   qtd:1243, alvo:1243, dur:312, started:Date.now()-1000*60*18, by:'SCOUT'},
+  {id:'btc_6d9b03', canal:'telegram', status:'warn', qtd:489,  alvo:800,  dur:201, started:Date.now()-1000*60*47, by:'SCOUT', err:'rate-limit em 311 leads'},
+  {id:'btc_5c8a12', canal:'instagram',status:'err',  qtd:0,    alvo:600,  dur:18,  started:Date.now()-1000*60*72, by:'ORCHESTRATOR', err:'sessão Instagram expirada'},
+  {id:'btc_4b7910', canal:'discord',  status:'ok',   qtd:572,  alvo:572,  dur:198, started:Date.now()-1000*60*96, by:'SCOUT'},
+  {id:'btc_3a6829', canal:'whatsapp', status:'ok',   qtd:889,  alvo:889,  dur:267, started:Date.now()-1000*60*180, by:'MANUAL DISPATCH'},
+  {id:'btc_2f5731', canal:'telegram', status:'ok',   qtd:2104, alvo:2104, dur:421, started:Date.now()-1000*60*240, by:'SCOUT'},
+  {id:'btc_1e4640', canal:'manual',   status:'ok',   qtd:120,  alvo:120,  dur:14,  started:Date.now()-1000*60*360, by:'00baby'},
+  {id:'btc_0d3559', canal:'telegram', status:'warn', qtd:1456, alvo:2000, dur:380, started:Date.now()-1000*60*540, by:'SCOUT', err:'544 leads sem username'},
+  {id:'btc_9c2468', canal:'whatsapp', status:'ok',   qtd:998,  alvo:998,  dur:289, started:Date.now()-1000*60*720, by:'SCOUT'}
+];
+
+const AUDIT = [
+  {tipo:'CONFIG', autor:'00baby', target:'agent_signals', when:Date.now()-1000*60*4,
+   msg:'Workflow <b>MASTER FLOW</b> reativado após manutenção',
+   before:{ativo:false, last_run:null, status:'paused'}, after:{ativo:true, last_run:'2026-04-30T14:22Z', status:'running'}},
+  {tipo:'UPDATE', autor:'toni', target:'leads/8439', when:Date.now()-1000*60*12,
+   msg:'Lead <b>tg:@bingofan2024</b> movido para tag <b>HOT</b>',
+   before:{tag:'morno', score:54}, after:{tag:'hot', score:78}},
+  {tipo:'CREATE', autor:'system', target:'import_log/btc_8a3f29', when:Date.now()-1000*60*2,
+   msg:'Novo batch de coleta iniciado · canal <b>telegram</b>',
+   payload:{batch_id:'btc_8a3f29', canal:'telegram', alvo:1500, by:'SCOUT'}},
+  {tipo:'DELETE', autor:'00baby', target:'kanban_cards/72', when:Date.now()-1000*60*28,
+   msg:'Card <b>"Validar webhooks N8N"</b> removido do Kanban',
+   before:{titulo:'Validar webhooks N8N', coluna:'concluido', responsavel:'toni'}, after:null},
+  {tipo:'LOGIN', autor:'bigao', target:'session', when:Date.now()-1000*60*42,
+   msg:'Login bem-sucedido · IP <b>177.43.x.x</b> · BRT',
+   payload:{ip:'177.43.x.x', ua:'Chrome 120', role:'OPERADOR'}},
+  {tipo:'UPDATE', autor:'painel', target:'metricas_ultimas_24h', when:Date.now()-1000*60*65,
+   msg:'Métricas recalculadas após batch <b>btc_7e2c14</b>',
+   before:{leads_24h:30782, conversao:17.4}, after:{leads_24h:32873, conversao:18.0}},
+  {tipo:'CONFIG', autor:'00baby', target:'config/split_test', when:Date.now()-1000*60*120,
+   msg:'Split A/B alterado de <b>70/30</b> para <b>50/50</b>',
+   before:{split:'70/30', variant_a:0.7}, after:{split:'50/50', variant_a:0.5}},
+  {tipo:'CREATE', autor:'system', target:'bloqueios/14', when:Date.now()-1000*60*180,
+   msg:'Bloqueio <b>"Sessão Instagram expirada"</b> reportado por <b>system</b>',
+   payload:{titulo:'Sessão Instagram expirada', prioridade:'alto', batch:'btc_5c8a12'}},
+  {tipo:'UPDATE', autor:'toni', target:'ops_updates/489', when:Date.now()-1000*60*240,
+   msg:'Update editado · tipo alterado de <b>INFO</b> para <b>ALERTA</b>',
+   before:{tipo:'INFO', tags:[]}, after:{tipo:'ALERTA', tags:['urgente']}},
+  {tipo:'LOGIN', autor:'00baby', target:'session', when:Date.now()-1000*60*420,
+   msg:'Login bem-sucedido · IP <b>200.150.x.x</b>',
+   payload:{ip:'200.150.x.x', ua:'Chrome 120', role:'MASTER'}}
+];
+
+/* =============== HELPERS =============== */
+function timeAgo(ts){
+  const s = Math.floor((Date.now()-ts)/1000);
+  if(s<60) return s+'s atrás';
+  const m = Math.floor(s/60);
+  if(m<60) return m+'min atrás';
+  const h = Math.floor(m/60);
+  if(h<24) return h+'h atrás';
+  return Math.floor(h/24)+'d atrás';
+}
+function fmtDur(sec){
+  if(sec<60) return sec+'s';
+  const m=Math.floor(sec/60), s=sec%60;
+  return m+'m '+s+'s';
+}
+function fmtNum(n){return n.toLocaleString('pt-BR')}
+
+/* =============== COLETAS =============== */
+function renderColetas(){
+  const el = document.getElementById('coletas-list');
+  if(state.coletas==='loading'){
+    el.innerHTML = Array(4).fill().map(()=>`
+      <div class="sk-batch">
+        <div class="sk-row">
+          <div class="sk-circ"></div>
+          <div style="flex:1"><div class="sk-line w40"></div><div class="sk-line w25" style="margin-top:6px"></div></div>
+          <div class="sk-line w25" style="width:80px"></div>
+        </div>
+        <div class="sk-grid"><div class="sk-cell"></div><div class="sk-cell"></div><div class="sk-cell"></div><div class="sk-cell"></div></div>
+        <div class="sk-line w80" style="margin-top:10px;height:5px"></div>
+      </div>`).join('');
+    setKpis('—','—','—','—','—','—','—','—');
+    return;
+  }
+  if(state.coletas==='empty'){
+    el.innerHTML = `<div class="state">
+      <div class="state-ico">📭</div>
+      <div class="state-ttl">Nenhum batch encontrado</div>
+      <div class="state-sub">Os filtros aplicados não retornaram resultados, ou nenhuma coleta foi executada no intervalo selecionado. Ajuste os filtros ou aguarde a próxima execução do SCOUT.</div>
+      <button class="state-btn" onclick="resetFilters()">Limpar filtros</button>
+    </div>`;
+    setKpis('0','—','0','—','0','—','—','—');
+    return;
+  }
+  if(state.coletas==='error'){
+    el.innerHTML = `<div class="state">
+      <div class="state-ico err">⚠️</div>
+      <div class="state-ttl" style="color:var(--red)">Erro ao consultar import_log</div>
+      <div class="state-sub">Falha de leitura na tabela <b style="color:var(--text)">import_log</b>. Verifique as chaves Supabase e a conexão com <b style="color:var(--text)">oaenyqkiheipyaiculza.supabase.co</b>.</div>
+      <button class="state-btn" onclick="state.coletas='data';renderColetas()">Tentar novamente</button>
+    </div>`;
+    setKpis('—','—','—','—','—','—','—','—');
+    return;
+  }
+
+  // DADOS
+  const fc = document.getElementById('f-canal').value;
+  const fs = document.getElementById('f-status').value;
+  const fq = document.getElementById('f-search').value.toLowerCase();
+  const list = BATCHES.filter(b=>
+    (fc==='all'||b.canal===fc) &&
+    (fs==='all'||b.status===fs) &&
+    (!fq || b.id.toLowerCase().includes(fq) || b.canal.includes(fq) || (b.by||'').toLowerCase().includes(fq))
+  );
+
+  if(!list.length){
+    el.innerHTML = `<div class="state">
+      <div class="state-ico">🔍</div>
+      <div class="state-ttl">Nenhum batch corresponde aos filtros</div>
+      <div class="state-sub">Tente ampliar o intervalo ou remover filtros.</div>
+      <button class="state-btn" onclick="resetFilters()">Limpar filtros</button>
+    </div>`;
+  } else {
+    const sLabel = {ok:'<i class="pill-ico">✓</i><span class="pill-lbl">OK</span>', warn:'<i class="pill-ico">!</i><span class="pill-lbl">PART</span>', err:'<i class="pill-ico">✕</i><span class="pill-lbl">ERR</span>', run:'<i class="pill-ico">▶</i><span class="pill-lbl">RUN</span>'};
+    const sPill  = {ok:'p-ok',    warn:'p-warn',  err:'p-err',  run:'p-blue live'};
+    const sBar   = {ok:'bbf-ok',  warn:'bbf-warn',err:'bbf-err',run:'bbf-run'};
+    const sCls   = {ok:'b-ok',    warn:'b-warn',  err:'b-err',  run:'b-run'};
+
+    el.innerHTML = `<div class="batch-list">${list.map(b=>{
+      const pct = b.alvo? Math.round(b.qtd/b.alvo*100):0;
+      const c = CANAIS[b.canal]||{ico:'•',label:b.canal};
+      return `<div class="batch ${sCls[b.status]}">
+        <div class="batch-head">
+          <div class="batch-canal">
+            <div class="batch-ico"><span class="social-ico ${c.type}">${SOCIAL_SVG[c.type]||''}</span></div>
+            <div style="min-width:0">
+              <div class="batch-canal-name">${c.label}</div>
+              <div class="batch-id">${b.id} · ${b.by}</div>
+            </div>
+          </div>
+          <span class="pill ${sPill[b.status]}">${sLabel[b.status]}</span>
+          <div class="batch-when">
+            ${timeAgo(b.started)}
+            <div class="batch-when-d">${new Date(b.started).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</div>
+          </div>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="bm"><div class="bm-l">Coletados</div><div class="bm-v ${b.status==='err'?'err':'success'}">${fmtNum(b.qtd)}</div></div>
+          <div class="bm"><div class="bm-l">Alvo</div><div class="bm-v">${fmtNum(b.alvo)}</div></div>
+          <div class="bm"><div class="bm-l">Duração</div><div class="bm-v info">${fmtDur(b.dur)}</div></div>
+          <div class="bm"><div class="bm-l">Resultado</div><div class="bm-v ${b.status==='ok'?'success':b.status==='err'?'err':b.status==='warn'?'warn':'info'}">${b.status==='run'?fmtNum(Math.round(b.qtd/b.dur))+'/s':sLabel[b.status]}</div></div>
+        </div>
+
+        ${b.err?`<div style="font-size:10px;font-family:var(--fm);color:var(--${b.status==='err'?'red':'yellow'});margin-bottom:8px;padding-left:2px">▸ ${b.err}</div>`:''}
+
+        <div class="batch-foot">
+          <div class="batch-bar"><div class="batch-bar-fill ${sBar[b.status]}" style="width:${pct}%"></div></div>
+          <span class="batch-pct">${pct}%</span>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+  }
+
+  // KPIs sempre com base no dataset filtrado real
+  const okList = BATCHES.filter(b=>b.status==='ok');
+  const totalLeads = BATCHES.reduce((s,b)=>s+b.qtd,0);
+  const tax = Math.round(okList.length/BATCHES.length*100);
+  const durMed = Math.round(BATCHES.reduce((s,b)=>s+b.dur,0)/BATCHES.length);
+  setKpis(BATCHES.length, '+3 vs ontem', fmtNum(totalLeads), '+12% vs 7d', tax+'%', okList.length+'/'+BATCHES.length+' OK', fmtDur(durMed), 'tempo médio');
+}
+function setKpis(a,ad,b,bd,c,cd,d,dd){
+  document.getElementById('kpi-total').textContent=a;
+  document.getElementById('kpi-total-d').textContent=ad;
+  document.getElementById('kpi-leads').textContent=b;
+  document.getElementById('kpi-leads-d').textContent=bd;
+  document.getElementById('kpi-tax').textContent=c;
+  document.getElementById('kpi-tax-d').textContent=cd;
+  document.getElementById('kpi-dur').textContent=d;
+  document.getElementById('kpi-dur-d').textContent=dd;
+}
+function resetFilters(){
+  document.getElementById('f-canal').value='all';
+  document.getElementById('f-status').value='all';
+  document.getElementById('f-data').value='24h';
+  document.getElementById('f-search').value='';
+  renderColetas();
+}
+
+/* =============== AUDITORIA =============== */
+function renderAudit(){
+  const el = document.getElementById('audit-list');
+  const aTotal = document.getElementById('aud-total');
+  const aCreate = document.getElementById('aud-create');
+  const aUpdate = document.getElementById('aud-update');
+  const aDelete = document.getElementById('aud-delete');
+
+  if(state.audit==='loading'){
+    el.innerHTML = `<div style="padding-left:30px">${Array(5).fill().map(()=>`
+      <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+        <div class="sk-row"><div class="sk-line w25" style="width:60px"></div><div class="sk-line w60"></div></div>
+        <div class="sk-line w40" style="margin-top:6px;height:8px"></div>
+      </div>`).join('')}</div>`;
+    aTotal.textContent='—';aCreate.textContent='—';aUpdate.textContent='—';aDelete.textContent='—';
+    return;
+  }
+  if(state.audit==='empty'){
+    el.innerHTML = `<div class="state">
+      <div class="state-ico">📜</div>
+      <div class="state-ttl">Nenhum evento registrado</div>
+      <div class="state-sub">A trilha de auditoria está vazia para os filtros aplicados. Tente ampliar o escopo ou remover filtros de tipo/autor.</div>
+      <button class="state-btn" onclick="resetAuditFilters()">Limpar filtros</button>
+    </div>`;
+    aTotal.textContent='0';aCreate.textContent='0';aUpdate.textContent='0';aDelete.textContent='0';
+    return;
+  }
+  if(state.audit==='error'){
+    el.innerHTML = `<div class="state">
+      <div class="state-ico err">⚠️</div>
+      <div class="state-ttl" style="color:var(--red)">Erro ao consultar audit_log</div>
+      <div class="state-sub">Falha de leitura na tabela <b style="color:var(--text)">audit_log</b>. RLS pode estar bloqueando o usuário <b style="color:var(--text)">painel</b> ou o token expirou.</div>
+      <button class="state-btn" onclick="state.audit='data';renderAudit()">Tentar novamente</button>
+    </div>`;
+    aTotal.textContent='—';aCreate.textContent='—';aUpdate.textContent='—';aDelete.textContent='—';
+    return;
+  }
+
+  const ft = document.getElementById('af-tipo').value;
+  const fa = document.getElementById('af-autor').value;
+  const fq = document.getElementById('af-search').value.toLowerCase();
+  const list = AUDIT.filter(a=>
+    (ft==='all'||a.tipo===ft) &&
+    (fa==='all'||a.autor===fa) &&
+    (!fq || a.msg.toLowerCase().includes(fq) || (a.target||'').toLowerCase().includes(fq))
+  );
+
+  // KPIs
+  aTotal.textContent  = AUDIT.length;
+  aCreate.textContent = AUDIT.filter(a=>a.tipo==='CREATE').length;
+  aUpdate.textContent = AUDIT.filter(a=>a.tipo==='UPDATE').length;
+  aDelete.textContent = AUDIT.filter(a=>a.tipo==='DELETE').length;
+
+  if(!list.length){
+    el.innerHTML = `<div class="state">
+      <div class="state-ico">🔍</div>
+      <div class="state-ttl">Nenhum evento corresponde aos filtros</div>
+      <button class="state-btn" onclick="resetAuditFilters()">Limpar filtros</button>
+    </div>`;
+    return;
+  }
+
+  const tCls = {CREATE:'a-create',UPDATE:'a-update',DELETE:'a-delete',LOGIN:'a-login',CONFIG:'a-config'};
+  const tPill = {CREATE:'at-create',UPDATE:'at-update',DELETE:'at-delete',LOGIN:'at-login',CONFIG:'at-config'};
+  const flat = state.alayout==='flat';
+
+  const inner = list.map((a,i)=>{
+    const dt = new Date(a.when);
+    const diffHtml = (a.before!==undefined||a.after!==undefined)?
+      `<div class="diff">
+        <div class="diff-col"><div class="diff-h before">▾ BEFORE</div><div class="diff-pre">${a.before?JSON.stringify(a.before,null,2):'<em style="color:var(--dim)">— vazio —</em>'}</div></div>
+        <div class="diff-col"><div class="diff-h after">▴ AFTER</div><div class="diff-pre">${a.after?JSON.stringify(a.after,null,2):'<em style="color:var(--dim)">— removido —</em>'}</div></div>
+      </div>`
+      : a.payload?
+      `<div class="diff" style="grid-template-columns:1fr"><div class="diff-col"><div class="diff-h" style="color:var(--orange)">PAYLOAD</div><div class="diff-pre">${JSON.stringify(a.payload,null,2)}</div></div></div>`
+      :'';
+
+    return `<div class="audit ${tCls[a.tipo]}" onclick="this.classList.toggle('open')">
+      <div class="audit-head">
+        <span class="audit-tipo ${tPill[a.tipo]}">${a.tipo}</span>
+        <div class="audit-msg">${a.msg}</div>
+        <span class="audit-chev">▸</span>
+      </div>
+      <div class="audit-meta">
+        <span class="audit-autor">${a.autor}</span>
+        <span class="audit-target">${a.target}</span>
+        <span class="audit-time">${dt.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'})} · ${timeAgo(a.when)}</span>
+      </div>
+      <div class="audit-body">${diffHtml}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = flat
+    ? `<div style="padding-left:0">${inner.replace(/class="audit /g,'class="audit ').replace(/audit-list/g,'')}<style>#audit-list::before{display:none}</style></div>`
+    : `<div class="audit-list">${inner}</div>`;
+}
+function resetAuditFilters(){
+  document.getElementById('af-tipo').value='all';
+  document.getElementById('af-autor').value='all';
+  document.getElementById('af-search').value='';
+  renderAudit();
+}
+
+/* =============== NAV =============== */
+function showPage(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  document.getElementById('tb-title').textContent = id==='coletas'?'COLETAS':'AUDITORIA';
+}
+
+/* =============== TWEAKS =============== */
+document.querySelectorAll('.tw-r').forEach(r=>{
+  r.addEventListener('click', ()=>{
+    const group = r.parentElement;
+    group.querySelectorAll('.tw-r').forEach(x=>x.classList.remove('on'));
+    r.classList.add('on');
+    if(r.dataset.target){
+      state[r.dataset.target] = r.dataset.state;
+      if(r.dataset.target==='coletas') renderColetas();
+      else renderAudit();
+    } else if(r.dataset.density){
+      state.density = r.dataset.density;
+      document.body.style.setProperty('--row-pad', r.dataset.density==='compact'?'8px':'14px');
+      document.querySelectorAll('.batch').forEach(b=>{
+        b.style.padding = r.dataset.density==='compact'?'10px 14px':'14px 16px';
+      });
+    } else if(r.dataset.alayout){
+      state.alayout = r.dataset.alayout;
+      renderAudit();
+    } else if(r.dataset.vibe){
+      state.vibe = r.dataset.vibe;
+      document.body.dataset.vibe = r.dataset.vibe;
+    } else if(r.dataset.pulso){
+      state.pulso = r.dataset.pulso;
+      document.body.dataset.pulso = r.dataset.pulso;
+    } else if(r.dataset.modo){
+      state.modo = r.dataset.modo;
+      document.body.dataset.modo = r.dataset.modo;
+    }
+  });
+});
+
+/* set defaults so :not selectors work */
+document.body.dataset.vibe = 'inferno';
+document.body.dataset.pulso = 'calmo';
+document.body.dataset.modo = 'terminal';
+
+/* =============== CLOCK =============== */
+function _d4_updateClock(){
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  const eH=document.getElementById('clk-h'); if(eH) eH.textContent=h;
+  const eM=document.getElementById('clk-m'); if(eM) eM.textContent=m;
+  const eS=document.getElementById('clk-s'); if(eS) eS.textContent=s;
+  const eD=document.getElementById('clk-d');
+  if(eD) eD.textContent=now.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'}).replace(/\./g,'').toUpperCase().replace(',','');
+}
+
+/* =============== INIT =============== */
+
+
+// expor para onclicks inline do HTML D4
+window.resetFilters = resetFilters;
+window.resetAuditFilters = resetAuditFilters;
+window.D4_renderColetas = renderColetas;
+window.D4_renderAudit = renderAudit;
+window.D4_state = state;
+
+// hooks acionados quando navegamos para as páginas
+window.D4_initOnce = function(){
+  if(window._d4_inited)return;
+  window._d4_inited=true;
+  try{ renderColetas(); renderAudit(); }catch(e){ console.warn('D4 init',e); }
+};
+})();
+/* === FIM D4 JS === */
+
+/* override: usa renderers do D4 quando navegar */
+(function(){
+  const _origShowPage = window.showPage;
+  window.showPage = function(id, el){
+    _origShowPage(id, el);
+    if(id==='coletas' || id==='audit'){ window.D4_initOnce && window.D4_initOnce(); }
+  };
+})();
+
 </script>
 </body>
 </html>
