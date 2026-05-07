@@ -402,10 +402,10 @@ select.fi option{background:var(--bg2)}
         <select class="fi"><option>Todos os canais</option><option>Canal 1</option><option>Canal 2</option></select>
       </div>
       <div class="sc-grid">
-        <div class="sc"><div class="sc-ico sio"><svg viewBox="0 0 24 24" stroke="var(--orange)"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sc-v" style="color:var(--orange)">32.873</div><div class="sc-l">Total Leads</div></div>
-        <div class="sc"><div class="sc-ico sig"><svg viewBox="0 0 24 24" stroke="var(--green)"><polyline points="20 6 9 17 4 12"/></svg></div><div class="sc-v" style="color:var(--green)">22.353</div><div class="sc-l">Ativos</div><div class="sc-d dg">68%</div></div>
-        <div class="sc"><div class="sc-ico siy"><svg viewBox="0 0 24 24" stroke="var(--yellow)"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg></div><div class="sc-v" style="color:var(--yellow)">10.520</div><div class="sc-l">RMKT</div><div class="sc-d dw">32%</div></div>
-        <div class="sc"><div class="sc-ico sib"><svg viewBox="0 0 24 24" stroke="var(--blue)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="sc-v" style="color:var(--blue)">5.917</div><div class="sc-l">Convertidos</div><div class="sc-d dg">18%</div></div>
+        <div class="sc"><div class="sc-ico sio"><svg viewBox="0 0 24 24" stroke="var(--orange)"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sc-v" style="color:var(--orange)" id="m-total">—</div><div class="sc-l">Total Leads</div><div class="sc-d dg">Supabase live</div></div>
+        <div class="sc"><div class="sc-ico sig"><svg viewBox="0 0 24 24" stroke="var(--green)"><polyline points="20 6 9 17 4 12"/></svg></div><div class="sc-v" style="color:var(--green)">--</div><div class="sc-l">Aguardando Operação</div><div class="sc-d" style="color:var(--dim)">Ativos</div></div>
+        <div class="sc"><div class="sc-ico siy"><svg viewBox="0 0 24 24" stroke="var(--yellow)"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg></div><div class="sc-v" style="color:var(--yellow)">--</div><div class="sc-l">Aguardando Operação</div><div class="sc-d" style="color:var(--dim)">RMKT</div></div>
+        <div class="sc"><div class="sc-ico sib"><svg viewBox="0 0 24 24" stroke="var(--blue)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="sc-v" style="color:var(--blue)">--</div><div class="sc-l">Aguardando Operação</div><div class="sc-d" style="color:var(--dim)">Convertidos</div></div>
       </div>
       <div class="g2">
         <div class="chart-box"><div class="chart-hdr"><span class="chart-ttl">Distribuição de Leads</span></div><div style="position:relative;height:220px"><canvas id="cLeads"></canvas></div></div>
@@ -516,8 +516,19 @@ select.fi option{background:var(--bg2)}
         </div>
       </div>
 
+      <!-- HISTÓRICO DE IMPORTAÇÕES (import_log real) -->
+      <div class="ccard" style="margin-top:4px">
+        <div class="ccard-h" style="justify-content:space-between">
+          <span>📦 Histórico de Importações · import_log</span>
+          <span style="font-size:.65rem;color:var(--dim);font-family:var(--fm)" id="import-log-update">—</span>
+        </div>
+        <div id="import-log-body" style="padding:0">
+          <div style="padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Carregando...</div>
+        </div>
+      </div>
+
       <!-- LOG DE COLETA -->
-      <div class="log-terminal" style="margin-top:4px">
+      <div class="log-terminal" style="margin-top:12px">
         <div class="log-bar">
           <div class="log-dots"><span style="background:#ff4444"></span><span style="background:#f5a623"></span><span style="background:#22c55e"></span></div>
           <span class="log-title">● STREAM DE COLETA · TEMPO REAL</span>
@@ -543,10 +554,10 @@ select.fi option{background:var(--bg2)}
         <input class="fi" type="date" style="color:var(--dim)">
       </div>
       <div class="sc-grid" style="grid-template-columns:repeat(4,1fr)">
-        <div class="op-c"><div class="op-r"><span class="op-lbl">Entrada</span><span class="op-val" style="color:var(--orange)">32.873</span></div><div class="op-r"><span class="op-lbl">Saída</span><span class="op-val" style="color:var(--red)">2.630</span></div></div>
-        <div class="op-c"><div class="op-r"><span class="op-lbl">Retenção</span><span class="op-val" style="color:var(--green)">68%</span></div><div class="op-r"><span class="op-lbl">Conversão</span><span class="op-val" style="color:var(--blue)">18%</span></div></div>
-        <div class="op-c"><div class="op-r"><span class="op-lbl">Variante A</span><span class="op-val" style="color:var(--orange)">16.436</span></div><div class="op-r"><span class="op-lbl">Variante B</span><span class="op-val" style="color:var(--blue)">16.437</span></div></div>
-        <div class="op-c"><div class="op-r"><span class="op-lbl">RMKT</span><span class="op-val" style="color:var(--yellow)">10.520</span></div><div class="op-r"><span class="op-lbl">FTD</span><span class="op-val" style="color:var(--green)" id="ftd">—</span></div></div>
+        <div class="op-c"><div class="op-r"><span class="op-lbl">Entrada</span><span class="op-val" style="color:var(--orange)" id="op-entrada">—</span></div><div class="op-r"><span class="op-lbl">Saída</span><span class="op-val" style="color:var(--red)">--</span></div></div>
+        <div class="op-c"><div class="op-r"><span class="op-lbl">Retenção</span><span class="op-val" style="color:var(--dim)">--</span></div><div class="op-r"><span class="op-lbl">Conversão</span><span class="op-val" style="color:var(--dim)">--</span></div></div>
+        <div class="op-c"><div class="op-r"><span class="op-lbl">Variante A</span><span class="op-val" style="color:var(--dim)">--</span></div><div class="op-r"><span class="op-lbl">Variante B</span><span class="op-val" style="color:var(--dim)">--</span></div></div>
+        <div class="op-c"><div class="op-r"><span class="op-lbl">RMKT</span><span class="op-val" style="color:var(--dim)">--</span></div><div class="op-r"><span class="op-lbl">FTD</span><span class="op-val" style="color:var(--dim)" id="ftd">--</span></div></div>
       </div>
       <div class="g2">
         <div class="chart-box"><div class="chart-hdr"><span class="chart-ttl">Fluxo de Leads · Live</span></div><div style="position:relative;height:240px"><canvas id="cOp1"></canvas></div></div>
@@ -577,6 +588,17 @@ select.fi option{background:var(--bg2)}
           <button onclick="clearLog()" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--red);padding:7px 13px;border-radius:8px;cursor:pointer;font-family:var(--f);font-size:.75rem;font-weight:700">Limpar</button>
         </div>
         <div class="log-body"><div id="log-list"></div></div>
+      </div>
+
+      <!-- AUDIT LOG (audit_log real Supabase) -->
+      <div class="ccard" style="margin-top:16px" id="audit-log-card">
+        <div class="ccard-h" style="justify-content:space-between">
+          <span>🔍 Auditoria Supabase · audit_log</span>
+          <span style="font-size:.65rem;color:var(--dim);font-family:var(--fm)" id="audit-log-update">—</span>
+        </div>
+        <div id="audit-log-body" style="padding:0">
+          <div style="padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Carregando...</div>
+        </div>
       </div>
     </div>
 
@@ -762,7 +784,7 @@ async function exportCSV(){
 
 
 const SB_URL='https://oaenyqkiheipyaiculza.supabase.co';
-const SB_KEY='sb_publishable_gH1O53o9IQkekYX0oOGI3Q_uAGS_nKy';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hZW55cWtpaGVpcHlhaWN1bHphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NDU5NTUsImV4cCI6MjA5MTMyMTk1NX0.U-IQPAuXTPR6MsBqi3J6wT1sr2Ad1s5ngKj5SUej1EI';
 let coletaChart=null;
 let coletaIntervals=[];
 
@@ -808,28 +830,51 @@ async function sbGetAll(table,params=''){
 
 async function loadOverviewCards(){
   try{
-    const res=await fetch(`${SB_URL}/rest/v1/leads?select=grupo_origem,score_qualidade,is_premium`,{
-      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Range':'0-19999'}
+    // Total via count=exact (lê só 1 linha, usa Content-Range para o total)
+    const countRes=await fetch(`${SB_URL}/rest/v1/leads?select=telegram_id&limit=1`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'count=exact'}
     });
-    if(!res.ok)return;
-    const data=await res.json();
-    if(!Array.isArray(data))return;
+    if(countRes.ok){
+      const range=countRes.headers.get('content-range');
+      if(range){
+        const total=parseInt(range.split('/')[1]);
+        const el=document.getElementById('ov-total');
+        if(el)el.textContent=total.toLocaleString('pt-BR');
+        const elM=document.getElementById('m-total');
+        if(elM)elM.textContent=total.toLocaleString('pt-BR');
+        const elOp=document.getElementById('op-entrada');
+        if(elOp)elOp.textContent=total.toLocaleString('pt-BR');
+      }
+    }
 
-    const totalEl=document.getElementById('ov-total');
-    if(totalEl)totalEl.textContent=data.length.toLocaleString('pt-BR');
+    // v_leads_stats: score médio ponderado, canais, premium, alta qualidade, última coleta
+    const statsRes=await fetch(`${SB_URL}/rest/v1/v_leads_stats?select=grupo_origem,total_leads,leads_alta_qualidade,leads_media_qualidade,leads_baixa_qualidade,leads_premium,score_medio,ultima_coleta`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Accept':'application/json'}
+    });
+    if(statsRes.ok){
+      const stats=await statsRes.json();
+      if(Array.isArray(stats)&&stats.length){
+        const totalLeads=stats.reduce((a,b)=>a+(b.total_leads||0),0);
+        const scoreSum=stats.reduce((a,b)=>a+(b.score_medio||0)*(b.total_leads||0),0);
+        const avgScore=totalLeads?Math.round(scoreSum/totalLeads*10)/10:0;
+        const scoreEl=document.getElementById('ov-score');if(scoreEl)scoreEl.textContent=avgScore.toFixed(1);
 
-    const valid=data.filter(l=>(l.score_qualidade||0)>0);
-    const avg=valid.length?Math.round(valid.reduce((a,b)=>a+(b.score_qualidade||0),0)/valid.length):0;
-    const scoreEl=document.getElementById('ov-score');
-    if(scoreEl)scoreEl.textContent=avg;
+        const canaisEl=document.getElementById('ov-canais');if(canaisEl)canaisEl.textContent=stats.length;
 
-    const canais=new Set(data.map(l=>l.grupo_origem).filter(Boolean));
-    const canaisEl=document.getElementById('ov-canais');
-    if(canaisEl)canaisEl.textContent=canais.size;
+        const premium=stats.reduce((a,b)=>a+(b.leads_premium||0),0);
+        const premiumEl=document.getElementById('ov-premium');if(premiumEl)premiumEl.textContent=premium.toLocaleString('pt-BR');
 
-    const premium=data.filter(l=>l.is_premium).length;
-    const premiumEl=document.getElementById('ov-premium');
-    if(premiumEl)premiumEl.textContent=premium.toLocaleString('pt-BR');
+        const alta=stats.reduce((a,b)=>a+(b.leads_alta_qualidade||0),0);
+        const elAlta=document.getElementById('m-alta');if(elAlta)elAlta.textContent=alta.toLocaleString('pt-BR');
+
+        const ultimas=stats.map(s=>s.ultima_coleta).filter(Boolean).sort();
+        if(ultimas.length){
+          const d=new Date(ultimas[ultimas.length-1]);
+          const fmt=d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+          const elD=document.getElementById('ov-total-d');if(elD)elD.textContent='última coleta: '+fmt;
+        }
+      }
+    }
   }catch(e){console.error('overview cards',e);}
 }
 
@@ -894,34 +939,28 @@ async function loadColetaCards(){
 
 async function loadColetaTable(){
   try{
-    const data=await sbGetAll('leads','select=grupo_origem,score_qualidade,is_premium,coletado_em');
-    if(!data||!data.length){document.getElementById('c-table-body').innerHTML='<tr><td colspan="5" style="padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Nenhum dado ainda</td></tr>';return;}
-
-    const grouped={};
-    data.forEach(l=>{
-      const g=l.grupo_origem||'Desconhecido';
-      if(!grouped[g])grouped[g]={total:0,premium:0,scores:[],ultima:null};
-      grouped[g].total++;
-      if(l.is_premium)grouped[g].premium++;
-      if(l.score_qualidade)grouped[g].scores.push(l.score_qualidade);
-      if(!grouped[g].ultima||l.coletado_em>grouped[g].ultima)grouped[g].ultima=l.coletado_em;
+    // Usa v_leads_stats diretamente — sem varrer todos os leads individualmente
+    const res=await fetch(`${SB_URL}/rest/v1/v_leads_stats?select=grupo_origem,total_leads,leads_alta_qualidade,leads_media_qualidade,leads_premium,score_medio,ultima_coleta&order=total_leads.desc`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Accept':'application/json'}
     });
-
-    const rows=Object.entries(grouped).sort((a,b)=>b[1].total-a[1].total);
-    document.getElementById('c-table-body').innerHTML=rows.map(([canal,d])=>{
-      const score=d.scores.length?Math.round(d.scores.reduce((a,b)=>a+b,0)/d.scores.length):0;
-      const ultima=d.ultima?new Date(d.ultima).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):'—';
+    const tbody=document.getElementById('c-table-body');
+    if(!res.ok){tbody.innerHTML='<tr><td colspan="5" style="padding:20px;text-align:center;color:var(--red);font-family:var(--fm);font-size:.75rem">Erro ao carregar dados</td></tr>';return;}
+    const data=await res.json();
+    if(!Array.isArray(data)||!data.length){tbody.innerHTML='<tr><td colspan="5" style="padding:20px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Nenhum dado ainda</td></tr>';return;}
+    tbody.innerHTML=data.map(g=>{
+      const score=g.score_medio||0;
       const scoreColor=score>=70?'var(--green)':score>=50?'var(--yellow)':'var(--red)';
+      const ultima=g.ultima_coleta?new Date(g.ultima_coleta).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
       return`<tr style="border-bottom:1px solid var(--border)">
-        <td style="padding:10px 16px;font-size:.8rem;font-weight:700;color:var(--text)">${canal}</td>
-        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:800;color:var(--orange);font-family:var(--fm)">${d.total}</td>
-        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:700;color:var(--purple);font-family:var(--fm)">${d.premium}</td>
-        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:800;color:${scoreColor};font-family:var(--fm)">${score}</td>
+        <td style="padding:10px 16px;font-size:.8rem;font-weight:700;color:var(--text)">${g.grupo_origem||'—'}</td>
+        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:800;color:var(--orange);font-family:var(--fm)">${(g.total_leads||0).toLocaleString('pt-BR')}</td>
+        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:700;color:var(--purple);font-family:var(--fm)">${g.leads_premium||0}</td>
+        <td style="padding:10px 8px;text-align:right;font-size:.8rem;font-weight:800;color:${scoreColor};font-family:var(--fm)">${score.toFixed(2)}</td>
         <td style="padding:10px 16px;text-align:right;font-size:.72rem;color:var(--dim);font-family:var(--fm)">${ultima}</td>
       </tr>`;
     }).join('');
     document.getElementById('c-table-update').textContent='atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  }catch(e){console.error('coleta table',e);}
+  }catch(e){console.error('coleta table',e);document.getElementById('c-table-body').innerHTML='<tr><td colspan="5" style="padding:20px;text-align:center;color:var(--red);font-family:var(--fm);font-size:.75rem">Erro ao carregar dados</td></tr>';}
 }
 
 async function loadColetaChart(){
@@ -1215,14 +1254,8 @@ function updateClock(){
   document.getElementById('clock-d').textContent=now.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'}).toUpperCase()+' · BRT';
 }
 
-// SIM
-function updateSim(){
-  const a=document.getElementById('ov1'),b=document.getElementById('ov2'),f=document.getElementById('ftd'),o3=document.getElementById('ov3');
-  if(a)a.textContent=Math.floor(1200+Math.random()*300).toLocaleString('pt-BR');
-  if(b)b.textContent=Math.floor(800+Math.random()*200).toLocaleString('pt-BR');
-  if(f)f.textContent=Math.floor(400+Math.random()*100).toLocaleString('pt-BR');
-  if(o3)o3.textContent=Math.floor(60+Math.random()*15)+'%';
-}
+// SIM — simulação removida; métricas sem dado real exibem "--" até sistema operar
+function updateSim(){}
 
 // BG
 const BG_OBJ=['🎰','🃏','🎲','🎯','🎳','💰','💵','💸','🪙','♠️','♥️','♦️','♣️'];
@@ -1240,6 +1273,64 @@ function buildBg(){
 function toggleBg(el){el.classList.toggle('on');bgEnabled=el.classList.contains('on');document.getElementById('bgCanvas').style.opacity=bgEnabled?'1':'0'}
 function setBgSpeed(v){bgSpeed=parseInt(v);buildBg()}
 
+async function loadImportLog(){
+  const el=document.getElementById('import-log-body');
+  const upd=document.getElementById('import-log-update');
+  if(!el)return;
+  try{
+    const res=await fetch(`${SB_URL}/rest/v1/import_log?select=id,canal,origem,total_processados,total_novos,total_erros,status_import,mensagem,created_at&order=created_at.desc`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Accept':'application/json'}
+    });
+    if(!res.ok){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--red);font-family:var(--fm);font-size:.75rem">Erro ao carregar import_log</div>';return;}
+    const data=await res.json();
+    if(!Array.isArray(data)||!data.length){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Sem registros</div>';return;}
+    el.innerHTML=data.map(r=>{
+      const sc=r.status_import==='OK'?'p-ok':r.status_import==='ERRO'?'p-err':'p-warn';
+      const orig=r.origem==='BACKFILL'?'<span class="pill p-warn">BACKFILL</span>':`<span class="pill p-blue">${r.origem||'—'}</span>`;
+      const dt=r.created_at?new Date(r.created_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+      return`<div style="padding:12px 16px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px">
+          <div style="font-size:.82rem;font-weight:700">${r.canal||'—'}</div>
+          <div style="display:flex;gap:6px;align-items:center;flex-shrink:0"><span class="pill ${sc}">${r.status_import||'—'}</span>${orig}</div>
+        </div>
+        <div style="font-size:.68rem;color:var(--dim);font-family:var(--fm);margin-bottom:6px">${r.mensagem||'—'}</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <span style="font-size:.72rem;font-family:var(--fm)">processados: <strong style="color:var(--orange)">${(r.total_processados||0).toLocaleString('pt-BR')}</strong></span>
+          <span style="font-size:.72rem;font-family:var(--fm)">novos: <strong style="color:var(--green)">${(r.total_novos||0).toLocaleString('pt-BR')}</strong></span>
+          <span style="font-size:.72rem;font-family:var(--fm)">erros: <strong style="color:${r.total_erros?'var(--red)':'var(--dim)'}">${r.total_erros||0}</strong></span>
+          <span style="font-size:.65rem;color:var(--dim);font-family:var(--fm);margin-left:auto">${dt}</span>
+        </div>
+      </div>`;
+    }).join('');
+    if(upd)upd.textContent='atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){console.error('import log',e);el.innerHTML='<div style="padding:16px;text-align:center;color:var(--red);font-family:var(--fm);font-size:.75rem">Erro ao carregar</div>';}
+}
+
+async function loadAuditLog(){
+  const el=document.getElementById('audit-log-body');
+  const upd=document.getElementById('audit-log-update');
+  if(!el)return;
+  try{
+    const res=await fetch(`${SB_URL}/rest/v1/audit_log?select=id,executed_at,executed_by,acao,objeto_tipo,objeto_nome,descricao,risco&order=executed_at.desc`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Accept':'application/json'}
+    });
+    if(!res.ok){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--red);font-family:var(--fm);font-size:.75rem">Erro ao carregar audit_log</div>';return;}
+    const data=await res.json();
+    if(!Array.isArray(data)||!data.length){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--dim);font-family:var(--fm);font-size:.75rem">Sem registros</div>';return;}
+    const riscoMap={ALTO:'err',MEDIO:'warn',BAIXO:'ok'};
+    el.innerHTML='<div style="padding:6px 8px">'+ data.map(r=>{
+      const t=riscoMap[r.risco]||'ok';
+      const dt=r.executed_at?new Date(r.executed_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+      return`<div class="log-row lg-${t}">
+        <span class="log-t">${dt}</span>
+        <span class="log-type lt-${t}">${r.acao||'AUDIT'}</span>
+        <span class="log-msg">${r.objeto_nome||r.objeto_tipo||'—'} · <span style="color:var(--dim)">${r.descricao||'—'}</span></span>
+      </div>`;
+    }).join('')+'</div>';
+    if(upd)upd.textContent='atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){console.error('audit log',e);el.innerHTML='<div style="padding:16px;text-align:center;color:var(--red);font-family:var(--fm);font-size:.75rem">Erro ao carregar</div>';}
+}
+
 function initDashboard(){
   renderAgents();renderCmds();renderOvStatus();
   document.getElementById('pend-list').innerHTML=tasks.map(t=>{
@@ -1248,13 +1339,12 @@ function initDashboard(){
   }).join('');
   addLog('MASTER FLOW ativo · fluxo reativo operacional','ok');
   addLog('WEBHOOK N8N validado e operacional','ok');
-  addLog('Importação de leads pendente · 6 canais','warn');
-  addLog('agent_signals · tabela não criada','err');
-  addLog('Chaves Supabase aguardando rotação','warn');
-  updateClock();updateSim();loadOverviewCards();
+  addLog('Supabase conectado · ANON KEY ativa · leitura OK','ok');
+  addLog('agent_signals · 52 sinais PENDING · falha arquitetural COLETOR_V7','warn');
+  addLog('Base: 11.932 leads reais · 5 grupos · coleta pausada','ok');
+  updateClock();loadOverviewCards();loadImportLog();loadAuditLog();
   setInterval(updateClock,1000);
-  setInterval(updateSim,15000);
-  setInterval(loadOverviewCards,15000);
+  setInterval(loadOverviewCards,30000);
   setInterval(()=>{
     const m=[['Ping MASTER FLOW · OK','ok'],['Webhook N8N · 200ms','ok'],['Supabase · conexão estável','ok'],['Importação base leads pendente','warn']];
     const r=m[Math.floor(Math.random()*m.length)];addLog(r[0],r[1]);
